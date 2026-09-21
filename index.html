@@ -285,8 +285,182 @@
     .menu-box span{font-size:clamp(1.2rem, 3vh, 1.65rem);line-height:1.2;font-weight:600;}
     footer{flex:0 0 auto;max-width:85vw;margin:6px auto 0;}
   }
+
+  /* ---------- Okul Bilgi Girişi popup ---------- */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(11,41,45,.45);
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    z-index:200;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal-box{
+    background:var(--bg);
+    border-radius:var(--radius);
+    padding:22px 20px 18px;
+    width:100%;
+    max-width:360px;
+    max-height:88vh;
+    overflow-y:auto;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute;
+    top:10px;
+    right:12px;
+    background:none;
+    border:none;
+    font-size:1.4rem;
+    line-height:1;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .modal-title{
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 14px;
+    text-align:center;
+  }
+  .modal-field{
+    margin-bottom:12px;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .modal-field label{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .modal-field input{
+    border:1px solid var(--card);
+    background:var(--card);
+    border-radius:10px;
+    padding:9px 10px;
+    font-size:.92rem;
+    color:var(--ink);
+    font-family:inherit;
+    width:100%;
+  }
+  .modal-field input:disabled{
+    background:transparent;
+    border-color:var(--line);
+    color:var(--ink);
+    opacity:1;
+    -webkit-text-fill-color:var(--ink);
+  }
+  .modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:6px;
+  }
+  .modal-btn{
+    flex:1;
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    font-size:.92rem;
+    font-weight:600;
+    cursor:pointer;
+    background:var(--card);
+    color:var(--ink);
+    font-family:inherit;
+  }
+  .modal-btn.primary{
+    background:var(--accent-dark);
+    color:#fff;
+  }
+  .modal-status{
+    text-align:center;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    min-height:16px;
+  }
+
+  /* ---------- Öğretmen listesi ---------- */
+  .ogretmen-list{
+    margin:4px 0 14px;
+    border-top:1px solid var(--line);
+  }
+  .ogretmen-item{
+    border-bottom:1px solid var(--line);
+  }
+  .ogretmen-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:9px 2px;
+  }
+  .ogretmen-name{
+    flex:1 1 auto;
+    font-size:.92rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .ogretmen-name.selected{font-weight:700;color:var(--accent-dark);}
+  .ogretmen-toggle{
+    flex:0 0 auto;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    border:none;
+    background:var(--card);
+    color:var(--ink);
+    font-size:1rem;
+    line-height:1;
+    cursor:pointer;
+  }
+  .ogretmen-detay{
+    display:none;
+    padding:0 2px 10px;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
+  .ogretmen-empty{
+    padding:10px 2px;
+    font-size:.85rem;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .modal-btn.wide{flex:1 1 100%;}
+
+  /* ---------- Yazdırma / PDF alanı ---------- */
+  .print-area{display:none;}
+  @media print{
+    body *{visibility:hidden;}
+    .print-area, .print-area *{visibility:visible;}
+    .print-area{
+      display:block;
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+    }
+    .modal-overlay{position:static;background:none;}
+  }
+  @page{size:A4;margin:18mm 15mm;}
+  .print-header{text-align:center;margin-bottom:18px;}
+  .print-header .print-okul{font-size:1.2rem;font-weight:700;color:#16323a;}
+  .print-header .print-yil{font-size:.95rem;color:#4d6a70;margin-top:2px;}
+  .print-header h2{font-size:1rem;margin:14px 0 0;color:#16323a;}
+  .print-table{width:100%;border-collapse:collapse;font-size:.92rem;color:#16323a;}
+  .print-table th,.print-table td{border:1px solid #b7d8db;padding:7px 9px;text-align:left;}
+  .print-table th{background:#eef7f8;}
+  .print-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:48px;}
+  .print-footer-left{display:flex;gap:36px;}
+  .print-signature{text-align:center;min-width:120px;}
+  .print-signature .ad{font-weight:600;font-size:.92rem;color:#16323a;border-top:1px solid #16323a;padding-top:6px;}
+  .print-signature .unvan{font-size:.82rem;color:#4d6a70;margin-top:2px;}
 </style>
 <style>
+
 /* ---- Takvim / Notlar sayfası (muammerbozer.github.io/takvim) — orijinal şablon ve renkler korunarak #takvim-app içine kapsüllendi ---- */
 
     #takvim-app{
@@ -794,29 +968,29 @@
   <section id="home" class="page active">
 
     <div class="menu-grid">
-      <a class="menu-box" href="https://muammerbozer.github.io/muammerbozer/index.html" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
-        <span>Muammer Bozer</span>
-      </a>
-      <a class="menu-box" href="https://muammerbozer.github.io/hesnabegumbozer/index.html" target="_blank" rel="noopener">
+          <button type="button" class="menu-box" onClick="openOkulBilgiModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
-        <span>Okul Bilişim Sistemi</span>
-      </a>
-      <a class="menu-box" href="https://muammerbozer.github.io/dinkulturudefteri/index.html" target="_blank" rel="noopener">
+        <span>Okul Bilgi Girişi</span>
+      </button>
+      <button type="button" class="menu-box" onClick="openOgretmenBilgiModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        <span>Öğretmen Bilgi Girişi</span>
+      </button>
+      <button type="button" class="menu-box" onClick="openSinifBilgiModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9 12 4l10 5-10 5-10-5Z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/></svg>
-        <span>Din Kültürü Defteri</span>
-      </a>
+        <span>Sınıf Bilgi Girişi</span>
+      </button>
       <a class="menu-box" href="https://muammerbozer.github.io/takvim/index.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5Z"/><path d="M17 3.5 17.8 5.4 19.7 6.2 17.8 7 17 8.9 16.2 7 14.3 6.2 16.2 5.4z"/></svg>
-        <span>Takvim</span>
+        <span>Öğrenci Bilgi Girişi</span>
       </a>
       <a class="menu-box" href="https://muammerbozer.github.io/muammerbozer/gunluk.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13l3 3v13H4z"/><path d="M8 9h9M8 13h9M8 17h5"/></svg>
-        <span>Günlük plan</span>
+        <span>Ders Bilgi Girişi</span>
       </a>
       <a class="menu-box" href="https://muammerbozer.github.io/muammerbozer/siparis.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 10v4M5 12h4M16 11.2h.01M18.5 13.2h.01"/></svg>
-        <span>Sipariş Listesi</span>
+        <span>Not Girişi</span>
       </a>
       <a class="menu-box" href="https://muammerbozer.github.io/muammerbozer/butce.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M9 12l2 2 4-4"/></svg>
@@ -1085,6 +1259,417 @@
 </main>
 
 <footer>© 2026 Muammer Bozer · Din Kültürü ve Ahlak Bilgisi</footer>
+
+<!-- ================= OKUL BİLGİ GİRİŞİ POPUP ================= -->
+<div id="okulBilgiOverlay" class="modal-overlay" onClick="if(event.target===this) closeOkulBilgiModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onClick="closeOkulBilgiModal()" aria-label="Kapat">×</button>
+    <h2 class="modal-title">Okul Bilgi Girişi</h2>
+
+    <div class="modal-field">
+      <label for="okulIl">İl</label>
+      <input type="text" id="okulIl" placeholder="İl">
+    </div>
+    <div class="modal-field">
+      <label for="okulIlce">İlçe</label>
+      <input type="text" id="okulIlce" placeholder="İlçe">
+    </div>
+    <div class="modal-field">
+      <label for="okulMebMudurlugu">Milli Eğitim Müdürlüğü</label>
+      <input type="text" id="okulMebMudurlugu" placeholder="Milli Eğitim Müdürlüğü">
+    </div>
+    <div class="modal-field">
+      <label for="okulAdi">Okulun Adı</label>
+      <input type="text" id="okulAdi" placeholder="Okulun Adı">
+    </div>
+    <div class="modal-field">
+      <label for="okulYil">Eğitim Öğretim Yılı</label>
+      <input type="text" id="okulYil" placeholder="Örn. 2026-2027">
+    </div>
+    <div class="modal-field">
+      <label for="okulMudur">Müdürün Adı</label>
+      <input type="text" id="okulMudur" placeholder="Müdürün Adı Soyadı">
+    </div>
+    <div class="modal-field">
+      <label for="okulMudurYrd1">Müdür Yardımcısı (1)</label>
+      <input type="text" id="okulMudurYrd1" placeholder="1. Müdür Yardımcısının Adı Soyadı">
+    </div>
+    <div class="modal-field">
+      <label for="okulMudurYrd2">Müdür Yardımcısı (2)</label>
+      <input type="text" id="okulMudurYrd2" placeholder="2. Müdür Yardımcısının Adı Soyadı">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn primary" onClick="kaydetOkulBilgi()">Kaydet</button>
+      <button type="button" class="modal-btn" onClick="duzenleOkulBilgi()">Düzenle</button>
+    </div>
+    <div id="okulBilgiDurum" class="modal-status"></div>
+  </div>
+</div>
+
+<script>
+  function openOkulBilgiModal(){
+    okulBilgiYukle();
+    document.getElementById('okulBilgiOverlay').classList.add('active');
+  }
+  function closeOkulBilgiModal(){
+    document.getElementById('okulBilgiOverlay').classList.remove('active');
+  }
+  var OKUL_BILGI_ALANLARI = ['okulIl','okulIlce','okulMebMudurlugu','okulAdi','okulYil','okulMudur','okulMudurYrd1','okulMudurYrd2'];
+  function okulBilgiYukle(){
+    try{
+      var kayitli = JSON.parse(localStorage.getItem('okulBilgiGirisi') || '{}');
+      var doluMu = false;
+      OKUL_BILGI_ALANLARI.forEach(function(id){
+        var el = document.getElementById(id);
+        el.value = kayitli[id] || '';
+        if(kayitli[id]) doluMu = true;
+      });
+      okulBilgiKilitle(doluMu);
+    }catch(e){}
+  }
+  function okulBilgiKilitle(kilitli){
+    OKUL_BILGI_ALANLARI.forEach(function(id){
+      document.getElementById(id).disabled = kilitli;
+    });
+  }
+  function kaydetOkulBilgi(){
+    var veri = {};
+    OKUL_BILGI_ALANLARI.forEach(function(id){
+      veri[id] = document.getElementById(id).value.trim();
+    });
+    localStorage.setItem('okulBilgiGirisi', JSON.stringify(veri));
+    okulBilgiKilitle(true);
+    document.getElementById('okulBilgiDurum').textContent = 'Kaydedildi.';
+  }
+  function duzenleOkulBilgi(){
+    okulBilgiKilitle(false);
+    document.getElementById('okulBilgiDurum').textContent = '';
+  }
+</script>
+
+<!-- ================= ÖĞRETMEN BİLGİ GİRİŞİ POPUP ================= -->
+<div id="ogretmenBilgiOverlay" class="modal-overlay" onClick="if(event.target===this) closeOgretmenBilgiModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onclick="closeOgretmenBilgiModal()" aria-label="Kapat">×</button>
+    <h2 class="modal-title">Öğretmen Bilgi Girişi</h2>
+
+    <div class="modal-field">
+      <label for="ogretmenAd">Adı Soyadı</label>
+      <input type="text" id="ogretmenAd" placeholder="Öğretmenin Adı Soyadı">
+    </div>
+    <div class="modal-field">
+      <label for="ogretmenBrans">Branşı</label>
+      <input type="text" id="ogretmenBrans" placeholder="Branşı">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn primary" onclick="kaydetOgretmen()">Kaydet</button>
+      <button type="button" class="modal-btn" onclick="silOgretmen()">Sil</button>
+      <button type="button" class="modal-btn" onclick="yeniKayitOgretmen()">Yeni Kayıt</button>
+    </div>
+    <div id="ogretmenBilgiDurum" class="modal-status"></div>
+
+    <div id="ogretmenListesiKutu" class="ogretmen-list"></div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn wide" onclick="yazdirOgretmenler()">Yazdır (PDF)</button>
+    </div>
+  </div>
+</div>
+
+<div id="raporYazdirAlani" class="print-area"></div>
+
+<script>
+  var OGRETMEN_LISTESI = [];
+  var OGRETMEN_SECILI_INDEX = null;
+
+  function openOgretmenBilgiModal(){
+    ogretmenListesiYukle();
+    yeniKayitOgretmen();
+    document.getElementById('ogretmenBilgiOverlay').classList.add('active');
+  }
+  function closeOgretmenBilgiModal(){
+    document.getElementById('ogretmenBilgiOverlay').classList.remove('active');
+  }
+  function ogretmenListesiYukle(){
+    try{
+      OGRETMEN_LISTESI = JSON.parse(localStorage.getItem('ogretmenListesi') || '[]');
+    }catch(e){
+      OGRETMEN_LISTESI = [];
+    }
+    ogretmenListesiRender();
+  }
+  function ogretmenListesiKaydet(){
+    localStorage.setItem('ogretmenListesi', JSON.stringify(OGRETMEN_LISTESI));
+  }
+  function ogretmenListesiRender(){
+    var kutu = document.getElementById('ogretmenListesiKutu');
+    if(!OGRETMEN_LISTESI.length){
+      kutu.innerHTML = '<div class="ogretmen-empty">Henüz kayıtlı öğretmen yok.</div>';
+      return;
+    }
+    var html = '';
+    OGRETMEN_LISTESI.forEach(function(o, i){
+      var secili = (i === OGRETMEN_SECILI_INDEX) ? ' selected' : '';
+      html +=
+        '<div class="ogretmen-item">' +
+          '<div class="ogretmen-row">' +
+            '<span class="ogretmen-name' + secili + '" onclick="ogretmenSec(' + i + ')">' + ogretmenKacir(o.ad || '(isimsiz)') + '</span>' +
+            '<button type="button" class="ogretmen-toggle" onclick="ogretmenAc(' + i + ')" id="ogretmenToggle' + i + '" aria-label="Detay">+</button>' +
+          '</div>' +
+          '<div class="ogretmen-detay" id="ogretmenDetay' + i + '">Branş: ' + ogretmenKacir(o.brans || '—') + '</div>' +
+        '</div>';
+    });
+    kutu.innerHTML = html;
+  }
+  function ogretmenAc(i){
+    var detay = document.getElementById('ogretmenDetay' + i);
+    var dugme = document.getElementById('ogretmenToggle' + i);
+    var acik = detay.style.display === 'block';
+    detay.style.display = acik ? 'none' : 'block';
+    dugme.textContent = acik ? '+' : '–';
+  }
+  function ogretmenSec(i){
+    var o = OGRETMEN_LISTESI[i];
+    if(!o) return;
+    document.getElementById('ogretmenAd').value = o.ad || '';
+    document.getElementById('ogretmenBrans').value = o.brans || '';
+    OGRETMEN_SECILI_INDEX = i;
+    document.getElementById('ogretmenBilgiDurum').textContent = '';
+    ogretmenListesiRender();
+  }
+  function kaydetOgretmen(){
+    var ad = document.getElementById('ogretmenAd').value.trim();
+    var brans = document.getElementById('ogretmenBrans').value.trim();
+    if(!ad){
+      document.getElementById('ogretmenBilgiDurum').textContent = 'Lütfen adı soyadı girin.';
+      return;
+    }
+    var kayit = {ad: ad, brans: brans};
+    if(OGRETMEN_SECILI_INDEX !== null && OGRETMEN_LISTESI[OGRETMEN_SECILI_INDEX]){
+      OGRETMEN_LISTESI[OGRETMEN_SECILI_INDEX] = kayit;
+    }else{
+      OGRETMEN_LISTESI.push(kayit);
+      OGRETMEN_SECILI_INDEX = OGRETMEN_LISTESI.length - 1;
+    }
+    ogretmenListesiKaydet();
+    ogretmenListesiRender();
+    document.getElementById('ogretmenBilgiDurum').textContent = 'Kaydedildi.';
+  }
+  function silOgretmen(){
+    if(OGRETMEN_SECILI_INDEX === null || !OGRETMEN_LISTESI[OGRETMEN_SECILI_INDEX]){
+      document.getElementById('ogretmenBilgiDurum').textContent = 'Silmek için listeden bir öğretmen seçin.';
+      return;
+    }
+    OGRETMEN_LISTESI.splice(OGRETMEN_SECILI_INDEX, 1);
+    ogretmenListesiKaydet();
+    yeniKayitOgretmen();
+    ogretmenListesiRender();
+    document.getElementById('ogretmenBilgiDurum').textContent = 'Silindi.';
+  }
+  function yeniKayitOgretmen(){
+    document.getElementById('ogretmenAd').value = '';
+    document.getElementById('ogretmenBrans').value = '';
+    OGRETMEN_SECILI_INDEX = null;
+    document.getElementById('ogretmenBilgiDurum').textContent = '';
+    ogretmenListesiRender();
+  }
+  function ogretmenKacir(s){
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+  function yazdirOgretmenler(){
+    var okul = {};
+    try{ okul = JSON.parse(localStorage.getItem('okulBilgiGirisi') || '{}'); }catch(e){}
+    var satirlar = OGRETMEN_LISTESI.map(function(o, i){
+      return '<tr><td>' + (i + 1) + '</td><td>' + ogretmenKacir(o.ad) + '</td><td>' + ogretmenKacir(o.brans) + '</td></tr>';
+    }).join('');
+    if(!satirlar){
+      satirlar = '<tr><td colspan="3" style="text-align:center;">Kayıtlı öğretmen yok.</td></tr>';
+    }
+    var alan = document.getElementById('raporYazdirAlani');
+    alan.innerHTML =
+      '<div class="print-header">' +
+        '<div class="print-okul">' + ogretmenKacir(okul.okulAdi || '') + '</div>' +
+        '<div class="print-yil">' + ogretmenKacir(okul.okulYil || '') + '</div>' +
+        '<h2>Öğretmen Listesi</h2>' +
+      '</div>' +
+      '<table class="print-table"><thead><tr><th>#</th><th>Adı Soyadı</th><th>Branşı</th></tr></thead><tbody>' + satirlar + '</tbody></table>';
+    window.print();
+  }
+</script>
+
+<!-- ================= SINIF BİLGİ GİRİŞİ POPUP ================= -->
+<div id="sinifBilgiOverlay" class="modal-overlay" onClick="if(event.target===this) closeSinifBilgiModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onclick="closeSinifBilgiModal()" aria-label="Kapat">×</button>
+    <h2 class="modal-title">Sınıf Bilgi Girişi</h2>
+
+    <div class="modal-field">
+      <label for="sinifAdi">Sınıfın Adı</label>
+      <input type="text" id="sinifAdi" placeholder="Sınıfın Adı">
+    </div>
+    <div class="modal-field">
+      <label for="sinifOgretmeni">Sınıf Öğretmeni</label>
+      <input type="text" id="sinifOgretmeni" placeholder="Sınıf Öğretmeninin Adı Soyadı">
+    </div>
+    <div class="modal-field">
+      <label for="sinifBaskani">Sınıf Başkanının Adı Soyadı</label>
+      <input type="text" id="sinifBaskani" placeholder="Sınıf Başkanının Adı Soyadı">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn primary" onclick="kaydetSinif()">Kaydet</button>
+      <button type="button" class="modal-btn" onclick="silSinif()">Sil</button>
+      <button type="button" class="modal-btn" onclick="yeniKayitSinif()">Yeni Kayıt</button>
+    </div>
+    <div id="sinifBilgiDurum" class="modal-status"></div>
+
+    <div id="sinifListesiKutu" class="ogretmen-list"></div>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn wide" onclick="yazdirSiniflar()">Yazdır (PDF)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var SINIF_LISTESI = [];
+  var SINIF_SECILI_INDEX = null;
+
+  function openSinifBilgiModal(){
+    sinifListesiYukle();
+    yeniKayitSinif();
+    document.getElementById('sinifBilgiOverlay').classList.add('active');
+  }
+  function closeSinifBilgiModal(){
+    document.getElementById('sinifBilgiOverlay').classList.remove('active');
+  }
+  function sinifListesiYukle(){
+    try{
+      SINIF_LISTESI = JSON.parse(localStorage.getItem('sinifListesi') || '[]');
+    }catch(e){
+      SINIF_LISTESI = [];
+    }
+    sinifListesiRender();
+  }
+  function sinifListesiKaydet(){
+    localStorage.setItem('sinifListesi', JSON.stringify(SINIF_LISTESI));
+  }
+  function sinifListesiRender(){
+    var kutu = document.getElementById('sinifListesiKutu');
+    if(!SINIF_LISTESI.length){
+      kutu.innerHTML = '<div class="ogretmen-empty">Henüz kayıtlı sınıf yok.</div>';
+      return;
+    }
+    var html = '';
+    SINIF_LISTESI.forEach(function(s, i){
+      var secili = (i === SINIF_SECILI_INDEX) ? ' selected' : '';
+      html +=
+        '<div class="ogretmen-item">' +
+          '<div class="ogretmen-row">' +
+            '<span class="ogretmen-name' + secili + '" onclick="sinifSec(' + i + ')">' + sinifKacir(s.ad || '(isimsiz)') + '</span>' +
+            '<button type="button" class="ogretmen-toggle" onclick="sinifAc(' + i + ')" id="sinifToggle' + i + '" aria-label="Detay">+</button>' +
+          '</div>' +
+          '<div class="ogretmen-detay" id="sinifDetay' + i + '">Sınıf Öğretmeni: ' + sinifKacir(s.ogretmen || '—') + '<br>Sınıf Başkanı: ' + sinifKacir(s.baskan || '—') + '</div>' +
+        '</div>';
+    });
+    kutu.innerHTML = html;
+  }
+  function sinifAc(i){
+    var detay = document.getElementById('sinifDetay' + i);
+    var dugme = document.getElementById('sinifToggle' + i);
+    var acik = detay.style.display === 'block';
+    detay.style.display = acik ? 'none' : 'block';
+    dugme.textContent = acik ? '+' : '–';
+  }
+  function sinifSec(i){
+    var s = SINIF_LISTESI[i];
+    if(!s) return;
+    document.getElementById('sinifAdi').value = s.ad || '';
+    document.getElementById('sinifOgretmeni').value = s.ogretmen || '';
+    document.getElementById('sinifBaskani').value = s.baskan || '';
+    SINIF_SECILI_INDEX = i;
+    document.getElementById('sinifBilgiDurum').textContent = '';
+    sinifListesiRender();
+  }
+  function kaydetSinif(){
+    var ad = document.getElementById('sinifAdi').value.trim();
+    var ogretmen = document.getElementById('sinifOgretmeni').value.trim();
+    var baskan = document.getElementById('sinifBaskani').value.trim();
+    if(!ad){
+      document.getElementById('sinifBilgiDurum').textContent = 'Lütfen sınıfın adını girin.';
+      return;
+    }
+    var kayit = {ad: ad, ogretmen: ogretmen, baskan: baskan};
+    if(SINIF_SECILI_INDEX !== null && SINIF_LISTESI[SINIF_SECILI_INDEX]){
+      SINIF_LISTESI[SINIF_SECILI_INDEX] = kayit;
+    }else{
+      SINIF_LISTESI.push(kayit);
+      SINIF_SECILI_INDEX = SINIF_LISTESI.length - 1;
+    }
+    sinifListesiKaydet();
+    sinifListesiRender();
+    document.getElementById('sinifBilgiDurum').textContent = 'Kaydedildi.';
+  }
+  function silSinif(){
+    if(SINIF_SECILI_INDEX === null || !SINIF_LISTESI[SINIF_SECILI_INDEX]){
+      document.getElementById('sinifBilgiDurum').textContent = 'Silmek için listeden bir sınıf seçin.';
+      return;
+    }
+    SINIF_LISTESI.splice(SINIF_SECILI_INDEX, 1);
+    sinifListesiKaydet();
+    yeniKayitSinif();
+    sinifListesiRender();
+    document.getElementById('sinifBilgiDurum').textContent = 'Silindi.';
+  }
+  function yeniKayitSinif(){
+    document.getElementById('sinifAdi').value = '';
+    document.getElementById('sinifOgretmeni').value = '';
+    document.getElementById('sinifBaskani').value = '';
+    SINIF_SECILI_INDEX = null;
+    document.getElementById('sinifBilgiDurum').textContent = '';
+    sinifListesiRender();
+  }
+  function sinifKacir(s){
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+  function yazdirSiniflar(){
+    var okul = {};
+    try{ okul = JSON.parse(localStorage.getItem('okulBilgiGirisi') || '{}'); }catch(e){}
+    var satirlar = SINIF_LISTESI.map(function(s, i){
+      return '<tr><td>' + (i + 1) + '</td><td>' + sinifKacir(s.ad) + '</td><td>' + sinifKacir(s.ogretmen) + '</td><td>' + sinifKacir(s.baskan) + '</td></tr>';
+    }).join('');
+    if(!satirlar){
+      satirlar = '<tr><td colspan="4" style="text-align:center;">Kayıtlı sınıf yok.</td></tr>';
+    }
+    var yrd1 = sinifKacir(okul.okulMudurYrd1 || '');
+    var yrd2 = sinifKacir(okul.okulMudurYrd2 || '');
+    var mudur = sinifKacir(okul.okulMudur || '');
+    var alan = document.getElementById('raporYazdirAlani');
+    alan.innerHTML =
+      '<div class="print-header">' +
+        '<div class="print-okul">' + sinifKacir(okul.okulAdi || '') + '</div>' +
+        '<div class="print-yil">' + sinifKacir(okul.okulYil || '') + '</div>' +
+        '<h2>Sınıf Listesi</h2>' +
+      '</div>' +
+      '<table class="print-table"><thead><tr><th>#</th><th>Sınıfın Adı</th><th>Sınıf Öğretmeni</th><th>Sınıf Başkanı</th></tr></thead><tbody>' + satirlar + '</tbody></table>' +
+      '<div class="print-footer">' +
+        '<div class="print-footer-left">' +
+          '<div class="print-signature"><div class="ad">' + (yrd1 || '&nbsp;') + '</div><div class="unvan">Müdür Yardımcısı</div></div>' +
+          '<div class="print-signature"><div class="ad">' + (yrd2 || '&nbsp;') + '</div><div class="unvan">Müdür Yardımcısı</div></div>' +
+        '</div>' +
+        '<div class="print-signature"><div class="ad">' + (mudur || '&nbsp;') + '</div><div class="unvan">Okul Müdürü</div></div>' +
+      '</div>';
+    window.print();
+  }
+</script>
+
+
 
 <script>
   function showPage(id){
