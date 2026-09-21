@@ -46,13 +46,31 @@
     justify-content:space-between;
     gap:12px;
   }
+  .brand-group{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+  .logo-badge{
+    flex:0 0 auto;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--accent-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
   .brand{
     display:flex;
     flex-direction:column;
     line-height:1.15;
+    min-width:0;
   }
-  .brand .name{font-size:1.18rem;font-weight:700;}
-  .brand .role{font-size:.82rem;color:#bfe0e3;font-weight:400;}
+  .brand .name{font-size:1.3rem;font-weight:700;}
+  .brand .role{font-size:.88rem;color:#bfe0e3;font-weight:400;}
   nav button{
     background:#fff;
     color:var(--accent-dark);
@@ -216,7 +234,56 @@
 
   @media (max-width:360px){
     .menu-box span{font-size:.6rem;}
-    .brand .name{font-size:1.05rem;}
+    .brand .name{font-size:1.15rem;}
+  }
+
+  /* ---------- Desktop layout: fills ~80% of the screen, no scrolling on the home page ---------- */
+  @media (min-width:900px){
+    html,body{height:100%;}
+    body{
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+      padding-bottom:0;
+      overflow:hidden;
+    }
+    header{flex:0 0 auto;}
+    .header-inner{max-width:85vw;}
+    main{
+      flex:1 1 auto;
+      min-height:0;
+      max-width:85vw;
+      width:85vw;
+      display:flex;
+      flex-direction:column;
+      padding:14px 16px 10px;
+      overflow:hidden;
+    }
+    .page{height:100%;}
+    .page:not(#home){
+      overflow-y:auto;
+    }
+    #home.page.active{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .menu-grid{
+      flex:1 1 auto;
+      display:grid;
+      grid-template-columns:repeat(6, 1fr);
+      grid-template-rows:repeat(5, 1fr);
+      gap:clamp(6px, 1.4vh, 16px);
+      height:100%;
+    }
+    .menu-box{
+      padding:clamp(4px, 1.2vh, 12px) 8px;
+      gap:clamp(4px, 1vh, 12px);
+      overflow:hidden;
+    }
+    .menu-box svg{width:clamp(20px, 4.2vh, 40px);height:clamp(20px, 4.2vh, 40px);}
+    .menu-box span{font-size:clamp(.8rem, 2vh, 1.1rem);line-height:1.2;font-weight:600;}
+    footer{flex:0 0 auto;max-width:85vw;margin:6px auto 0;}
   }
 </style>
 <style>
@@ -708,9 +775,14 @@
 
 <header>
   <div class="header-inner">
-    <div class="brand">
-      <span class="name">Muammer Bozer</span>
-      <span class="role">Din Kültürü ve Ahlak Bilgisi Öğretmeni</span>
+    <div class="brand-group">
+      <span class="logo-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9 12 4l10 5-10 5-10-5Z"/><path d="M6 11.5V17c0 1.7 2.7 3.2 6 3.2s6-1.5 6-3.2v-5.5"/><path d="M22 9v6"/></svg>
+      </span>
+      <div class="brand">
+        <span class="name">Muammer Bozer</span>
+        <span class="role">Din Kültürü ve Ahlak Bilgisi Öğretmeni</span>
+      </div>
     </div>
     <nav><button onClick="showHome()" aria-label="Anasayfa" title="Anasayfa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></button></nav>
   </div>
