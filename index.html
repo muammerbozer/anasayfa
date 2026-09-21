@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Muammer Bozer | Din Kültürü ve Ahlak Bilgisi</title>
-<style>
+<script type="text/javascript" src="https://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=oi7MuusN8P8jefVsk9SbUlVVBOtuUfoiLdGvra-NBSZdBcnu8fwwGlE_-Nd8Xsunghp2J2szrzMrLeLLRcNiIKGSLnaSYCnjN5xEy5CYHcXad2whvOzJdTsquB2DnVhjKf7EhlQfteUelIF1o7rluyWzA553X0Uh1wQk-CKLDI4bI729uxxS5z5gfAHAaRKPvhsE-VHLStq0LPhQxbSmhFZ_XxKWODLqmUWTQHn6Oy5MvmPAgeesRKz974ZFVT4IDd25Ep6cf7dRmHZ-nFQQZapS9OibePdBK7S3wgNxToNgbqTvb7uP5CteCaLduDgwyc3TqdjN1oRveGc1DrfBUQ" charset="UTF-8"></script><style>
   :root{
     --bg: #eef7f8;
     --card: #cfe7ea;
@@ -71,20 +71,41 @@
   }
   .brand .name{font-size:1.3rem;font-weight:700;}
   .brand .role{font-size:.88rem;color:#bfe0e3;font-weight:400;}
+  nav{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex:0 0 auto;
+  }
   nav button{
     background:#fff;
     color:var(--accent-dark);
     border:none;
     border-radius:999px;
-    width:40px;
+    min-width:40px;
     height:40px;
-    padding:0;
+    padding:0 10px;
     display:flex;
     align-items:center;
     justify-content:center;
+    gap:5px;
     cursor:pointer;
+    font-family:inherit;
+    font-size:.72rem;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  nav button.home-btn{width:40px;padding:0;}
+  nav button.backup-btn, nav button.restore-btn{
+    min-width:40px;
   }
   nav button:active{background:#dff3f4;}
+  @media (max-width:500px){
+    nav{gap:4px;}
+    nav button{font-size:0;min-width:38px;width:38px;height:38px;padding:0;}
+    nav button.home-btn{width:38px;}
+    nav button svg{width:17px;height:17px;}
+  }
 
   main{max-width:640px;margin:0 auto;padding:18px 16px 0;}
 
@@ -958,7 +979,20 @@
         <span class="role">Din Kültürü ve Ahlak Bilgisi Öğretmeni</span>
       </div>
     </div>
-    <nav><button onClick="showHome()" aria-label="Anasayfa" title="Anasayfa"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></button></nav>
+    <nav>
+      <button class="home-btn" onClick="showHome()" aria-label="Anasayfa" title="Anasayfa">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+      </button>
+      <button class="backup-btn" onClick="yedekle()" aria-label="Yedekle" title="Yedekle">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        <span>Yedekle</span>
+      </button>
+      <button class="restore-btn" onClick="document.getElementById('yukle-input').click()" aria-label="Güncelle" title="Güncelle">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 0 0-14.9-4L3 10"/><path d="M3 5v5h5"/><path d="M4 13a8.1 8.1 0 0 0 14.9 4L21 14"/><path d="M21 19v-5h-5"/></svg>
+        <span>Güncelle</span>
+      </button>
+      <input type="file" id="yukle-input" accept="application/json,.json" style="display:none" onChange="dosyaYukle(event)">
+    </nav>
   </div>
 </header>
 
@@ -1219,7 +1253,6 @@
   <a href="https://muammerbozer.github.io/takvim/randevular.html" target="_blank" rel="noopener">📅 Randevular</a>
   <button onClick="yedekle()">💾 Yedekle</button>
   <button onClick="document.getElementById('yukle-input').click()">⬆️ Güncelle</button>
-  <input type="file" id="yukle-input" accept="application/json" style="display:none" onChange="dosyaYukle(event)">
 </div>
 
 <div class="sheet" id="sheet"></div>
@@ -1945,7 +1978,7 @@ function yedekle(){
   }
   const now = new Date();
   const pad = n => String(n).padStart(2, "0");
-  const isim = `yedek-${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}.json`;
+  const isim = `yedek-${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}.json`;
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -1969,16 +2002,25 @@ function dosyaYukle(e){
         e.target.value = "";
         return;
       }
+      // Yedek, localStorage'ın tam görüntüsüdür. Önce mevcut kayıtları temizleyip
+      // ardından yedekte bulunan kayıtları geri yükleyerek gerçek bir geri yükleme yapıyoruz.
+      localStorage.clear();
       let sayac = 0;
       Object.keys(data).forEach(key => {
         localStorage.setItem(key, data[key]);
         sayac++;
       });
+
+      // Açık sayfadaki değişkenleri ve görünümleri yeniden yükle.
+      try{
+        if (typeof ogretmenListesiYukle === "function") ogretmenListesiYukle();
+        if (typeof sinifListesiYukle === "function") sinifListesiYukle();
+        if (typeof okulBilgiYukle === "function") okulBilgiYukle();
+      }catch(refreshErr){}
       document.querySelectorAll(".day[data-iso]").forEach(el => gunGoruntusunuGuncelle(el.dataset.iso));
-      if (typeof notlariCiz === "function" && document.getElementById("notListesi")){
-        notlariCiz();
-      }
-      alert(sayac + " kayıt yüklendi.");
+      if (typeof notlariCiz === "function") notlariCiz();
+      alert(sayac + " kayıt geri yüklendi. Sayfa güncel yedekle yenilendi.");
+      setTimeout(function(){ location.reload(); }, 150);
     } catch(err){
       alert("Dosya okunamadı. Lütfen geçerli bir yedek (.json) dosyası seçin.");
     }
