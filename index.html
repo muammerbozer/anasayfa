@@ -796,7 +796,7 @@
     <button type="button" class="modal-close" onClick="closeRaporModal()">×</button>
     <h2 class="modal-title">Rapor</h2>
     <div class="modal-actions-single-row" style="grid-template-columns:repeat(3, 1fr);">
-      <button type="button" class="modal-btn primary" onClick="okulRaporuOlustur('ikisi')">Okul Raporu</button>
+      <button type="button" class="modal-btn primary" onClick="okulRaporuOlustur('onizleme')">Okul Raporu</button>
       <button type="button" class="modal-btn danger" onClick="okulRaporuOlustur('pdf')">PDF Kaydet</button>
       <button type="button" class="modal-btn secondary" onClick="okulRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
@@ -1923,15 +1923,29 @@
     a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   }
-  /* tur: 'pdf' = yalnız PDF, 'excel' = yalnız Excel, 'ikisi' = ikisi birden */
+  /* tur: 'onizleme' = PDF'i yeni sekmede açar (indirmez), 'pdf' = yalnız PDF indirir, 'excel' = yalnız Excel indirir */
   function okulRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
+    if(tur === 'onizleme'){
+      /* Açılır pencere engeline takılmamak için pencere tıklama anında açılır */
+      var pencere = window.open('', '_blank');
+      try{
+        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+        var dok = pdfMake.createPdf(rapPdfDok(rapModelHazirla()));
+        if(pencere) dok.open({}, pencere); else dok.open();
+        durum.textContent = 'Önizleme açıldı. Kontrol ettikten sonra PDF Kaydet veya Excel Kaydet ile indirebilirsiniz.';
+      }catch(e){
+        if(pencere) pencere.close();
+        durum.textContent = 'Önizleme oluşturulamadı (internet bağlantısını kontrol edin).';
+      }
+      return;
+    }
     var ad = rapDosyaAdi();
     var m = rapModelHazirla();
     var hata = [];
     var kaydedilen = [];
-    var excelIste = (tur === 'excel' || tur === 'ikisi');
-    var pdfIste = (tur === 'pdf' || tur === 'ikisi');
+    var excelIste = (tur === 'excel');
+    var pdfIste = (tur === 'pdf');
 
     var excelSoz = Promise.resolve();
     if(excelIste){
