@@ -334,6 +334,27 @@
     background:var(--accent);
     color:#fff;
   }
+  .cinsiyet-btns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+  .cinsiyet-btn{
+    padding:9px 2px;
+    border-radius:10px;
+    border:1px solid var(--card);
+    background:var(--card);
+    color:var(--ink);
+    font-size:.86rem;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .cinsiyet-btn.active{
+    background:var(--accent-dark);
+    border-color:var(--accent-dark);
+    color:#fff;
+  }
   .modal-status{
     text-align:center;
     font-size:.78rem;
@@ -602,7 +623,13 @@
     <div class="modal-field"><label for="ogrenciAd">Adı Soyadı</label><input type="text" id="ogrenciAd" placeholder="Öğrenci Adı Soyadı"></div>
     <div class="modal-field"><label for="ogrenciSinifSelect">Sınıfı</label><select id="ogrenciSinifSelect"></select></div>
     <div class="modal-field"><label for="ogrenciNumara">Numarası</label><input type="text" id="ogrenciNumara" placeholder="Örnek: 102"></div>
-    <div class="modal-field"><label for="ogrenciCinsiyet">Cinsiyeti</label><select id="ogrenciCinsiyet"><option value="">Seçiniz...</option><option value="K">Kız</option><option value="E">Erkek</option></select></div>
+    <div class="modal-field"><label>Cinsiyeti</label>
+      <input type="hidden" id="ogrenciCinsiyet" value="">
+      <div class="cinsiyet-btns">
+        <button type="button" class="cinsiyet-btn" id="cinsiyetKiz" onClick="ogrenciCinsiyetAyarla(document.getElementById('ogrenciCinsiyet').value === 'K' ? '' : 'K')">Kız</button>
+        <button type="button" class="cinsiyet-btn" id="cinsiyetErkek" onClick="ogrenciCinsiyetAyarla(document.getElementById('ogrenciCinsiyet').value === 'E' ? '' : 'E')">Erkek</button>
+      </div>
+    </div>
 
     <div class="modal-actions-single-row">
       <button type="button" class="modal-btn primary" onClick="kaydetOgrenci()">Kaydet</button>
@@ -768,7 +795,11 @@
   <div class="modal-box">
     <button type="button" class="modal-close" onClick="closeRaporModal()">×</button>
     <h2 class="modal-title">Rapor</h2>
-    <button type="button" class="modal-btn primary" style="padding:12px 6px;font-size:.9rem;" onClick="okulRaporuOlustur()">Okul Raporu</button>
+    <div class="modal-actions-single-row" style="grid-template-columns:repeat(3, 1fr);">
+      <button type="button" class="modal-btn primary" onClick="okulRaporuOlustur('ikisi')">Okul Raporu</button>
+      <button type="button" class="modal-btn danger" onClick="okulRaporuOlustur('pdf')">PDF Kaydet</button>
+      <button type="button" class="modal-btn secondary" onClick="okulRaporuOlustur('excel')">Excel Kaydet</button>
+    </div>
     <div id="raporDurum" class="modal-status"></div>
   </div>
 </div>
@@ -1084,7 +1115,7 @@
     OGRENCI_LISTESI.forEach(function(o, i){
       html += '<div class="list-item list-item-compact" onclick="ogrenciSec(' + i + ')">' +
                 '<span class="main-text compact-text">' + escapeHtml(o.numara) + ' - ' + escapeHtml(o.ad) + '</span>' +
-                '<span class="sub-text" style="font-weight:600;">Sınıf: ' + escapeHtml(o.sinif || '—') + '</span>' +
+                '<span class="sub-text" style="font-weight:600;">Sınıf: ' + escapeHtml(o.sinif || '—') + ' | ' + (o.cinsiyet === 'K' ? 'Kız' : (o.cinsiyet === 'E' ? 'Erkek' : 'Cinsiyet yok')) + '</span>' +
               '</div>';
     });
     kutu.innerHTML = html;
@@ -1095,7 +1126,7 @@
     document.getElementById('ogrenciAd').value = o.ad || '';
     document.getElementById('ogrenciSinifSelect').value = o.sinif || '';
     document.getElementById('ogrenciNumara').value = o.numara || '';
-    document.getElementById('ogrenciCinsiyet').value = o.cinsiyet || '';
+    ogrenciCinsiyetAyarla(o.cinsiyet || '');
     OGRENCI_SECILI = i;
   }
   function kaydetOgrenci(){
@@ -1126,7 +1157,7 @@
   function yeniKayitOgrenci(){
     document.getElementById('ogrenciAd').value = '';
     document.getElementById('ogrenciNumara').value = '';
-    document.getElementById('ogrenciCinsiyet').value = '';
+    ogrenciCinsiyetAyarla('');
     OGRENCI_SECILI = null;
     document.getElementById('ogrenciBilgiDurum').textContent = '';
   }
@@ -1792,8 +1823,8 @@
 
     for(var r = 13; r <= son; r++){
       var i = r - 13;
-      if(i < N) cells.push({r:r, c1:4, c2:4, text:i + 1, bold:false, align:'right'});
       var o = ogretmenler[i];
+      if(o) cells.push({r:r, c1:4, c2:4, text:i + 1, bold:false, align:'right'});
       cells.push({r:r, c1:5, c2:7, text:o ? (o.ad || '') : '', bold:false, align:'left'});
       cells.push({r:r, c1:8, c2:10, text:o ? (o.brans || '') : '', bold:false, align:'left'});
       merges.push([r, 5, r, 7], [r, 8, r, 10]);
@@ -1813,7 +1844,7 @@
   function rapExcelBuffer(m){
     var wb = new ExcelJS.Workbook();
     var ws = wb.addWorksheet('okul_bilgi_raporu', {
-      pageSetup:{paperSize:9, orientation:'portrait', scale:100,
+      pageSetup:{paperSize:9, orientation:'portrait', fitToPage:true, fitToWidth:1, fitToHeight:1,
         margins:{left:0.7875, right:0.7875, top:0.590277777777778, bottom:0.590277777777778, header:0.511811023622047, footer:0.511811023622047}}
     });
     ws.getColumn(1).width = 1.78;
@@ -1892,27 +1923,46 @@
     a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   }
-  function okulRaporuOlustur(){
+  /* tur: 'pdf' = yalnız PDF, 'excel' = yalnız Excel, 'ikisi' = ikisi birden */
+  function okulRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
     var ad = rapDosyaAdi();
     var m = rapModelHazirla();
     var hata = [];
-    var excelSoz;
-    try{
-      if(typeof ExcelJS === 'undefined') throw new Error('ExcelJS yok');
-      excelSoz = rapExcelBuffer(m).then(function(buf){
-        rapIndir(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), ad + '.xlsx');
-      });
-    }catch(e){ hata.push('Excel'); excelSoz = Promise.resolve(); }
-    excelSoz.catch(function(){ hata.push('Excel'); }).then(function(){
-      return new Promise(function(ok){ setTimeout(ok, 400); });
-    }).then(function(){
+    var kaydedilen = [];
+    var excelIste = (tur === 'excel' || tur === 'ikisi');
+    var pdfIste = (tur === 'pdf' || tur === 'ikisi');
+
+    var excelSoz = Promise.resolve();
+    if(excelIste){
       try{
-        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
-        pdfMake.createPdf(rapPdfDok(m)).download(ad + '.pdf');
-      }catch(e){ hata.push('PDF'); }
-      durum.textContent = hata.length ? (hata.join(' ve ') + ' oluşturulamadı (internet bağlantısını kontrol edin).') : ('Kaydedildi: ' + ad + ' (.xlsx ve .pdf)');
+        if(typeof ExcelJS === 'undefined') throw new Error('ExcelJS yok');
+        excelSoz = rapExcelBuffer(m).then(function(buf){
+          rapIndir(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), ad + '.xlsx');
+          kaydedilen.push('.xlsx');
+        });
+      }catch(e){ hata.push('Excel'); }
+    }
+    excelSoz.catch(function(){ hata.push('Excel'); }).then(function(){
+      if(!pdfIste) return;
+      return new Promise(function(ok){ setTimeout(ok, excelIste ? 400 : 0); }).then(function(){
+        try{
+          if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+          pdfMake.createPdf(rapPdfDok(m)).download(ad + '.pdf');
+          kaydedilen.push('.pdf');
+        }catch(e){ hata.push('PDF'); }
+      });
+    }).then(function(){
+      durum.textContent = hata.length
+        ? (hata.join(' ve ') + ' oluşturulamadı (internet bağlantısını kontrol edin).')
+        : ('Kaydedildi: ' + ad + ' (' + kaydedilen.join(' ve ') + ')');
     });
+  }
+
+  function ogrenciCinsiyetAyarla(v){
+    document.getElementById('ogrenciCinsiyet').value = v;
+    document.getElementById('cinsiyetKiz').classList.toggle('active', v === 'K');
+    document.getElementById('cinsiyetErkek').classList.toggle('active', v === 'E');
   }
 
   /* Backup & Restore System */
