@@ -413,21 +413,22 @@
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
     <div class="brand-group">
-      <span class="logo-badge" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 9 12 4l10 5-10 5-10-5Z"/><path d="M6 11.5V17c0 1.7 2.7 3.2 6 3.2s6-1.5 6-3.2v-5.5"/><path d="M22 9v6"/></svg>
-      </span>
       <div class="brand">
         <span class="name">Muammer Bozer</span>
         <span class="role">Müdür Yardımcısı</span>
       </div>
     </div>
     <nav>
+      <button type="button" onClick="openRaporModal()" title="Rapor"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 17v-3M12 17v-5M15 17v-2"/></svg></button>
       <button type="button" onClick="yedekAl()" title="Yedekle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></button>
       <button type="button" onClick="document.getElementById('yedekDosyaSec').click()" title="Güncelle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9"/><path d="M7 14l5-5 5 5"/><path d="M4 5h16"/></svg></button>
       <input type="file" id="yedekDosyaSec" accept="application/json,.json" style="display:none" onChange="yedekGeriYukle(event)">
@@ -479,7 +480,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span>Kulüp Rehber Öğretmen Girişi</span>
       </button>
-      <a class="menu-box" href="https://www.meb.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="4" y="10" width="16" height="9" rx="1"/><path d="M2 10 12 4l10 6"/><path d="M8 19v-5M12 19v-5M16 19v-5"/></svg><span>MEB</span></a>
+      <!-- 9. kutu: Kulüp Öğrenci Girişi Pop-Up -->
+      <button type="button" class="menu-box" onClick="openKulupOgrenciModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.8 0 4.5 1.8 4.5 4.5"/></svg>
+        <span>Kulüp Öğrenci Girişi</span>
+      </button>
       <a class="menu-box" href="https://www.eba.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>EBA</span></a>
       <a class="menu-box" href="https://tymm.meb.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 6c-2-2-6-2-8 0v13c2-2 6-2 8 0V6zM12 6c2-2 6-2 8 0V6z"/></svg><span>TYMM</span></a>
       <a class="menu-box" href="https://e-okul.meb.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="11" rx="1"/><path d="M2 19h20"/></svg><span>e-Okul</span></a>
@@ -546,7 +551,7 @@
     <h2 class="modal-title">Öğretmen Bilgi Girişi</h2>
 
     <div class="modal-field"><label for="ogretmenAd">Adı Soyadı</label><input type="text" id="ogretmenAd" placeholder="Öğretmenin Adı Soyadı"></div>
-    <div class="modal-field"><label for="ogretmenBrans">Branşı</label><input type="text" id="ogretmenBrans" placeholder="Branşı"></div>
+    <div class="modal-field"><label for="ogretmenBrans">Branşı</label><select id="ogretmenBrans"></select></div>
 
     <div class="modal-actions-single-row">
       <button type="button" class="modal-btn primary" onClick="kaydetOgretmen()">Kaydet</button>
@@ -597,6 +602,7 @@
     <div class="modal-field"><label for="ogrenciAd">Adı Soyadı</label><input type="text" id="ogrenciAd" placeholder="Öğrenci Adı Soyadı"></div>
     <div class="modal-field"><label for="ogrenciSinifSelect">Sınıfı</label><select id="ogrenciSinifSelect"></select></div>
     <div class="modal-field"><label for="ogrenciNumara">Numarası</label><input type="text" id="ogrenciNumara" placeholder="Örnek: 102"></div>
+    <div class="modal-field"><label for="ogrenciCinsiyet">Cinsiyeti</label><select id="ogrenciCinsiyet"><option value="">Seçiniz...</option><option value="K">Kız</option><option value="E">Erkek</option></select></div>
 
     <div class="modal-actions-single-row">
       <button type="button" class="modal-btn primary" onClick="kaydetOgrenci()">Kaydet</button>
@@ -714,7 +720,6 @@
     <button type="button" class="modal-close" onClick="closeSosyalKulupModal()">×</button>
     <h2 class="modal-title">Sosyal Kulüp Rehber Öğretmenleri Girişi</h2>
 
-    <div class="modal-field"><label for="skSinifSelect">Sınıf Girişi</label><select id="skSinifSelect"></select></div>
     <div class="modal-field"><label for="skOgretmenSelect">Öğretmen Girişi</label><select id="skOgretmenSelect"></select></div>
     <div class="modal-field"><label for="skKulupAdi">Kulüp İsmi Girişi</label><input type="text" id="skKulupAdi" placeholder="Örn: Gezi ve İnceleme Kulübü"></div>
 
@@ -730,6 +735,41 @@
       <div class="data-list-title">Kayıtlı Sosyal Kulüp Öğretmenleri</div>
       <div id="skListesiKutu"></div>
     </div>
+  </div>
+</div>
+
+<!-- ================= 9. KULÜP ÖĞRENCİ GİRİŞİ MODAL ================= -->
+<div id="kulupOgrenciOverlay" class="modal-overlay" onClick="if(event.target===this) closeKulupOgrenciModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onClick="closeKulupOgrenciModal()">×</button>
+    <h2 class="modal-title">Kulüp Öğrenci Girişi</h2>
+
+    <div class="modal-field"><label for="koKulupSelect">Kulüp</label><select id="koKulupSelect"></select></div>
+    <div class="modal-field"><label for="koSinifSelect">Sınıf</label><select id="koSinifSelect" onChange="koOgrenciSecenekleriGuncelle()"></select></div>
+    <div class="modal-field"><label for="koOgrenciSelect">Öğrenci</label><select id="koOgrenciSelect"></select></div>
+
+    <div class="modal-actions-single-row">
+      <button type="button" class="modal-btn primary" onClick="kaydetKulupOgrenci()">Kaydet</button>
+      <button type="button" class="modal-btn danger" onClick="silKulupOgrenci()">Sil</button>
+      <button type="button" class="modal-btn secondary" onClick="alert('e-Okul Kulüp Öğrenci aktarımı.')">e-Okul</button>
+      <button type="button" class="modal-btn" onClick="yeniKayitKulupOgrenci()">Yeni</button>
+    </div>
+    <div id="koDurum" class="modal-status"></div>
+
+    <div class="data-list-container">
+      <div class="data-list-title">Kulüp Öğrenci Kayıtları (Kulüp ve Sınıfa Göre)</div>
+      <div id="koListesiKutu"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= RAPOR MODAL ================= -->
+<div id="raporOverlay" class="modal-overlay" onClick="if(event.target===this) closeRaporModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onClick="closeRaporModal()">×</button>
+    <h2 class="modal-title">Rapor</h2>
+    <button type="button" class="modal-btn primary" style="padding:12px 6px;font-size:.9rem;" onClick="okulRaporuOlustur()">Okul Raporu</button>
+    <div id="raporDurum" class="modal-status"></div>
   </div>
 </div>
 
@@ -832,7 +872,25 @@
   /* ================= 2. ÖĞRETMEN BİLGİSİ SCRIPT ================= */
   var OGRETMEN_LISTESI = [];
   var OGRETMEN_SECILI = null;
+  /* Ders Bilgi Girişi'ndeki "Branş Adı" bilgilerinden branş listesi üretir */
+  function ogretmenBransOptionsYukle(ekstra){
+    var dersler = [];
+    try{ dersler = JSON.parse(localStorage.getItem('dersListesi') || '[]'); }catch(e){}
+    var liste = [];
+    dersler.forEach(function(d){
+      var b = (d.bransAd || '').trim();
+      if(b && liste.indexOf(b) === -1) liste.push(b);
+    });
+    if(ekstra && liste.indexOf(ekstra) === -1) liste.push(ekstra);
+    liste.sort(function(a,b){ return a.localeCompare(b, 'tr'); });
+    var sel = document.getElementById('ogretmenBrans');
+    var bos = liste.length ? 'Seçiniz...' : '(Önce Ders Bilgi Girişi\'nden Branş Adı giriniz)';
+    sel.innerHTML = '<option value="">' + bos + '</option>' + liste.map(function(b){
+      return '<option value="' + escapeHtml(b) + '">' + escapeHtml(b) + '</option>';
+    }).join('');
+  }
   function openOgretmenBilgiModal(){
+    ogretmenBransOptionsYukle();
     ogretmenYukle();
     yeniKayitOgretmen();
     document.getElementById('ogretmenBilgiOverlay').classList.add('active');
@@ -861,6 +919,7 @@
     var o = OGRETMEN_LISTESI[i];
     if(!o) return;
     document.getElementById('ogretmenAd').value = o.ad || '';
+    ogretmenBransOptionsYukle(o.brans || '');
     document.getElementById('ogretmenBrans').value = o.brans || '';
     OGRETMEN_SECILI = i;
   }
@@ -1036,18 +1095,20 @@
     document.getElementById('ogrenciAd').value = o.ad || '';
     document.getElementById('ogrenciSinifSelect').value = o.sinif || '';
     document.getElementById('ogrenciNumara').value = o.numara || '';
+    document.getElementById('ogrenciCinsiyet').value = o.cinsiyet || '';
     OGRENCI_SECILI = i;
   }
   function kaydetOgrenci(){
     var ad = document.getElementById('ogrenciAd').value.trim();
     var sinif = document.getElementById('ogrenciSinifSelect').value;
     var numara = document.getElementById('ogrenciNumara').value.trim();
+    var cinsiyet = document.getElementById('ogrenciCinsiyet').value;
     if(!ad){ document.getElementById('ogrenciBilgiDurum').textContent = 'Ad Soyad zorunludur.'; return; }
     if(!sinif){ document.getElementById('ogrenciBilgiDurum').textContent = 'Sınıf seçilmelidir.'; return; }
     if(OGRENCI_SECILI !== null){
-      OGRENCI_LISTESI[OGRENCI_SECILI] = {ad: ad, sinif: sinif, numara: numara};
+      OGRENCI_LISTESI[OGRENCI_SECILI] = {ad: ad, sinif: sinif, numara: numara, cinsiyet: cinsiyet};
     } else {
-      OGRENCI_LISTESI.push({ad: ad, sinif: sinif, numara: numara});
+      OGRENCI_LISTESI.push({ad: ad, sinif: sinif, numara: numara, cinsiyet: cinsiyet});
     }
     localStorage.setItem('ogrenciListesi', JSON.stringify(OGRENCI_LISTESI));
     document.getElementById('ogrenciBilgiDurum').textContent = 'Kaydedildi.';
@@ -1065,6 +1126,7 @@
   function yeniKayitOgrenci(){
     document.getElementById('ogrenciAd').value = '';
     document.getElementById('ogrenciNumara').value = '';
+    document.getElementById('ogrenciCinsiyet').value = '';
     OGRENCI_SECILI = null;
     document.getElementById('ogrenciBilgiDurum').textContent = '';
   }
@@ -1083,8 +1145,10 @@
           var ad = r['Adı Soyadı'] || r['Ad Soyad'] || r['ADI SOYADI'] || '';
           var sinif = r['Sınıfı'] || r['Sınıf'] || '';
           var no = r['Numarası'] || r['No'] || r['Okul No'] || '';
+          var cins = String(r['Cinsiyeti'] || r['Cinsiyet'] || r['CİNSİYETİ'] || '').trim().toLocaleUpperCase('tr');
+          cins = (cins === 'K' || cins === 'KIZ' || cins === 'KADIN') ? 'K' : ((cins === 'E' || cins === 'ERKEK') ? 'E' : '');
           if(ad){
-            OGRENCI_LISTESI.push({ad: String(ad).trim(), sinif: String(sinif).trim(), numara: String(no).trim()});
+            OGRENCI_LISTESI.push({ad: String(ad).trim(), sinif: String(sinif).trim(), numara: String(no).trim(), cinsiyet: cins});
             eklenen++;
           }
         });
@@ -1487,12 +1551,6 @@
     document.getElementById('sosyalKulupOverlay').classList.remove('active');
   }
   function skOptionsYukle(){
-    var siniflar = [];
-    try{ siniflar = JSON.parse(localStorage.getItem('sinifListesi') || '[]'); }catch(e){}
-    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
-    var sSelect = document.getElementById('skSinifSelect');
-    sSelect.innerHTML = siniflar.map(function(s){ return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>'; }).join('');
-
     var ogretmenler = [];
     try{ ogretmenler = JSON.parse(localStorage.getItem('ogretmenListesi') || '[]'); }catch(e){}
     ogretmenler.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr'); });
@@ -1514,27 +1572,25 @@
     }
     var html = '';
     SK_LISTESI.forEach(function(item, i){
-      html += '<div class="list-item" onclick="skSec(' + i + ')"><div><div class="main-text">' + escapeHtml(item.kulup) + '</div><div class="sub-text">Sınıf: ' + escapeHtml(item.sinif) + ' | Ögr: ' + escapeHtml(item.ogretmen) + '</div></div></div>';
+      html += '<div class="list-item" onclick="skSec(' + i + ')"><div><div class="main-text">' + escapeHtml(item.kulup) + '</div><div class="sub-text">Öğretmen: ' + escapeHtml(item.ogretmen) + '</div></div></div>';
     });
     kutu.innerHTML = html;
   }
   function skSec(i){
     var item = SK_LISTESI[i];
     if(!item) return;
-    document.getElementById('skSinifSelect').value = item.sinif || '';
     document.getElementById('skOgretmenSelect').value = item.ogretmen || '';
     document.getElementById('skKulupAdi').value = item.kulup || '';
     SK_SECILI = i;
   }
   function kaydetSosyalKulup(){
-    var sinif = document.getElementById('skSinifSelect').value;
     var ogretmen = document.getElementById('skOgretmenSelect').value;
     var kulup = document.getElementById('skKulupAdi').value.trim();
-    if(!sinif || !ogretmen || !kulup){ document.getElementById('skDurum').textContent = 'Sınıf, Öğretmen ve Kulüp ismi girilmelidir.'; return; }
+    if(!ogretmen || !kulup){ document.getElementById('skDurum').textContent = 'Öğretmen ve Kulüp ismi girilmelidir.'; return; }
     if(SK_SECILI !== null){
-      SK_LISTESI[SK_SECILI] = {sinif: sinif, ogretmen: ogretmen, kulup: kulup};
+      SK_LISTESI[SK_SECILI] = {ogretmen: ogretmen, kulup: kulup};
     } else {
-      SK_LISTESI.push({sinif: sinif, ogretmen: ogretmen, kulup: kulup});
+      SK_LISTESI.push({ogretmen: ogretmen, kulup: kulup});
     }
     localStorage.setItem('skListesi', JSON.stringify(SK_LISTESI));
     document.getElementById('skDurum').textContent = 'Kaydedildi.';
@@ -1556,8 +1612,311 @@
     document.getElementById('skDurum').textContent = '';
   }
 
+  /* ================= 9. KULÜP ÖĞRENCİ GİRİŞİ SCRIPT ================= */
+  var KO_LISTESI = [];
+  var KO_SECILI = null;
+  var KO_OGRENCILER = [];
+  function openKulupOgrenciModal(){
+    koSecenekleriYukle();
+    koYukle();
+    yeniKayitKulupOgrenci();
+    document.getElementById('kulupOgrenciOverlay').classList.add('active');
+  }
+  function closeKulupOgrenciModal(){
+    document.getElementById('kulupOgrenciOverlay').classList.remove('active');
+  }
+  /* Kulüpler: Kulüp Rehber Öğretmen Girişi'nden, Sınıflar: Sınıf Bilgi Girişi'nden */
+  function koSecenekleriYukle(){
+    var kulupler = [];
+    try{ kulupler = JSON.parse(localStorage.getItem('skListesi') || '[]'); }catch(e){}
+    var adlar = [];
+    kulupler.forEach(function(k){
+      var a = (k.kulup || '').trim();
+      if(a && adlar.indexOf(a) === -1) adlar.push(a);
+    });
+    adlar.sort(function(a,b){ return a.localeCompare(b, 'tr'); });
+    var kSel = document.getElementById('koKulupSelect');
+    kSel.innerHTML = adlar.length
+      ? adlar.map(function(a){ return '<option value="' + escapeHtml(a) + '">' + escapeHtml(a) + '</option>'; }).join('')
+      : '<option value="">(Önce Kulüp Rehber Öğretmen Girişi yapınız)</option>';
+
+    var siniflar = [];
+    try{ siniflar = JSON.parse(localStorage.getItem('sinifListesi') || '[]'); }catch(e){}
+    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
+    var sSel = document.getElementById('koSinifSelect');
+    sSel.innerHTML = siniflar.length
+      ? siniflar.map(function(s){ return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>'; }).join('')
+      : '<option value="">(Önce Sınıf Ekleyiniz)</option>';
+    koOgrenciSecenekleriGuncelle();
+  }
+  /* Öğrenciler: Öğrenci Bilgi Girişi'nden, seçili sınıfa göre */
+  function koOgrenciSecenekleriGuncelle(){
+    var sinif = document.getElementById('koSinifSelect').value;
+    var hepsi = [];
+    try{ hepsi = JSON.parse(localStorage.getItem('ogrenciListesi') || '[]'); }catch(e){}
+    KO_OGRENCILER = hepsi.filter(function(o){ return o.sinif === sinif; });
+    KO_OGRENCILER.sort(function(a,b){ return (parseInt(a.numara)||0) - (parseInt(b.numara)||0); });
+    var oSel = document.getElementById('koOgrenciSelect');
+    oSel.innerHTML = KO_OGRENCILER.length
+      ? KO_OGRENCILER.map(function(o, i){ return '<option value="' + i + '">' + escapeHtml((o.numara ? o.numara + ' - ' : '') + o.ad) + '</option>'; }).join('')
+      : '<option value="">(Bu sınıfta kayıtlı öğrenci yok)</option>';
+  }
+  function koYukle(){
+    try{ KO_LISTESI = JSON.parse(localStorage.getItem('kulupOgrenciListesi') || '[]'); }catch(e){ KO_LISTESI = []; }
+    koRender();
+  }
+  function koRender(){
+    KO_LISTESI.sort(function(a,b){
+      var c1 = (a.kulup || '').localeCompare(b.kulup || '', 'tr');
+      if(c1 !== 0) return c1;
+      var c2 = (a.sinif || '').localeCompare(b.sinif || '', 'tr', {numeric:true});
+      if(c2 !== 0) return c2;
+      return (parseInt(a.numara)||0) - (parseInt(b.numara)||0);
+    });
+    var kutu = document.getElementById('koListesiKutu');
+    if(!KO_LISTESI.length){
+      kutu.innerHTML = '<div class="list-item"><span class="sub-text">Kayıtlı kulüp öğrencisi yok.</span></div>';
+      return;
+    }
+    var html = '';
+    KO_LISTESI.forEach(function(item, i){
+      html += '<div class="list-item" onclick="koSec(' + i + ')"><div><div class="main-text">' + escapeHtml(item.kulup) + '</div>' +
+              '<div class="sub-text">Sınıf: ' + escapeHtml(item.sinif) + ' | ' + escapeHtml((item.numara ? item.numara + ' - ' : '') + item.ad) + '</div></div></div>';
+    });
+    kutu.innerHTML = html;
+  }
+  function koSec(i){
+    var item = KO_LISTESI[i];
+    if(!item) return;
+    document.getElementById('koKulupSelect').value = item.kulup || '';
+    document.getElementById('koSinifSelect').value = item.sinif || '';
+    koOgrenciSecenekleriGuncelle();
+    for(var k = 0; k < KO_OGRENCILER.length; k++){
+      if(KO_OGRENCILER[k].ad === item.ad && (KO_OGRENCILER[k].numara || '') === (item.numara || '')){
+        document.getElementById('koOgrenciSelect').value = String(k);
+        break;
+      }
+    }
+    KO_SECILI = i;
+  }
+  function kaydetKulupOgrenci(){
+    var durum = document.getElementById('koDurum');
+    var kulup = document.getElementById('koKulupSelect').value;
+    var sinif = document.getElementById('koSinifSelect').value;
+    var idx = document.getElementById('koOgrenciSelect').value;
+    if(!kulup){ durum.textContent = 'Kulüp seçilmelidir.'; return; }
+    if(!sinif){ durum.textContent = 'Sınıf seçilmelidir.'; return; }
+    var ogr = KO_OGRENCILER[parseInt(idx)];
+    if(idx === '' || !ogr){ durum.textContent = 'Öğrenci seçilmelidir.'; return; }
+    var kayit = {kulup: kulup, sinif: sinif, ad: ogr.ad, numara: ogr.numara || ''};
+    var var_mi = KO_LISTESI.some(function(x, i){
+      return i !== KO_SECILI && x.kulup === kayit.kulup && x.sinif === kayit.sinif && x.ad === kayit.ad && (x.numara || '') === kayit.numara;
+    });
+    if(var_mi){ durum.textContent = 'Bu öğrenci bu kulübe zaten kayıtlı.'; return; }
+    if(KO_SECILI !== null){
+      KO_LISTESI[KO_SECILI] = kayit;
+    } else {
+      KO_LISTESI.push(kayit);
+    }
+    localStorage.setItem('kulupOgrenciListesi', JSON.stringify(KO_LISTESI));
+    koRender();
+    yeniKayitKulupOgrenci();
+    durum.textContent = 'Kaydedildi.';
+  }
+  function silKulupOgrenci(){
+    var durum = document.getElementById('koDurum');
+    if(KO_SECILI === null){ durum.textContent = 'Silmek için listeden seçin.'; return; }
+    KO_LISTESI.splice(KO_SECILI, 1);
+    localStorage.setItem('kulupOgrenciListesi', JSON.stringify(KO_LISTESI));
+    koRender();
+    yeniKayitKulupOgrenci();
+    durum.textContent = 'Silindi.';
+  }
+  function yeniKayitKulupOgrenci(){
+    KO_SECILI = null;
+    koOgrenciSecenekleriGuncelle();
+    document.getElementById('koDurum').textContent = '';
+  }
+
+  /* ================= RAPOR (Excel + PDF) — okul_raporu.xlsx şablonu ================= */
+  function openRaporModal(){
+    document.getElementById('raporDurum').textContent = '';
+    document.getElementById('raporOverlay').classList.add('active');
+  }
+  function closeRaporModal(){
+    document.getElementById('raporOverlay').classList.remove('active');
+  }
+  function rapLoad(key, def){
+    try{ var v = JSON.parse(localStorage.getItem(key)); return v == null ? def : v; }catch(e){ return def; }
+  }
+  function rapDosyaAdi(){
+    var d = new Date();
+    function p(n){ return (n < 10 ? '0' : '') + n; }
+    return 'Okul_Formu_' + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + '-' + p(d.getMinutes());
+  }
+
+  /* Şablon düzeni: B..J sütunları (2..10), satır 2'den başlar. Excel ve PDF aynı modelden üretilir. */
+  function rapModelHazirla(){
+    var tr = function(a,b){ return (a||'').localeCompare(b||'', 'tr', {numeric:true}); };
+    var okul = rapLoad('okulBilgiGirisi', {});
+    var ogrenciler = rapLoad('ogrenciListesi', []);
+    var ogretmenler = rapLoad('ogretmenListesi', []).slice().sort(function(a,b){ return tr(a.brans,b.brans) || tr(a.ad,b.ad); });
+    var kiz = ogrenciler.filter(function(o){ return o.cinsiyet === 'K'; }).length;
+    var erkek = ogrenciler.filter(function(o){ return o.cinsiyet === 'E'; }).length;
+
+    var N = Math.max(50, ogretmenler.length);   /* numaralı satır sayısı */
+    var son = 13 + N;                           /* son satır (şablonda 63) */
+    var ilce = (okul.okulIlce || '').trim().toLocaleUpperCase('tr');
+    var okulAdi = (okul.okulAdi || '').trim();
+
+    var cells = [], boxes = [], merges = [];
+    function T(r, c1, c2, text, bold, align){
+      cells.push({r:r, c1:c1, c2:c2, text:text, bold:!!bold, align:align});
+      if(c2 > c1) merges.push([r, c1, r, c2]);
+    }
+    T(2, 2, 10, 'T.C.', true, 'center');
+    T(3, 2, 10, (ilce ? ilce + ' ' : '') + 'KAYMAKAMLIĞI', true, 'center');
+    T(4, 2, 10, (okulAdi ? okulAdi + ' ' : '') + 'Müdürlüğü', true, 'center');
+    T(6, 2, 10, 'Okul Bilgileri', true, 'center');
+
+    T(7, 2, 4, 'Okulun Adı', true, 'right');            T(7, 5, 10, okulAdi, false, 'left');
+    T(8, 2, 4, 'Öğrenci Sayıları', true, 'right');
+    T(8, 5, 5, 'Kız', true, 'right');     T(8, 6, 6, kiz, false, 'left');
+    T(8, 7, 7, 'Erkek', true, 'right');   T(8, 8, 8, erkek, false, 'left');
+    T(8, 9, 9, 'Toplam', true, 'right');  T(8, 10, 10, ogrenciler.length, false, 'left');
+    T(9, 2, 4, 'Okul Müdürü', true, 'right');           T(9, 5, 10, okul.okulMudur || '', false, 'left');
+    T(10, 2, 4, 'Müdür Yardımcısı', true, 'right');     T(10, 5, 10, okul.okulMudurYrd1 || '', false, 'left');
+    T(11, 2, 4, 'Müdür Yardımcısı', true, 'right');     T(11, 5, 10, okul.okulMudurYrd2 || '', false, 'left');
+    T(12, 2, 4, 'Öğretmenler ve Branşları', true, 'right');
+    T(12, 5, 7, 'Adı Soyadı', true, 'left');            T(12, 8, 10, 'Branşı', true, 'left');
+
+    for(var r = 13; r <= son; r++){
+      var i = r - 13;
+      if(i < N) cells.push({r:r, c1:4, c2:4, text:i + 1, bold:false, align:'right'});
+      var o = ogretmenler[i];
+      cells.push({r:r, c1:5, c2:7, text:o ? (o.ad || '') : '', bold:false, align:'left'});
+      cells.push({r:r, c1:8, c2:10, text:o ? (o.brans || '') : '', bold:false, align:'left'});
+      merges.push([r, 5, r, 7], [r, 8, r, 10]);
+      boxes.push([r, 4, r, 4], [r, 5, r, 7], [r, 8, r, 10]);
+    }
+
+    boxes.push([2, 2, son, 10]);                         /* dış çerçeve */
+    for(var k = 7; k <= 12; k++) boxes.push([k, 2, k, 4]);
+    [7, 9, 10, 11].forEach(function(k){ boxes.push([k, 5, k, 10]); });
+    for(var c = 5; c <= 10; c++) boxes.push([8, c, 8, c]);
+    boxes.push([12, 5, 12, 7], [12, 8, 12, 10]);
+    boxes.push([13, 2, son, 3]);                         /* sol boş alan */
+
+    return {son:son, cells:cells, boxes:boxes, merges:merges};
+  }
+
+  function rapExcelBuffer(m){
+    var wb = new ExcelJS.Workbook();
+    var ws = wb.addWorksheet('okul_bilgi_raporu', {
+      pageSetup:{paperSize:9, orientation:'portrait', scale:100,
+        margins:{left:0.7875, right:0.7875, top:0.590277777777778, bottom:0.590277777777778, header:0.511811023622047, footer:0.511811023622047}}
+    });
+    ws.getColumn(1).width = 1.78;
+    for(var c = 2; c <= 10; c++) ws.getColumn(c).width = 8.88;
+    ws.getColumn(11).width = 1.78;
+    ws.getRow(1).height = 3;
+    for(var r = 2; r <= m.son; r++) ws.getRow(r).height = 12;
+    ws.getRow(m.son + 1).height = 3;
+
+    var font = {name:'Times New Roman', size:9};
+    var kenar = {};
+    function key(r, c){ return r + ',' + c; }
+    m.boxes.forEach(function(b){
+      for(var r = b[0]; r <= b[2]; r++){
+        for(var c = b[1]; c <= b[3]; c++){
+          var e = kenar[key(r,c)] || (kenar[key(r,c)] = {});
+          if(c === b[1]) e.left = {style:'thin'};
+          if(c === b[3]) e.right = {style:'thin'};
+          if(r === b[0]) e.top = {style:'thin'};
+          if(r === b[2]) e.bottom = {style:'thin'};
+        }
+      }
+    });
+    var kole = {};   /* birleştirilmiş hücrelerin ana hücre dışındakileri */
+    m.merges.forEach(function(g){
+      ws.mergeCells(g[0], g[1], g[2], g[3]);
+      var birlesik = {};
+      for(var r = g[0]; r <= g[2]; r++){
+        for(var c = g[1]; c <= g[3]; c++){
+          var e = kenar[key(r,c)] || {};
+          for(var yon in e) birlesik[yon] = e[yon];
+          if(r !== g[0] || c !== g[1]) kole[key(r,c)] = true;
+        }
+      }
+      kenar[key(g[0], g[1])] = birlesik;
+    });
+    for(var r2 = 2; r2 <= m.son; r2++){
+      for(var c2 = 2; c2 <= 10; c2++){
+        if(kole[key(r2,c2)]) continue;
+        var cell = ws.getCell(r2, c2);
+        cell.font = font;
+        if(kenar[key(r2,c2)]) cell.border = kenar[key(r2,c2)];
+      }
+    }
+    m.cells.forEach(function(h){
+      var cell = ws.getCell(h.r, h.c1);
+      if(h.text !== '' && h.text != null) cell.value = h.text;
+      cell.font = {name:'Times New Roman', size:9, bold:h.bold};
+      cell.alignment = {horizontal:h.align, vertical:'bottom'};
+    });
+    return wb.xlsx.writeBuffer();
+  }
+
+  function rapPdfDok(m){
+    var X0 = 66, Y0 = 45.5, CW = 49.4, RH = 12;
+    var yuk = Math.max(841.89, Y0 + (m.son - 1) * RH + 3 + 42.5);
+    var cizim = m.boxes.map(function(b){
+      return {type:'rect', x:X0 + (b[1]-2)*CW, y:Y0 + (b[0]-2)*RH, w:(b[3]-b[1]+1)*CW, h:(b[2]-b[0]+1)*RH, lineWidth:0.6, lineColor:'#000000'};
+    });
+    var icerik = [{canvas:cizim, absolutePosition:{x:0, y:0}}];
+    m.cells.forEach(function(h){
+      if(h.text === '' || h.text == null) return;
+      icerik.push({
+        columns:[{width:(h.c2 - h.c1 + 1)*CW - 4, text:String(h.text), bold:h.bold, alignment:h.align, fontSize:9}],
+        absolutePosition:{x:X0 + (h.c1-2)*CW + 2, y:Y0 + (h.r-2)*RH + 1.2}
+      });
+    });
+    return {pageSize:{width:595.28, height:yuk}, pageMargins:[0,0,0,0], content:icerik, defaultStyle:{fontSize:9}};
+  }
+
+  function rapIndir(blob, dosyaAdi){
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = dosyaAdi;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function okulRaporuOlustur(){
+    var durum = document.getElementById('raporDurum');
+    var ad = rapDosyaAdi();
+    var m = rapModelHazirla();
+    var hata = [];
+    var excelSoz;
+    try{
+      if(typeof ExcelJS === 'undefined') throw new Error('ExcelJS yok');
+      excelSoz = rapExcelBuffer(m).then(function(buf){
+        rapIndir(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), ad + '.xlsx');
+      });
+    }catch(e){ hata.push('Excel'); excelSoz = Promise.resolve(); }
+    excelSoz.catch(function(){ hata.push('Excel'); }).then(function(){
+      return new Promise(function(ok){ setTimeout(ok, 400); });
+    }).then(function(){
+      try{
+        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+        pdfMake.createPdf(rapPdfDok(m)).download(ad + '.pdf');
+      }catch(e){ hata.push('PDF'); }
+      durum.textContent = hata.length ? (hata.join(' ve ') + ' oluşturulamadı (internet bağlantısını kontrol edin).') : ('Kaydedildi: ' + ad + ' (.xlsx ve .pdf)');
+    });
+  }
+
   /* Backup & Restore System */
-  var YEDEK_KEYS = ['okulBilgiGirisi', 'ogretmenListesi', 'sinifListesi', 'ogrenciListesi', 'dersListesi', 'notKayitlari', 'sroListesi', 'skListesi'];
+  var YEDEK_KEYS = ['okulBilgiGirisi', 'ogretmenListesi', 'sinifListesi', 'ogrenciListesi', 'dersListesi', 'notKayitlari', 'sroListesi', 'skListesi', 'kulupOgrenciListesi'];
   function yedekAl(){
     var data = {};
     YEDEK_KEYS.forEach(function(k){
