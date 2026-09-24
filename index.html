@@ -72,19 +72,25 @@
   .brand .name{font-size:1.2rem;font-weight:700;}
   .brand .role{font-size:.85rem;color:#bfe0e3;font-weight:400;}
   nav{display:flex;align-items:center;gap:8px;}
+  
+  /* Üst Menüdeki Yazdır, Yedekle, Güncelle Butonları %20 Büyütüldü (34px -> 41px, SVG 18px -> 22px) */
   nav button{
     background:#fff;
     color:var(--accent-dark);
     border:none;
     border-radius:999px;
-    width:34px;
-    height:34px;
+    width:41px;
+    height:41px;
     padding:0;
     display:flex;
     align-items:center;
     justify-content:center;
     cursor:pointer;
     flex:0 0 auto;
+  }
+  nav button svg{
+    width:22px;
+    height:22px;
   }
   nav button:active{background:#dff3f4;}
 
@@ -176,9 +182,17 @@
     color:var(--ink-soft);
   }
 
+  /* Mobil İçin Üst Menüdeki Metin Boyutları Bir Tık Küçültüldü */
+  @media (max-width:600px){
+    .brand .name{font-size:0.95rem;}
+    .brand .role{font-size:0.75rem;}
+    .header-clock-box .digital-clock{font-size:0.9rem;}
+    .header-clock-box .lesson-status{font-size:0.65rem;}
+  }
+
   @media (max-width:360px){
     .menu-box span{font-size:.6rem;}
-    .brand .name{font-size:1.05rem;}
+    .brand .name{font-size:0.85rem;}
   }
 
   /* ---------- Desktop layout ---------- */
@@ -252,7 +266,6 @@
     overflow-y:auto;
     position:relative;
   }
-  /* Geniş Pop-Up Görünümü (Not Girişi için) */
   .modal-box.wide-modal{
     max-width:680px;
   }
@@ -301,13 +314,37 @@
     font-weight:700;
   }
   
-  /* Tek Satırlı 4 Buton Düzeni */
   .modal-actions-single-row{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
     gap:5px;
     margin-top:14px;
   }
+
+  /* Raporlar Buton Düzeni Esnekliği */
+  .modal-actions-rapor-row{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+    width:100%;
+  }
+  .modal-actions-rapor-row .btn-50{
+    flex:0 0 50%;
+  }
+  .modal-actions-rapor-row .btn-25{
+    flex:0 0 calc(25% - 4.5px);
+  }
+  .modal-actions-rapor-row .select-50{
+    flex:0 0 50%;
+    border:1px solid var(--card);
+    background:var(--card);
+    border-radius:8px;
+    padding:8px;
+    font-size:.82rem;
+    color:var(--ink);
+    font-weight:600;
+  }
+
   .modal-btn{
     padding:9px 2px;
     border-radius:8px;
@@ -363,7 +400,6 @@
     min-height:16px;
   }
 
-  /* Listeler ve Tablolar */
   .data-list-container{
     margin-top:16px;
     border-top:1px solid var(--line);
@@ -399,7 +435,6 @@
     color:var(--ink-soft);
   }
 
-  /* Öğrenci Listesi İçin Küçültülmüş Tek Satır Yapısı */
   .list-item-compact{
     padding:5px 10px !important;
     margin-bottom:4px !important;
@@ -449,9 +484,9 @@
       </div>
     </div>
     <nav>
-      <button type="button" onClick="openRaporModal()" title="Rapor"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 17v-3M12 17v-5M15 17v-2"/></svg></button>
-      <button type="button" onClick="yedekAl()" title="Yedekle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></button>
-      <button type="button" onClick="document.getElementById('yedekDosyaSec').click()" title="Güncelle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9"/><path d="M7 14l5-5 5 5"/><path d="M4 5h16"/></svg></button>
+      <button type="button" onClick="openRaporModal()" title="Rapor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 17v-3M12 17v-5M15 17v-2"/></svg></button>
+      <button type="button" onClick="yedekAl()" title="Yedekle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></button>
+      <button type="button" onClick="document.getElementById('yedekDosyaSec').click()" title="Güncelle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9"/><path d="M7 14l5-5 5 5"/><path d="M4 5h16"/></svg></button>
       <input type="file" id="yedekDosyaSec" accept="application/json,.json" style="display:none" onChange="yedekGeriYukle(event)">
       
       <!-- Dijital Saat & Ders Bilgisi Alanı -->
@@ -491,17 +526,14 @@
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 10v4M5 12h4M16 11.2h.01M18.5 13.2h.01"/></svg>
         <span>Not Girişi</span>
       </button>
-      <!-- Bütçe -> Sınıf Rehber Öğretmenleri Girişi Pop-Up -->
       <button type="button" class="menu-box" onClick="openSinifRehberOgretmenModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M9 12l2 2 4-4"/></svg>
         <span>Sınıf Rehber Öğretmeni Girişi</span>
       </button>
-      <!-- Günlük Plan -> Sosyal Kulüp Rehber Öğretmenleri Girişi Pop-Up -->
       <button type="button" class="menu-box" onClick="openSosyalKulupModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span>Kulüp Rehber Öğretmen Girişi</span>
       </button>
-      <!-- 9. kutu: Kulüp Öğrenci Girişi Pop-Up -->
       <button type="button" class="menu-box" onClick="openKulupOgrenciModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.8 0 4.5 1.8 4.5 4.5"/></svg>
         <span>Kulüp Öğrenci Girişi</span>
@@ -716,7 +748,7 @@
   </div>
 </div>
 
-<!-- ================= 7. SINIF REHBER ÖĞRETMENLERİ GİRİŞİ MODAL (BÜTÇE) ================= -->
+<!-- ================= 7. SINIF REHBER ÖĞRETMENLERİ GİRİŞİ MODAL ================= -->
 <div id="sinifRehberOgretmenOverlay" class="modal-overlay" onClick="if(event.target===this) closeSinifRehberOgretmenModal()">
   <div class="modal-box">
     <button type="button" class="modal-close" onClick="closeSinifRehberOgretmenModal()">×</button>
@@ -741,7 +773,7 @@
   </div>
 </div>
 
-<!-- ================= 8. SOSYAL KULÜP REHBER ÖĞRETMENLERİ GİRİŞİ MODAL (GÜNLÜK PLAN) ================= -->
+<!-- ================= 8. SOSYAL KULÜP REHBER ÖĞRETMENLERİ GİRİŞİ MODAL ================= -->
 <div id="sosyalKulupOverlay" class="modal-overlay" onClick="if(event.target===this) closeSosyalKulupModal()">
   <div class="modal-box">
     <button type="button" class="modal-close" onClick="closeSosyalKulupModal()">×</button>
@@ -794,12 +826,24 @@
 <div id="raporOverlay" class="modal-overlay" onClick="if(event.target===this) closeRaporModal()">
   <div class="modal-box">
     <button type="button" class="modal-close" onClick="closeRaporModal()">×</button>
-    <h2 class="modal-title">Rapor</h2>
-    <div class="modal-actions-single-row" style="grid-template-columns:repeat(3, 1fr);">
-      <button type="button" class="modal-btn primary" onClick="okulRaporuOlustur('onizleme')">Okul Raporu</button>
-      <button type="button" class="modal-btn danger" onClick="okulRaporuOlustur('pdf')">PDF Kaydet</button>
-      <button type="button" class="modal-btn secondary" onClick="okulRaporuOlustur('excel')">Excel Kaydet</button>
+    <h2 class="modal-title">Raporlar</h2>
+    
+    <!-- 1. Satır: Okul Raporu (%50), PDF (%25), Excel (%25) -->
+    <div class="modal-actions-rapor-row">
+      <button type="button" class="modal-btn primary btn-50" onClick="okulRaporuOlustur('onizleme')">Okul Raporu</button>
+      <button type="button" class="modal-btn danger btn-25" onClick="okulRaporuOlustur('pdf')">PDF Kaydet</button>
+      <button type="button" class="modal-btn secondary btn-25" onClick="okulRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
+
+    <!-- 2. Satır: Sınıf Listeleri Raporu (%50 Dropdown), PDF (%25), Excel (%25) -->
+    <div class="modal-actions-rapor-row">
+      <select id="raporSinifSelect" class="select-50">
+        <option value="TUMU">Tüm Sınıflar</option>
+      </select>
+      <button type="button" class="modal-btn danger btn-25" onClick="sinifListesiRaporuOlustur('pdf')">PDF Kaydet</button>
+      <button type="button" class="modal-btn secondary btn-25" onClick="sinifListesiRaporuOlustur('excel')">Excel Kaydet</button>
+    </div>
+
     <div id="raporDurum" class="modal-status"></div>
   </div>
 </div>
@@ -903,7 +947,6 @@
   /* ================= 2. ÖĞRETMEN BİLGİSİ SCRIPT ================= */
   var OGRETMEN_LISTESI = [];
   var OGRETMEN_SECILI = null;
-  /* Ders Bilgi Girişi'ndeki "Branş Adı" bilgilerinden branş listesi üretir */
   function ogretmenBransOptionsYukle(ekstra){
     var dersler = [];
     try{ dersler = JSON.parse(localStorage.getItem('dersListesi') || '[]'); }catch(e){}
@@ -1656,7 +1699,6 @@
   function closeKulupOgrenciModal(){
     document.getElementById('kulupOgrenciOverlay').classList.remove('active');
   }
-  /* Kulüpler: Kulüp Rehber Öğretmen Girişi'nden, Sınıflar: Sınıf Bilgi Girişi'nden */
   function koSecenekleriYukle(){
     var kulupler = [];
     try{ kulupler = JSON.parse(localStorage.getItem('skListesi') || '[]'); }catch(e){}
@@ -1680,7 +1722,6 @@
       : '<option value="">(Önce Sınıf Ekleyiniz)</option>';
     koOgrenciSecenekleriGuncelle();
   }
-  /* Öğrenciler: Öğrenci Bilgi Girişi'nden, seçili sınıfa göre */
   function koOgrenciSecenekleriGuncelle(){
     var sinif = document.getElementById('koSinifSelect').value;
     var hepsi = [];
@@ -1769,9 +1810,10 @@
     document.getElementById('koDurum').textContent = '';
   }
 
-  /* ================= RAPOR (Excel + PDF) — okul_raporu.xlsx şablonu ================= */
+  /* ================= RAPORLAR MODAL VE SINIF LİSTELERİ RAPORU ================= */
   function openRaporModal(){
     document.getElementById('raporDurum').textContent = '';
+    raporSinifSelectYukle();
     document.getElementById('raporOverlay').classList.add('active');
   }
   function closeRaporModal(){
@@ -1780,13 +1822,23 @@
   function rapLoad(key, def){
     try{ var v = JSON.parse(localStorage.getItem(key)); return v == null ? def : v; }catch(e){ return def; }
   }
-  function rapDosyaAdi(){
+  function rapDosyaAdi(prefix){
     var d = new Date();
     function p(n){ return (n < 10 ? '0' : '') + n; }
-    return 'Okul_Formu_' + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + '-' + p(d.getMinutes());
+    return (prefix || 'Rapor_') + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + '-' + p(d.getMinutes());
   }
 
-  /* Şablon düzeni: B..J sütunları (2..10), satır 2'den başlar. Excel ve PDF aynı modelden üretilir. */
+  /* Rapor Modalı Sınıf Seçim Dropdown Dolumu */
+  function raporSinifSelectYukle(){
+    var siniflar = rapLoad('sinifListesi', []);
+    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
+    var sel = document.getElementById('raporSinifSelect');
+    sel.innerHTML = '<option value="TUMU">Tüm Sınıflar</option>' + siniflar.map(function(s){
+      return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>';
+    }).join('');
+  }
+
+  /* --- OKUL RAPORU MODELİ --- */
   function rapModelHazirla(){
     var tr = function(a,b){ return (a||'').localeCompare(b||'', 'tr', {numeric:true}); };
     var okul = rapLoad('okulBilgiGirisi', {});
@@ -1795,8 +1847,8 @@
     var kiz = ogrenciler.filter(function(o){ return o.cinsiyet === 'K'; }).length;
     var erkek = ogrenciler.filter(function(o){ return o.cinsiyet === 'E'; }).length;
 
-    var N = Math.max(50, ogretmenler.length);   /* numaralı satır sayısı */
-    var son = 13 + N;                           /* son satır (şablonda 63) */
+    var N = Math.max(50, ogretmenler.length);
+    var son = 13 + N;
     var ilce = (okul.okulIlce || '').trim().toLocaleUpperCase('tr');
     var okulAdi = (okul.okulAdi || '').trim();
 
@@ -1831,14 +1883,95 @@
       boxes.push([r, 4, r, 4], [r, 5, r, 7], [r, 8, r, 10]);
     }
 
-    boxes.push([2, 2, son, 10]);                         /* dış çerçeve */
+    boxes.push([2, 2, son, 10]);
     for(var k = 7; k <= 12; k++) boxes.push([k, 2, k, 4]);
     [7, 9, 10, 11].forEach(function(k){ boxes.push([k, 5, k, 10]); });
     for(var c = 5; c <= 10; c++) boxes.push([8, c, 8, c]);
     boxes.push([12, 5, 12, 7], [12, 8, 12, 10]);
-    boxes.push([13, 2, son, 3]);                         /* sol boş alan */
+    boxes.push([13, 2, son, 3]);
 
     return {son:son, cells:cells, boxes:boxes, merges:merges};
+  }
+
+  /* --- SINIF LİSTESİ ŞABLONUNA UYGUN MODEL ÜRETİCİ --- */
+  function sinifListesiModeliHazirla(sinifAdiStr){
+    var okul = rapLoad('okulBilgiGirisi', {});
+    var siniflar = rapLoad('sinifListesi', []);
+    var ogrenciler = rapLoad('ogrenciListesi', []);
+
+    var sInfo = siniflar.find(function(s){ return s.ad === sinifAdiStr; }) || {};
+    var sOgrenciler = ogrenciler.filter(function(o){ return o.sinif === sinifAdiStr; });
+    sOgrenciler.sort(function(a,b){ return (parseInt(a.numara)||0) - (parseInt(b.numara)||0); });
+
+    var N = Math.max(40, sOgrenciler.length);
+    var endListRow = 10 + N;
+
+    var ilce = (okul.okulIlce || '').trim().toLocaleUpperCase('tr');
+    var okulAdi = (okul.okulAdi || '').trim();
+
+    var cells = [], boxes = [], merges = [];
+    function T(r, c1, c2, text, bold, align){
+      cells.push({r:r, c1:c1, c2:c2, text:text, bold:!!bold, align:align});
+      if(c2 > c1) merges.push([r, c1, r, c2]);
+    }
+
+    T(2, 2, 10, 'T.C.', true, 'center');
+    T(3, 2, 10, (ilce ? ilce + ' ' : '') + 'KAYMAKAMLIĞI', true, 'center');
+    T(4, 2, 10, (okulAdi ? okulAdi + ' ' : '') + 'Müdürlüğü', true, 'center');
+    T(6, 2, 10, 'Sınıf Listesi', true, 'center');
+
+    T(7, 2, 4, 'Sınıf Öğretmeni', true, 'right'); T(7, 5, 10, sInfo.ogretmen || '', false, 'left');
+    T(8, 2, 4, 'Sınıf Başkanı', true, 'right');   T(8, 5, 10, sInfo.baskan || '', false, 'left');
+    T(9, 2, 4, 'Sınıf', true, 'right');          T(9, 5, 10, sinifAdiStr, false, 'left');
+
+    T(10, 2, 2, 'Sıra', true, 'center');
+    T(10, 3, 3, 'Sınıf', true, 'center');
+    T(10, 4, 4, 'No', true, 'center');
+    T(10, 5, 9, 'Adı Soyadı', true, 'left');
+    T(10, 10, 10, 'Cinsiyet', true, 'center');
+
+    boxes.push([2, 2, endListRow, 10]);
+    boxes.push([7, 2, 7, 4], [7, 5, 7, 10]);
+    boxes.push([8, 2, 8, 4], [8, 5, 8, 10]);
+    boxes.push([9, 2, 9, 4], [9, 5, 9, 10]);
+    boxes.push([10, 2, 10, 2], [10, 3, 10, 3], [10, 4, 10, 4], [10, 5, 10, 9], [10, 10, 10, 10]);
+
+    for(var i = 0; i < N; i++){
+      var r = 11 + i;
+      var o = sOgrenciler[i];
+      T(r, 2, 2, i + 1, false, 'center');
+      T(r, 3, 3, o ? (o.sinif || sinifAdiStr) : '', false, 'center');
+      T(r, 4, 4, o ? (o.numara || '') : '', false, 'center');
+      T(r, 5, 9, o ? (o.ad || '') : '', false, 'left');
+      var cinsStr = o ? (o.cinsiyet === 'K' ? 'Kız' : (o.cinsiyet === 'E' ? 'Erkek' : '')) : '';
+      T(r, 10, 10, cinsStr, false, 'center');
+
+      boxes.push([r, 2, r, 2], [r, 3, r, 3], [r, 4, r, 4], [r, 5, r, 9], [r, 10, r, 10]);
+    }
+
+    /* İmza Blokları */
+    var sigRow1 = endListRow + 9;
+    var sigRow2 = sigRow1 + 1;
+    var sigRow3 = sigRow2 + 1;
+    var sigRow4 = sigRow3 + 1;
+
+    T(sigRow1, 2, 3, okul.okulMudurYrd1 || 'Muammer BOZER', true, 'center');
+    T(sigRow2, 2, 3, 'Müdür Yardımcısı', false, 'center');
+
+    T(sigRow1, 5, 6, okul.okulMudurYrd2 || 'Müdür Yardımcısı', true, 'center');
+    T(sigRow2, 5, 6, 'Müdür Yardımcısı', false, 'center');
+
+    T(sigRow3, 8, 10, okul.okulMudur || 'Okul Müdürü', true, 'center');
+    T(sigRow4, 8, 10, 'Okul Müdürü', false, 'center');
+
+    return {
+      sinifAdi: sinifAdiStr,
+      cleanTabName: sinifAdiStr.replace(/[^a-zA-Z0-9]/g, '').substring(0, 30) || 'Sinif',
+      son: sigRow4,
+      cells: cells,
+      boxes: boxes,
+      merges: merges
+    };
   }
 
   function rapExcelBuffer(m){
@@ -1868,7 +2001,7 @@
         }
       }
     });
-    var kole = {};   /* birleştirilmiş hücrelerin ana hücre dışındakileri */
+    var kole = {};
     m.merges.forEach(function(g){
       ws.mergeCells(g[0], g[1], g[2], g[3]);
       var birlesik = {};
@@ -1923,11 +2056,10 @@
     a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   }
-  /* tur: 'onizleme' = PDF'i yeni sekmede açar (indirmez), 'pdf' = yalnız PDF indirir, 'excel' = yalnız Excel indirir */
+
   function okulRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
     if(tur === 'onizleme'){
-      /* Açılır pencere engeline takılmamak için pencere tıklama anında açılır */
       var pencere = window.open('', '_blank');
       try{
         if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
@@ -1940,7 +2072,7 @@
       }
       return;
     }
-    var ad = rapDosyaAdi();
+    var ad = rapDosyaAdi('Okul_Raporu_');
     var m = rapModelHazirla();
     var hata = [];
     var kaydedilen = [];
@@ -1971,6 +2103,142 @@
         ? (hata.join(' ve ') + ' oluşturulamadı (internet bağlantısını kontrol edin).')
         : ('Kaydedildi: ' + ad + ' (' + kaydedilen.join(' ve ') + ')');
     });
+  }
+
+  /* ================= SINIF LİSTELERİ RAPORU OLUŞTURMA (Excel / PDF) ================= */
+  function sinifListesiRaporuOlustur(tur){
+    var durum = document.getElementById('raporDurum');
+    var seciliSinif = document.getElementById('raporSinifSelect').value;
+    var siniflar = rapLoad('sinifListesi', []);
+    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
+
+    if(!siniflar.length){
+      durum.textContent = 'Sistemde kayıtlı sınıf bulunmamaktadır.';
+      return;
+    }
+
+    var hedeflenenSiniflar = [];
+    if(seciliSinif === 'TUMU'){
+      hedeflenenSiniflar = siniflar.map(function(s){ return s.ad; });
+    } else {
+      hedeflenenSiniflar = [seciliSinif];
+    }
+
+    var modeller = hedeflenenSiniflar.map(function(sAd){
+      return sinifListesiModeliHazirla(sAd);
+    });
+
+    var ad = rapDosyaAdi('Sinif_Listesi_');
+
+    if(tur === 'excel'){
+      try{
+        if(typeof ExcelJS === 'undefined') throw new Error('ExcelJS yok');
+        var wb = new ExcelJS.Workbook();
+
+        modeller.forEach(function(m){
+          var sheetName = m.cleanTabName;
+          var ws = wb.addWorksheet(sheetName, {
+            pageSetup:{paperSize:9, orientation:'portrait', fitToPage:true, fitToWidth:1, fitToHeight:1,
+              margins:{left:0.7875, right:0.7875, top:0.590277777777778, bottom:0.590277777777778, header:0.511811023622047, footer:0.511811023622047}}
+          });
+          ws.getColumn(1).width = 1.78;
+          for(var c = 2; c <= 10; c++) ws.getColumn(c).width = 8.88;
+          ws.getColumn(11).width = 1.78;
+          ws.getRow(1).height = 3;
+          for(var r = 2; r <= m.son; r++) ws.getRow(r).height = 12;
+          ws.getRow(m.son + 1).height = 3;
+
+          var font = {name:'Times New Roman', size:9};
+          var kenar = {};
+          function key(r, c){ return r + ',' + c; }
+          m.boxes.forEach(function(b){
+            for(var r = b[0]; r <= b[2]; r++){
+              for(var c = b[1]; c <= b[3]; c++){
+                var e = kenar[key(r,c)] || (kenar[key(r,c)] = {});
+                if(c === b[1]) e.left = {style:'thin'};
+                if(c === b[3]) e.right = {style:'thin'};
+                if(r === b[0]) e.top = {style:'thin'};
+                if(r === b[2]) e.bottom = {style:'thin'};
+              }
+            }
+          });
+          var kole = {};
+          m.merges.forEach(function(g){
+            ws.mergeCells(g[0], g[1], g[2], g[3]);
+            var birlesik = {};
+            for(var r = g[0]; r <= g[2]; r++){
+              for(var c = g[1]; c <= g[3]; c++){
+                var e = kenar[key(r,c)] || {};
+                for(var yon in e) birlesik[yon] = e[yon];
+                if(r !== g[0] || c !== g[1]) kole[key(r,c)] = true;
+              }
+            }
+            kenar[key(g[0], g[1])] = birlesik;
+          });
+          for(var r2 = 2; r2 <= m.son; r2++){
+            for(var c2 = 2; c2 <= 10; c2++){
+              if(kole[key(r2,c2)]) continue;
+              var cell = ws.getCell(r2, c2);
+              cell.font = font;
+              if(kenar[key(r2,c2)]) cell.border = kenar[key(r2,c2)];
+            }
+          }
+          m.cells.forEach(function(h){
+            var cell = ws.getCell(h.r, h.c1);
+            if(h.text !== '' && h.text != null) cell.value = h.text;
+            cell.font = {name:'Times New Roman', size:9, bold:h.bold};
+            cell.alignment = {horizontal:h.align, vertical:'bottom'};
+          });
+        });
+
+        wb.xlsx.writeBuffer().then(function(buf){
+          rapIndir(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), ad + '.xlsx');
+          durum.textContent = 'Sınıf listesi Excel olarak başarıyla indirildi.';
+        });
+
+      }catch(e){
+        durum.textContent = 'Excel oluşturulamadı.';
+      }
+    } else if(tur === 'pdf'){
+      try{
+        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+
+        /* Tek bir PDF dökümanında her sınıf ayrı bir sayfa olacak şekilde birleştirilir */
+        var tumIcerik = [];
+        modeller.forEach(function(m, idx){
+          var X0 = 66, Y0 = 45.5, CW = 49.4, RH = 12;
+          var cizim = m.boxes.map(function(b){
+            return {type:'rect', x:X0 + (b[1]-2)*CW, y:Y0 + (b[0]-2)*RH, w:(b[3]-b[1]+1)*CW, h:(b[2]-b[0]+1)*RH, lineWidth:0.6, lineColor:'#000000'};
+          });
+          
+          if(idx > 0){
+            tumIcerik.push({text: '', pageBreak: 'before'});
+          }
+
+          tumIcerik.push({canvas:cizim, absolutePosition:{x:0, y:0}});
+          m.cells.forEach(function(h){
+            if(h.text === '' || h.text == null) return;
+            tumIcerik.push({
+              columns:[{width:(h.c2 - h.c1 + 1)*CW - 4, text:String(h.text), bold:h.bold, alignment:h.align, fontSize:9}],
+              absolutePosition:{x:X0 + (h.c1-2)*CW + 2, y:Y0 + (h.r-2)*RH + 1.2}
+            });
+          });
+        });
+
+        var pdfDok = {
+          pageSize: {width:595.28, height:841.89},
+          pageMargins: [0,0,0,0],
+          content: tumIcerik,
+          defaultStyle: {fontSize:9}
+        };
+
+        pdfMake.createPdf(pdfDok).download(ad + '.pdf');
+        durum.textContent = 'Sınıf listesi PDF olarak başarıyla indirildi.';
+
+      }catch(e){
+        durum.textContent = 'PDF oluşturulamadı.';
+      }
+    }
   }
 
   function ogrenciCinsiyetAyarla(v){
