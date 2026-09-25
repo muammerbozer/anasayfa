@@ -144,7 +144,7 @@
   }
   .menu-box:active{background:var(--card-hover);transform:scale(.98);}
   .menu-box svg{width:29px;height:29px;stroke:var(--ink);}
-  .menu-box span{font-size:.66rem;color:var(--ink);font-weight:500;}
+  .menu-box span{font-size:.99rem;color:var(--ink);font-weight:500;}
 
   /* ---------- inner pages ---------- */
   .page{display:none;}
@@ -191,7 +191,7 @@
   }
 
   @media (max-width:360px){
-    .menu-box span{font-size:.6rem;}
+    .menu-box span{font-size:.9rem;}
     .brand .name{font-size:0.85rem;}
   }
 
@@ -240,7 +240,7 @@
       overflow:hidden;
     }
     .menu-box svg{width:clamp(20px, 4.2vh, 40px);height:clamp(20px, 4.2vh, 40px);}
-    .menu-box span{font-size:clamp(1.2rem, 3vh, 1.65rem);line-height:1.2;font-weight:600;}
+    .menu-box span{font-size:clamp(0.96rem, 2.4vh, 1.32rem);line-height:1.2;font-weight:600;}
     footer{flex:0 0 auto;max-width:85vw;margin:6px auto 0;}
   }
 
@@ -884,16 +884,49 @@
       { name: '7. Ders', start: 14*60 + 40, end: 15*60 + 20 }
     ];
 
+    var statusElem = document.getElementById('lessonStatus');
+    var gun = now.getDay();  /* 0: Pazar, 6: Cumartesi */
+    if(gun === 0 || gun === 6){
+      if(statusElem) statusElem.textContent = 'Bugün Tatil';
+      return;
+    }
+
     var currentStatus = 'Ders Dışı Saat';
+    var buldu = false;
     for(var i = 0; i < schedule.length; i++){
       if(totalMins >= schedule[i].start && totalMins < schedule[i].end){
         currentStatus = schedule[i].name;
+        buldu = true;
         break;
       }
     }
 
-    var statusElem = document.getElementById('lessonStatus');
+    /* Günün son dersi bittiyse, ertesi okul gününün ilk dersine kalan süre gösterilir */
+    if(!buldu && totalMins >= schedule[schedule.length - 1].end){
+      var hedef = sonrakiOkulGunuBaslangici(now, schedule[0].start);
+      currentStatus = 'Derse Başlamasına: ' + kalanSureMetni(hedef, now);
+    }
+
     if(statusElem) statusElem.textContent = currentStatus;
+  }
+  /* Ertesi okul gününün (hafta sonu hariç) ilk ders saatini verir */
+  function sonrakiOkulGunuBaslangici(simdi, baslangicDakika){
+    var hedef = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+    hedef.setDate(hedef.getDate() + 1);
+    while(hedef.getDay() === 0 || hedef.getDay() === 6){
+      hedef.setDate(hedef.getDate() + 1);
+    }
+    hedef.setHours(Math.floor(baslangicDakika / 60), baslangicDakika % 60, 0, 0);
+    return hedef;
+  }
+  /* İki tarih arasındaki farkı "X sa Y dk" biçiminde yazar */
+  function kalanSureMetni(hedef, simdi){
+    var farkMs = hedef.getTime() - simdi.getTime();
+    if(farkMs < 0) farkMs = 0;
+    var toplamDk = Math.floor(farkMs / 60000);
+    var saat = Math.floor(toplamDk / 60);
+    var dk = toplamDk % 60;
+    return saat + ' sa ' + dk + ' dk';
   }
   setInterval(updateLiveClockAndLesson, 1000);
   updateLiveClockAndLesson();
