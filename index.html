@@ -52,17 +52,6 @@
     gap:10px;
     min-width:0;
   }
-  .logo-badge{
-    flex:0 0 auto;
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:#fff;
-    color:var(--accent-dark);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
   .brand{
     display:flex;
     flex-direction:column;
@@ -73,7 +62,6 @@
   .brand .role{font-size:.85rem;color:#bfe0e3;font-weight:400;}
   nav{display:flex;align-items:center;gap:8px;}
   
-  /* Üst Menüdeki Yazdır, Yedekle, Güncelle Butonları %20 Büyütüldü (34px -> 41px, SVG 18px -> 22px) */
   nav button{
     background:#fff;
     color:var(--accent-dark);
@@ -94,7 +82,6 @@
   }
   nav button:active{background:#dff3f4;}
 
-  /* Dijital Saat & Ders Bilgisi Alanı */
   .header-clock-box{
     display:flex;
     flex-direction:column;
@@ -152,27 +139,6 @@
   #home.active{display:block;}
   #home{display:block;}
 
-  .page-header{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:8px 0 18px;
-  }
-  .back-btn{
-    background:var(--card);
-    border:none;
-    border-radius:50%;
-    width:38px;
-    height:38px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    flex:0 0 auto;
-  }
-  .back-btn svg{width:18px;height:18px;stroke:var(--ink);}
-  .page-header h1{font-size:1.15rem;margin:0;color:var(--accent-dark);}
-
   footer{
     max-width:640px;
     margin:8px auto 0;
@@ -182,7 +148,6 @@
     color:var(--ink-soft);
   }
 
-  /* Mobil İçin Üst Menüdeki Metin Boyutları Bir Tık Küçültüldü */
   @media (max-width:600px){
     .brand .name{font-size:0.95rem;}
     .brand .role{font-size:0.75rem;}
@@ -267,7 +232,7 @@
     position:relative;
   }
   .modal-box.wide-modal{
-    max-width:680px;
+    max-width:760px;
   }
 
   .modal-close{
@@ -289,10 +254,10 @@
     text-align:center;
   }
   .modal-field{
-    margin-bottom:12px;
+    margin-bottom:8px;
     display:flex;
     flex-direction:column;
-    gap:5px;
+    gap:4px;
   }
   .modal-field label{
     font-size:.78rem;
@@ -303,8 +268,8 @@
     border:1px solid var(--card);
     background:var(--card);
     border-radius:10px;
-    padding:9px 10px;
-    font-size:.92rem;
+    padding:8px 10px;
+    font-size:.88rem;
     color:var(--ink);
     font-family:inherit;
     width:100%;
@@ -314,6 +279,22 @@
     font-weight:700;
   }
   
+  .donem-section{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:10px;
+  }
+  .donem-title{
+    font-size:.85rem;
+    font-weight:700;
+    color:var(--accent-dark);
+    margin-bottom:8px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:4px;
+  }
+
   .modal-actions-single-row{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
@@ -321,7 +302,6 @@
     margin-top:14px;
   }
 
-  /* Raporlar Buton Düzeni Esnekliği */
   .modal-actions-rapor-row{
     display:flex;
     gap:6px;
@@ -344,7 +324,6 @@
     color:var(--ink);
     font-weight:600;
   }
-
   .modal-btn{
     padding:9px 2px;
     border-radius:8px;
@@ -360,8 +339,8 @@
     white-space:nowrap;
   }
   .modal-btn.primary{
-    background:var(--accent-dark);
-    color:#fff;
+    background:var(--card);
+    color:var(--ink);
   }
   .modal-btn.danger{
     background:#d9534f;
@@ -370,6 +349,16 @@
   .modal-btn.secondary{
     background:var(--accent);
     color:#fff;
+  }
+  .modal-btn.rapor-ilk-btn, select.rapor-ilk-btn{
+    background:#cdeed7;
+    border:1px solid #9bd9ae;
+    color:#1c6b3f;
+    text-align:left;
+    padding-left:14px;
+  }
+  select.rapor-ilk-btn{
+    padding-left:12px;
   }
   .cinsiyet-btns{
     display:grid;
@@ -452,13 +441,13 @@
   .not-table{
     width:100%;
     border-collapse:collapse;
-    font-size:.76rem;
+    font-size:.72rem;
     margin-top:8px;
     background:#fff;
   }
   .not-table th, .not-table td{
     border:1px solid var(--line);
-    padding:5px 3px;
+    padding:4px 2px;
     text-align:center;
     white-space:nowrap;
   }
@@ -489,7 +478,6 @@
       <button type="button" onClick="document.getElementById('yedekDosyaSec').click()" title="Güncelle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21V9"/><path d="M7 14l5-5 5 5"/><path d="M4 5h16"/></svg></button>
       <input type="file" id="yedekDosyaSec" accept="application/json,.json" style="display:none" onChange="yedekGeriYukle(event)">
       
-      <!-- Dijital Saat & Ders Bilgisi Alanı -->
       <div class="header-clock-box">
         <div class="digital-clock" id="liveClock">00:00:00</div>
         <div class="lesson-status" id="lessonStatus">Hesaplanıyor...</div>
@@ -500,7 +488,6 @@
 
 <main>
 
-  <!-- ================= ANASAYFA ================= -->
   <section id="home" class="page active">
     <div class="menu-grid">
       <button type="button" class="menu-box" onClick="openOkulBilgiModal()">
@@ -703,31 +690,60 @@
   </div>
 </div>
 
-<!-- ================= 6. NOT GİRİŞİ MODAL ================= -->
+<!-- ================= 6. NOT GİRİŞİ MODAL (1. ve 2. DÖNEM + GENEL ORTALAMA) ================= -->
 <div id="notGirisiOverlay" class="modal-overlay" onClick="if(event.target===this) closeNotGirisiModal()">
   <div class="modal-box wide-modal">
     <button type="button" class="modal-close" onClick="closeNotGirisiModal()">×</button>
     <h2 class="modal-title">Not Girişi</h2>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px;">
       <div class="modal-field"><label for="notSinifSelect">Sınıf</label><select id="notSinifSelect" onChange="notOgrenciListesiGuncelle()"></select></div>
       <div class="modal-field"><label for="notDersSelect">Ders</label><select id="notDersSelect" onChange="notOgrenciListesiGuncelle()"></select></div>
       <div class="modal-field"><label for="notOgrenciSelect">Öğrenci / Numara</label><select id="notOgrenciSelect" onChange="ogrenciNotlariniYukle()"></select></div>
     </div>
 
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
-      <div class="modal-field"><label for="y1">1.Yazılı</label><input type="number" id="y1" min="0" max="100" oninput="notHesapla()"></div>
-      <div class="modal-field"><label for="y2">2.Yazılı</label><input type="number" id="y2" min="0" max="100" oninput="notHesapla()"></div>
-      <div class="modal-field"><label for="y3">3.Yazılı</label><input type="number" id="y3" min="0" max="100" oninput="notHesapla()"></div>
+    <!-- 1. DÖNEM ALANI -->
+    <div class="donem-section">
+      <div class="donem-title">1. Dönem</div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+        <div class="modal-field"><label for="y1_d1">1.Yazılı</label><input type="number" id="y1_d1" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="y2_d1">2.Yazılı</label><input type="number" id="y2_d1" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="y3_d1">3.Yazılı</label><input type="number" id="y3_d1" min="0" max="100" oninput="notHesapla()"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+        <div class="modal-field"><label for="p1_d1">1.Perf</label><input type="number" id="p1_d1" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="p2_d1">2.Perf</label><input type="number" id="p2_d1" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="p3_d1">3.Perf</label><input type="number" id="p3_d1" min="0" max="100" oninput="notHesapla()"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+        <div class="modal-field"><label for="prj_d1">Proje</label><input type="number" id="prj_d1" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="ort_d1">1. Dönem Ort.</label><input type="text" id="ort_d1" readonly placeholder="-"></div>
+      </div>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
-      <div class="modal-field"><label for="p1">1.Perf</label><input type="number" id="p1" min="0" max="100" oninput="notHesapla()"></div>
-      <div class="modal-field"><label for="p2">2.Perf</label><input type="number" id="p2" min="0" max="100" oninput="notHesapla()"></div>
-      <div class="modal-field"><label for="p3">3.Perf</label><input type="number" id="p3" min="0" max="100" oninput="notHesapla()"></div>
+
+    <!-- 2. DÖNEM ALANI -->
+    <div class="donem-section">
+      <div class="donem-title">2. Dönem</div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+        <div class="modal-field"><label for="y1_d2">1.Yazılı</label><input type="number" id="y1_d2" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="y2_d2">2.Yazılı</label><input type="number" id="y2_d2" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="y3_d2">3.Yazılı</label><input type="number" id="y3_d2" min="0" max="100" oninput="notHesapla()"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
+        <div class="modal-field"><label for="p1_d2">1.Perf</label><input type="number" id="p1_d2" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="p2_d2">2.Perf</label><input type="number" id="p2_d2" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="p3_d2">3.Perf</label><input type="number" id="p3_d2" min="0" max="100" oninput="notHesapla()"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+        <div class="modal-field"><label for="prj_d2">Proje</label><input type="number" id="prj_d2" min="0" max="100" oninput="notHesapla()"></div>
+        <div class="modal-field"><label for="ort_d2">2. Dönem Ort.</label><input type="text" id="ort_d2" readonly placeholder="-"></div>
+      </div>
     </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-      <div class="modal-field"><label for="prj">Proje</label><input type="number" id="prj" min="0" max="100" oninput="notHesapla()"></div>
-      <div class="modal-field"><label for="genelOrt">Ortalama</label><input type="text" id="genelOrt" readonly placeholder="-"></div>
+
+    <!-- GENEL ORTALAMA ALANI -->
+    <div class="modal-field" style="margin-bottom:12px;">
+      <label for="genelOrt" style="font-size:.88rem; font-weight:700; color:var(--accent-dark);">Genel Ortalama (1. ve 2. Dönem Ortalaması)</label>
+      <input type="text" id="genelOrt" readonly placeholder="-" style="font-size:1.05rem; text-align:center; background:#c5e3e7; color:var(--accent-dark);">
     </div>
 
     <div class="modal-actions-single-row">
@@ -830,18 +846,27 @@
     
     <!-- 1. Satır: Okul Raporu (%50), PDF (%25), Excel (%25) -->
     <div class="modal-actions-rapor-row">
-      <button type="button" class="modal-btn primary btn-50" onClick="okulRaporuOlustur('onizleme')">Okul Raporu</button>
+      <button type="button" class="modal-btn rapor-ilk-btn btn-50" onClick="okulRaporuOlustur('onizleme')">Okul Raporu</button>
       <button type="button" class="modal-btn danger btn-25" onClick="okulRaporuOlustur('pdf')">PDF Kaydet</button>
       <button type="button" class="modal-btn secondary btn-25" onClick="okulRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
 
     <!-- 2. Satır: Sınıf Listeleri Raporu (%50 Dropdown), PDF (%25), Excel (%25) -->
     <div class="modal-actions-rapor-row">
-      <select id="raporSinifSelect" class="select-50">
+      <select id="raporSinifSelect" class="select-50 rapor-ilk-btn">
         <option value="TUMU">Tüm Sınıflar</option>
       </select>
       <button type="button" class="modal-btn danger btn-25" onClick="sinifListesiRaporuOlustur('pdf')">PDF Kaydet</button>
       <button type="button" class="modal-btn secondary btn-25" onClick="sinifListesiRaporuOlustur('excel')">Excel Kaydet</button>
+    </div>
+
+    <!-- 3. Satır: Not Raporları (%50 Dropdown), PDF (%25), Excel (%25) -->
+    <div class="modal-actions-rapor-row">
+      <select id="notRaporSinifSelect" class="select-50 rapor-ilk-btn">
+        <option value="TUMU">Tüm Sınıflar</option>
+      </select>
+      <button type="button" class="modal-btn danger btn-25" onClick="notRaporuOlustur('pdf')">PDF Kaydet</button>
+      <button type="button" class="modal-btn secondary btn-25" onClick="notRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
 
     <div id="raporDurum" class="modal-status"></div>
@@ -849,7 +874,6 @@
 </div>
 
 <script>
-  /* Utility Escape */
   function escapeHtml(s){
     var d = document.createElement('div');
     d.textContent = s || '';
@@ -885,7 +909,7 @@
     ];
 
     var statusElem = document.getElementById('lessonStatus');
-    var gun = now.getDay();  /* 0: Pazar, 6: Cumartesi */
+    var gun = now.getDay();
     if(gun === 0 || gun === 6){
       if(statusElem) statusElem.textContent = 'Bugün Tatil';
       return;
@@ -901,7 +925,6 @@
       }
     }
 
-    /* Günün son dersi bittiyse, ertesi okul gününün ilk dersine kalan süre gösterilir */
     if(!buldu && totalMins >= schedule[schedule.length - 1].end){
       var hedef = sonrakiOkulGunuBaslangici(now, schedule[0].start);
       currentStatus = 'Derse Başlamasına: ' + kalanSureMetni(hedef, now);
@@ -909,7 +932,6 @@
 
     if(statusElem) statusElem.textContent = currentStatus;
   }
-  /* Ertesi okul gününün (hafta sonu hariç) ilk ders saatini verir */
   function sonrakiOkulGunuBaslangici(simdi, baslangicDakika){
     var hedef = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
     hedef.setDate(hedef.getDate() + 1);
@@ -919,7 +941,6 @@
     hedef.setHours(Math.floor(baslangicDakika / 60), baslangicDakika % 60, 0, 0);
     return hedef;
   }
-  /* İki tarih arasındaki farkı "X sa Y dk" biçiminde yazar */
   function kalanSureMetni(hedef, simdi){
     var farkMs = hedef.getTime() - simdi.getTime();
     if(farkMs < 0) farkMs = 0;
@@ -1338,7 +1359,7 @@
     document.getElementById('dersBilgiDurum').textContent = '';
   }
 
-  /* ================= 6. NOT GİRİŞİ SCRIPT ================= */
+  /* ================= 6. NOT GİRİŞİ SCRIPT (DÖNEMLİ VE GENEL ORTALAMA) ================= */
   var NOT_KAYITLARI = {};
   function openNotGirisiModal(){
     notGirisiInit();
@@ -1382,14 +1403,14 @@
     renderNotListesiTable(filtrelenmis);
   }
 
-  function notHesapla(){
-    var y1 = parseFloat(document.getElementById('y1').value);
-    var y2 = parseFloat(document.getElementById('y2').value);
-    var y3 = parseFloat(document.getElementById('y3').value);
-    var p1 = parseFloat(document.getElementById('p1').value);
-    var p2 = parseFloat(document.getElementById('p2').value);
-    var p3 = parseFloat(document.getElementById('p3').value);
-    var prj = parseFloat(document.getElementById('prj').value);
+  function donemOrtalamaHesapla(prefix){
+    var y1 = parseFloat(document.getElementById('y1_' + prefix).value);
+    var y2 = parseFloat(document.getElementById('y2_' + prefix).value);
+    var y3 = parseFloat(document.getElementById('y3_' + prefix).value);
+    var p1 = parseFloat(document.getElementById('p1_' + prefix).value);
+    var p2 = parseFloat(document.getElementById('p2_' + prefix).value);
+    var p3 = parseFloat(document.getElementById('p3_' + prefix).value);
+    var prj = parseFloat(document.getElementById('prj_' + prefix).value);
 
     var yTop = 0, yAdet = 0;
     if(!isNaN(y1)){ yTop += y1; yAdet++; }
@@ -1408,7 +1429,20 @@
     if(pOrt !== null){ gTop += pOrt; gAdet++; }
     if(!isNaN(prj)){ gTop += prj; gAdet++; }
 
-    document.getElementById('genelOrt').value = gAdet > 0 ? (gTop / gAdet).toFixed(2) : '';
+    var ort = gAdet > 0 ? (gTop / gAdet) : null;
+    document.getElementById('ort_' + prefix).value = ort !== null ? ort.toFixed(2) : '';
+    return ort;
+  }
+
+  function notHesapla(){
+    var ort1 = donemOrtalamaHesapla('d1');
+    var ort2 = donemOrtalamaHesapla('d2');
+
+    var genelTop = 0, genelAdet = 0;
+    if(ort1 !== null){ genelTop += ort1; genelAdet++; }
+    if(ort2 !== null){ genelTop += ort2; genelAdet++; }
+
+    document.getElementById('genelOrt').value = genelAdet > 0 ? (genelTop / genelAdet).toFixed(2) : '';
   }
 
   function getNotKey(){
@@ -1418,14 +1452,29 @@
   function ogrenciNotlariniYukle(){
     var key = getNotKey();
     var v = NOT_KAYITLARI[key] || {};
-    document.getElementById('y1').value = v.y1 || '';
-    document.getElementById('y2').value = v.y2 || '';
-    document.getElementById('y3').value = v.y3 || '';
-    document.getElementById('p1').value = v.p1 || '';
-    document.getElementById('p2').value = v.p2 || '';
-    document.getElementById('p3').value = v.p3 || '';
-    document.getElementById('prj').value = v.prj || '';
-    document.getElementById('genelOrt').value = v.ort || '';
+    
+    // 1. Dönem
+    document.getElementById('y1_d1').value = v.y1_d1 || v.y1 || '';
+    document.getElementById('y2_d1').value = v.y2_d1 || v.y2 || '';
+    document.getElementById('y3_d1').value = v.y3_d1 || v.y3 || '';
+    document.getElementById('p1_d1').value = v.p1_d1 || v.p1 || '';
+    document.getElementById('p2_d1').value = v.p2_d1 || v.p2 || '';
+    document.getElementById('p3_d1').value = v.p3_d1 || v.p3 || '';
+    document.getElementById('prj_d1').value = v.prj_d1 || v.prj || '';
+    document.getElementById('ort_d1').value = v.ort_d1 || '';
+
+    // 2. Dönem
+    document.getElementById('y1_d2').value = v.y1_d2 || '';
+    document.getElementById('y2_d2').value = v.y2_d2 || '';
+    document.getElementById('y3_d2').value = v.y3_d2 || '';
+    document.getElementById('p1_d2').value = v.p1_d2 || '';
+    document.getElementById('p2_d2').value = v.p2_d2 || '';
+    document.getElementById('p3_d2').value = v.p3_d2 || '';
+    document.getElementById('prj_d2').value = v.prj_d2 || '';
+    document.getElementById('ort_d2').value = v.ort_d2 || '';
+
+    document.getElementById('genelOrt').value = v.genelOrt || v.ort || '';
+    notHesapla();
   }
 
   function kaydetNotData(){
@@ -1433,14 +1482,25 @@
     if(!ogr){ document.getElementById('notGirisiDurum').textContent = 'Öğrenci bulunamadı.'; return; }
     var key = getNotKey();
     NOT_KAYITLARI[key] = {
-      y1: document.getElementById('y1').value,
-      y2: document.getElementById('y2').value,
-      y3: document.getElementById('y3').value,
-      p1: document.getElementById('p1').value,
-      p2: document.getElementById('p2').value,
-      p3: document.getElementById('p3').value,
-      prj: document.getElementById('prj').value,
-      ort: document.getElementById('genelOrt').value
+      y1_d1: document.getElementById('y1_d1').value,
+      y2_d1: document.getElementById('y2_d1').value,
+      y3_d1: document.getElementById('y3_d1').value,
+      p1_d1: document.getElementById('p1_d1').value,
+      p2_d1: document.getElementById('p2_d1').value,
+      p3_d1: document.getElementById('p3_d1').value,
+      prj_d1: document.getElementById('prj_d1').value,
+      ort_d1: document.getElementById('ort_d1').value,
+
+      y1_d2: document.getElementById('y1_d2').value,
+      y2_d2: document.getElementById('y2_d2').value,
+      y3_d2: document.getElementById('y3_d2').value,
+      p1_d2: document.getElementById('p1_d2').value,
+      p2_d2: document.getElementById('p2_d2').value,
+      p3_d2: document.getElementById('p3_d2').value,
+      prj_d2: document.getElementById('prj_d2').value,
+      ort_d2: document.getElementById('ort_d2').value,
+
+      genelOrt: document.getElementById('genelOrt').value
     };
     localStorage.setItem('notKayitlari', JSON.stringify(NOT_KAYITLARI));
     document.getElementById('notGirisiDurum').textContent = 'Not kaydedildi.';
@@ -1459,14 +1519,10 @@
   }
 
   function yeniKayitNotData(){
-    document.getElementById('y1').value = '';
-    document.getElementById('y2').value = '';
-    document.getElementById('y3').value = '';
-    document.getElementById('p1').value = '';
-    document.getElementById('p2').value = '';
-    document.getElementById('p3').value = '';
-    document.getElementById('prj').value = '';
-    document.getElementById('genelOrt').value = '';
+    ['y1_d1','y2_d1','y3_d1','p1_d1','p2_d1','p3_d1','prj_d1','ort_d1',
+     'y1_d2','y2_d2','y3_d2','p1_d2','p2_d2','p3_d2','prj_d2','ort_d2','genelOrt'].forEach(function(id){
+      document.getElementById(id).value = '';
+    });
     document.getElementById('notGirisiDurum').textContent = '';
   }
 
@@ -1481,30 +1537,23 @@
     var html = '<table class="not-table"><thead><tr>' +
                '<th>No</th>' +
                '<th>Ad Soyad</th>' +
-               '<th>1.Y</th>' +
-               '<th>2.Y</th>' +
-               '<th>3.Y</th>' +
-               '<th>1.P</th>' +
-               '<th>2.P</th>' +
-               '<th>3.P</th>' +
-               '<th>Proj.</th>' +
-               '<th>Ort.</th>' +
+               '<th>1.D Ort</th>' +
+               '<th>2.D Ort</th>' +
+               '<th>Genel Ort.</th>' +
                '</tr></thead><tbody>';
                
     ogrenciler.forEach(function(o){
       var key = seciliSinif + '_' + o.numara + ' - ' + o.ad + '_' + seciliDers;
       var n = NOT_KAYITLARI[key] || {};
+      var ort1 = n.ort_d1 || '-';
+      var ort2 = n.ort_d2 || '-';
+      var gOrt = n.genelOrt || n.ort || '-';
       html += '<tr>' +
               '<td>' + escapeHtml(o.numara) + '</td>' +
               '<td style="text-align:left;">' + escapeHtml(o.ad) + '</td>' +
-              '<td>' + (n.y1 || '-') + '</td>' +
-              '<td>' + (n.y2 || '-') + '</td>' +
-              '<td>' + (n.y3 || '-') + '</td>' +
-              '<td>' + (n.p1 || '-') + '</td>' +
-              '<td>' + (n.p2 || '-') + '</td>' +
-              '<td>' + (n.p3 || '-') + '</td>' +
-              '<td>' + (n.prj || '-') + '</td>' +
-              '<td><b>' + (n.ort || '-') + '</b></td>' +
+              '<td>' + ort1 + '</td>' +
+              '<td>' + ort2 + '</td>' +
+              '<td><b>' + gOrt + '</b></td>' +
               '</tr>';
     });
     html += '</tbody></table>';
@@ -1532,16 +1581,15 @@
           var ogr = ogrenciler.find(function(o){ return o.sinif === seciliSinif && o.numara === no; });
           if(ogr){
             var key = seciliSinif + '_' + ogr.numara + ' - ' + ogr.ad + '_' + seciliDers;
-            NOT_KAYITLARI[key] = {
-              y1: String(r['1.Yazılı'] || r['1.Y'] || r['Y1'] || ''),
-              y2: String(r['2.Yazılı'] || r['2.Y'] || r['Y2'] || ''),
-              y3: String(r['3.Yazılı'] || r['3.Y'] || r['Y3'] || ''),
-              p1: String(r['1.Performans'] || r['1.P'] || r['P1'] || ''),
-              p2: String(r['2.Performans'] || r['2.P'] || r['P2'] || ''),
-              p3: String(r['3.Performans'] || r['3.P'] || r['P3'] || ''),
-              prj: String(r['Proje'] || r['Proj.'] || r['PRJ'] || ''),
-              ort: String(r['Ortalama'] || r['Ort.'] || r['ORT'] || '')
-            };
+            NOT_KAYITLARI[key] = NOT_KAYITLARI[key] || {};
+            
+            NOT_KAYITLARI[key].y1_d1 = String(r['1.Yazılı'] || r['1.Y'] || r['Y1'] || NOT_KAYITLARI[key].y1_d1 || '');
+            NOT_KAYITLARI[key].y2_d1 = String(r['2.Yazılı'] || r['2.Y'] || r['Y2'] || NOT_KAYITLARI[key].y2_d1 || '');
+            NOT_KAYITLARI[key].p1_d1 = String(r['1.Performans'] || r['1.P'] || r['P1'] || NOT_KAYITLARI[key].p1_d1 || '');
+            NOT_KAYITLARI[key].p2_d1 = String(r['2.Performans'] || r['2.P'] || r['P2'] || NOT_KAYITLARI[key].p2_d1 || '');
+            NOT_KAYITLARI[key].ort_d1 = String(r['1.Dönem Ort.'] || r['1.D Ort'] || NOT_KAYITLARI[key].ort_d1 || '');
+            
+            NOT_KAYITLARI[key].genelOrt = String(r['Ortalama'] || r['Ort.'] || r['ORT'] || NOT_KAYITLARI[key].genelOrt || '');
             guncel++;
           }
         });
@@ -1847,6 +1895,7 @@
   function openRaporModal(){
     document.getElementById('raporDurum').textContent = '';
     raporSinifSelectYukle();
+    notRaporSinifSelectYukle();
     document.getElementById('raporOverlay').classList.add('active');
   }
   function closeRaporModal(){
@@ -1861,11 +1910,18 @@
     return (prefix || 'Rapor_') + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + '-' + p(d.getMinutes());
   }
 
-  /* Rapor Modalı Sınıf Seçim Dropdown Dolumu */
   function raporSinifSelectYukle(){
     var siniflar = rapLoad('sinifListesi', []);
     siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
     var sel = document.getElementById('raporSinifSelect');
+    sel.innerHTML = '<option value="TUMU">Tüm Sınıflar</option>' + siniflar.map(function(s){
+      return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>';
+    }).join('');
+  }
+  function notRaporSinifSelectYukle(){
+    var siniflar = rapLoad('sinifListesi', []);
+    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
+    var sel = document.getElementById('notRaporSinifSelect');
     sel.innerHTML = '<option value="TUMU">Tüm Sınıflar</option>' + siniflar.map(function(s){
       return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>';
     }).join('');
@@ -1982,7 +2038,6 @@
       boxes.push([r, 2, r, 2], [r, 3, r, 3], [r, 4, r, 4], [r, 5, r, 9], [r, 10, r, 10]);
     }
 
-    /* İmza Blokları */
     var sigRow1 = endListRow + 9;
     var sigRow2 = sigRow1 + 1;
     var sigRow3 = sigRow2 + 1;
@@ -2138,7 +2193,6 @@
     });
   }
 
-  /* ================= SINIF LİSTELERİ RAPORU OLUŞTURMA (Excel / PDF) ================= */
   function sinifListesiRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
     var seciliSinif = document.getElementById('raporSinifSelect').value;
@@ -2236,7 +2290,6 @@
       try{
         if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
 
-        /* Tek bir PDF dökümanında her sınıf ayrı bir sayfa olacak şekilde birleştirilir */
         var tumIcerik = [];
         modeller.forEach(function(m, idx){
           var X0 = 66, Y0 = 45.5, CW = 49.4, RH = 12;
@@ -2274,13 +2327,259 @@
     }
   }
 
+
+  /* ================= NOT RAPORU (NOT ÇİZELGESİ) MODELİ ================= */
+  /* Sütunlar: B=Sıra C=Sınıf D=No E=Adı Soyadı F..M=1.Dönem(1Y,2Y,3Y,1P,2P,3P,Prj,Ort) N..V=2.Dönem(aynı 8) + V=ORT değil, V son sütun genel ORT */
+  function notKolonGenislikleri(){
+    return {2:3.5, 3:5, 4:4.5, 5:19.89,
+            6:3.3, 7:3.3, 8:3.3, 9:3.3, 10:3.3, 11:3.3, 12:3.3, 13:4.3,
+            14:3.3, 15:3.3, 16:3.3, 17:3.3, 18:3.3, 19:3.3, 20:3.3, 21:4.3, 22:4.6};
+  }
+  function notSinifDersAnahtarBul(notKayitlari, sinifAdi, dersAdi){
+    var onEk = sinifAdi + '_', sonEk = '_' + dersAdi;
+    for(var k in notKayitlari){
+      if(k.indexOf(onEk) === 0 && k.slice(-sonEk.length) === sonEk) return true;
+    }
+    return false;
+  }
+  function notModeliHazirla(sinifAdiStr, dersAdiStr){
+    var okul = rapLoad('okulBilgiGirisi', {});
+    var siniflar = rapLoad('sinifListesi', []);
+    var ogrenciler = rapLoad('ogrenciListesi', []);
+    var NOT_KAYITLARI2 = rapLoad('notKayitlari', {});
+
+    var sOgrenciler = ogrenciler.filter(function(o){ return o.sinif === sinifAdiStr; });
+    sOgrenciler.sort(function(a,b){ return (parseInt(a.numara)||0) - (parseInt(b.numara)||0); });
+
+    var N = Math.max(45, sOgrenciler.length);
+    var headerRow = 8, dataStart = 9, dataEnd = 8 + N;
+
+    var ilce = (okul.okulIlce || '').trim().toLocaleUpperCase('tr');
+    var okulAdi = (okul.okulAdi || '').trim();
+
+    var cells = [], boxes = [], merges = [];
+    function T(r, c1, c2, text, bold, align, fs){
+      cells.push({r:r, c1:c1, c2:c2, text:text, bold:!!bold, align:align, fs:fs});
+      if(c2 > c1) merges.push([r, c1, r, c2]);
+    }
+
+    T(2, 2, 22, 'T.C.', true, 'center');
+    T(3, 2, 22, (ilce ? ilce + ' ' : '') + 'KAYMAKAMLIĞI', true, 'center');
+    T(4, 2, 22, (okulAdi ? okulAdi + ' ' : '') + 'Müdürlüğü', true, 'center');
+    T(5, 2, 22, 'NOT ÇİZELGESİ', true, 'center');
+
+    T(7, 2, 5, 'Dersin Adı', true, 'right');
+    T(7, 6, 22, dersAdiStr || '', false, 'left');
+    boxes.push([7, 2, 7, 5], [7, 6, 7, 22]);
+
+    T(headerRow, 2, 2, 'S.N.', true, 'center', 7);
+    T(headerRow, 3, 3, 'Snf', true, 'center', 7);
+    T(headerRow, 4, 4, 'No', true, 'center', 7);
+    T(headerRow, 5, 5, 'Adı Soyadı', true, 'center', 7);
+    ['1.Y','2.Y','3.Y','1.P','2.P','3.P','Prj','Ort.'].forEach(function(baslik, i){
+      T(headerRow, 6 + i, 6 + i, baslik, true, 'center', 7);
+    });
+    ['1.Y','2.Y','3.Y','1.P','2.P','3.P','Prj','Ort.'].forEach(function(baslik, i){
+      T(headerRow, 14 + i, 14 + i, baslik, true, 'center', 7);
+    });
+    T(headerRow, 22, 22, 'ORT', true, 'center', 7);
+    for(var c = 2; c <= 22; c++) boxes.push([headerRow, c, headerRow, c]);
+
+    var alanlarD1 = ['y1_d1','y2_d1','y3_d1','p1_d1','p2_d1','p3_d1','prj_d1','ort_d1'];
+    var alanlarD2 = ['y1_d2','y2_d2','y3_d2','p1_d2','p2_d2','p3_d2','prj_d2','ort_d2'];
+
+    for(var i = 0; i < N; i++){
+      var r = dataStart + i;
+      var o = sOgrenciler[i];
+      T(r, 2, 2, i + 1, false, 'center', 7);
+      if(o){
+        var key = sinifAdiStr + '_' + (o.numara + ' - ' + o.ad) + '_' + dersAdiStr;
+        var v = NOT_KAYITLARI2[key] || {};
+        T(r, 3, 3, o.sinif || sinifAdiStr, false, 'center', 7);
+        T(r, 4, 4, o.numara || '', false, 'center', 7);
+        T(r, 5, 5, o.ad || '', false, 'left', 7);
+        alanlarD1.forEach(function(f, idx){ T(r, 6 + idx, 6 + idx, v[f] || '', f === 'ort_d1', 'center', 7); });
+        alanlarD2.forEach(function(f, idx){ T(r, 14 + idx, 14 + idx, v[f] || '', f === 'ort_d2', 'center', 7); });
+        T(r, 22, 22, v.genelOrt || '', true, 'center', 7);
+      }
+      for(var c2 = 2; c2 <= 22; c2++) boxes.push([r, c2, r, c2]);
+    }
+
+    boxes.push([2, 2, dataEnd, 22]);
+
+    var sigRow1 = dataEnd + 5, sigRow2 = sigRow1 + 1, sigRow3 = sigRow1 + 3, sigRow4 = sigRow3 + 1;
+    T(sigRow1, 2, 5, okul.okulMudurYrd1 || '', true, 'center');
+    T(sigRow2, 2, 5, 'Müdür Yardımcısı', false, 'center');
+    T(sigRow1, 6, 13, okul.okulMudurYrd2 || '', true, 'center');
+    T(sigRow2, 6, 13, 'Müdür Yardımcısı', false, 'center');
+    T(sigRow3, 14, 22, okul.okulMudur || '', true, 'center');
+    T(sigRow4, 14, 22, 'Okul Müdürü', false, 'center');
+
+    var temizSinif = (sinifAdiStr || 'Sinif').replace(/[^a-zA-Z0-9ığüşöçİĞÜŞÖÇ]/g, '');
+    var temizDers = (dersAdiStr || 'Ders').replace(/[^a-zA-Z0-9ığüşöçİĞÜŞÖÇ]/g, '');
+
+    return {
+      sinifAdi: sinifAdiStr,
+      dersAdi: dersAdiStr,
+      cleanTabName: (temizSinif + '_' + temizDers).substring(0, 30) || 'Not',
+      son: sigRow4,
+      sonKolon: 22,
+      cells: cells,
+      boxes: boxes,
+      merges: merges
+    };
+  }
+
+  function notRaporuOlustur(tur){
+    var durum = document.getElementById('raporDurum');
+    var seciliSinif = document.getElementById('notRaporSinifSelect').value;
+    var siniflar = rapLoad('sinifListesi', []);
+    siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
+    var dersler = rapLoad('dersListesi', []);
+    var NOT_KAYITLARI2 = rapLoad('notKayitlari', {});
+
+    if(!siniflar.length){ durum.textContent = 'Sistemde kayıtlı sınıf bulunmamaktadır.'; return; }
+    if(!dersler.length){ durum.textContent = 'Sistemde kayıtlı ders bulunmamaktadır.'; return; }
+
+    var hedeflenenSiniflar = (seciliSinif === 'TUMU') ? siniflar.map(function(s){ return s.ad; }) : [seciliSinif];
+
+    var kombinasyonlar = [];
+    hedeflenenSiniflar.forEach(function(sAd){
+      dersler.forEach(function(d){
+        if(notSinifDersAnahtarBul(NOT_KAYITLARI2, sAd, d.dersAd)){
+          kombinasyonlar.push({sinif: sAd, ders: d.dersAd});
+        }
+      });
+    });
+
+    if(!kombinasyonlar.length){
+      durum.textContent = 'Seçilen sınıf(lar) için not girişi yapılmış ders bulunamadı.';
+      return;
+    }
+
+    var modeller = kombinasyonlar.map(function(k){ return notModeliHazirla(k.sinif, k.ders); });
+    var ad = rapDosyaAdi('Not_Raporu_');
+
+    if(tur === 'excel'){
+      try{
+        if(typeof ExcelJS === 'undefined') throw new Error('ExcelJS yok');
+        var wb = new ExcelJS.Workbook();
+        var kullanilan = {};
+
+        modeller.forEach(function(m){
+          var temel = m.cleanTabName, sheetName = temel, sayac = 1;
+          while(kullanilan[sheetName]){ sayac++; sheetName = temel.substring(0, 27) + '_' + sayac; }
+          kullanilan[sheetName] = true;
+
+          var ws = wb.addWorksheet(sheetName, {
+            pageSetup:{paperSize:9, orientation:'portrait', fitToPage:true, fitToWidth:1, fitToHeight:1,
+              margins:{left:0.4, right:0.4, top:0.590277777777778, bottom:0.590277777777778, header:0.511811023622047, footer:0.511811023622047}}
+          });
+          var gen = notKolonGenislikleri();
+          ws.getColumn(1).width = 1.78;
+          for(var c = 2; c <= m.sonKolon; c++) ws.getColumn(c).width = gen[c] || 4;
+          ws.getColumn(m.sonKolon + 1).width = 1.78;
+          ws.getRow(1).height = 3;
+          for(var r = 2; r <= m.son; r++) ws.getRow(r).height = 12;
+          ws.getRow(m.son + 1).height = 3;
+
+          var font = {name:'Times New Roman', size:8};
+          var kenar = {};
+          function key(r, c){ return r + ',' + c; }
+          m.boxes.forEach(function(b){
+            for(var rr = b[0]; rr <= b[2]; rr++){
+              for(var cc = b[1]; cc <= b[3]; cc++){
+                var e = kenar[key(rr,cc)] || (kenar[key(rr,cc)] = {});
+                if(cc === b[1]) e.left = {style:'thin'};
+                if(cc === b[3]) e.right = {style:'thin'};
+                if(rr === b[0]) e.top = {style:'thin'};
+                if(rr === b[2]) e.bottom = {style:'thin'};
+              }
+            }
+          });
+          var kole = {};
+          m.merges.forEach(function(g){
+            ws.mergeCells(g[0], g[1], g[2], g[3]);
+            var birlesik = {};
+            for(var rr = g[0]; rr <= g[2]; rr++){
+              for(var cc = g[1]; cc <= g[3]; cc++){
+                var e = kenar[key(rr,cc)] || {};
+                for(var yon in e) birlesik[yon] = e[yon];
+                if(rr !== g[0] || cc !== g[1]) kole[key(rr,cc)] = true;
+              }
+            }
+            kenar[key(g[0], g[1])] = birlesik;
+          });
+          for(var r2 = 2; r2 <= m.son; r2++){
+            for(var c2 = 2; c2 <= m.sonKolon; c2++){
+              if(kole[key(r2,c2)]) continue;
+              var cell = ws.getCell(r2, c2);
+              cell.font = font;
+              if(kenar[key(r2,c2)]) cell.border = kenar[key(r2,c2)];
+            }
+          }
+          m.cells.forEach(function(h){
+            var cell = ws.getCell(h.r, h.c1);
+            if(h.text !== '' && h.text != null) cell.value = h.text;
+            cell.font = {name:'Times New Roman', size:h.fs || 8, bold:h.bold};
+            cell.alignment = {horizontal:h.align, vertical:'bottom'};
+          });
+        });
+
+        wb.xlsx.writeBuffer().then(function(buf){
+          rapIndir(new Blob([buf], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}), ad + '.xlsx');
+          durum.textContent = 'Not raporu Excel olarak başarıyla indirildi (' + modeller.length + ' sekme).';
+        });
+      }catch(e){
+        durum.textContent = 'Excel oluşturulamadı.';
+      }
+    } else if(tur === 'pdf'){
+      try{
+        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+        var gen2 = notKolonGenislikleri();
+        var X0 = 32, Y0 = 40, RH = 12;
+        var toplamBirim = 0;
+        for(var cc2 = 2; cc2 <= 22; cc2++) toplamBirim += (gen2[cc2] || 4);
+        var PT = (595.28 - 2 * X0) / toplamBirim;
+        var kolonX = {}; kolonX[2] = X0;
+        for(var cc3 = 2; cc3 <= 22; cc3++) kolonX[cc3 + 1] = kolonX[cc3] + (gen2[cc3] || 4) * PT;
+
+        var tumIcerik = [];
+        modeller.forEach(function(m, idx){
+          var cizim = m.boxes.map(function(b){
+            return {type:'rect', x:kolonX[b[1]], y:Y0 + (b[0]-2)*RH, w:(kolonX[b[3]+1]-kolonX[b[1]]), h:(b[2]-b[0]+1)*RH, lineWidth:0.5, lineColor:'#000000'};
+          });
+          if(idx > 0) tumIcerik.push({text:'', pageBreak:'before'});
+          tumIcerik.push({canvas:cizim, absolutePosition:{x:0, y:0}});
+          m.cells.forEach(function(h){
+            if(h.text === '' || h.text == null) return;
+            tumIcerik.push({
+              columns:[{width:(kolonX[h.c2+1]-kolonX[h.c1])-2, text:String(h.text), bold:h.bold, alignment:h.align, fontSize:h.fs || 8}],
+              absolutePosition:{x:kolonX[h.c1] + 1, y:Y0 + (h.r-2)*RH + 1.2}
+            });
+          });
+        });
+
+        var pdfDok = {
+          pageSize:{width:595.28, height:841.89},
+          pageMargins:[0,0,0,0],
+          content:tumIcerik,
+          defaultStyle:{fontSize:8}
+        };
+        pdfMake.createPdf(pdfDok).download(ad + '.pdf');
+        durum.textContent = 'Not raporu PDF olarak başarıyla indirildi (' + modeller.length + ' sayfa).';
+      }catch(e){
+        durum.textContent = 'PDF oluşturulamadı.';
+      }
+    }
+  }
+
   function ogrenciCinsiyetAyarla(v){
     document.getElementById('ogrenciCinsiyet').value = v;
     document.getElementById('cinsiyetKiz').classList.toggle('active', v === 'K');
     document.getElementById('cinsiyetErkek').classList.toggle('active', v === 'E');
   }
 
-  /* Backup & Restore System */
   var YEDEK_KEYS = ['okulBilgiGirisi', 'ogretmenListesi', 'sinifListesi', 'ogrenciListesi', 'dersListesi', 'notKayitlari', 'sroListesi', 'skListesi', 'kulupOgrenciListesi'];
   function yedekAl(){
     var data = {};
