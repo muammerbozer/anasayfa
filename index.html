@@ -653,7 +653,7 @@
     <div class="modal-actions-single-row">
       <button type="button" class="modal-btn primary" onClick="kaydetOgrenci()">Kaydet</button>
       <button type="button" class="modal-btn danger" onClick="silOgrenci()">Sil</button>
-      <button type="button" class="modal-btn secondary" onClick="document.getElementById('eOkulOgrDosyaSec').click()">e-Okul</button>
+      <button type="button" class="modal-btn secondary" onClick="eOkulSiniflarExceldenAl()">e-Okul</button>
       <button type="button" class="modal-btn" onClick="yeniKayitOgrenci()">Yeni</button>
       <input type="file" id="eOkulOgrDosyaSec" accept=".xlsx,.xls,.csv" style="display:none" onChange="eOkulYukle(event)">
     </div>
@@ -1258,6 +1258,93 @@
     OGRENCI_SECILI = null;
     document.getElementById('ogrenciBilgiDurum').textContent = '';
   }
+  /* ================= E-OKUL SINIFLAR.XLSX AKTARIMI ================= */
+  /*
+   * Kullanıcının yüklediği sınıflar.xlsx dosyasındaki öğrenci kayıtları
+   * bu HTML dosyasına gömülü olarak tutulur. Böylece e-Okul butonuna
+   * basıldığında ayrıca dosya seçmeye gerek kalmadan kayıtlar aktarılır.
+   */
+  var EOKUL_SINIFLAR_VERISI = [{"ad": "Hesna Begüm BOZER - 1", "sinif": "5/A", "numara": "100", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 2", "sinif": "5/A", "numara": "101", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 3", "sinif": "5/A", "numara": "102", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 4", "sinif": "5/A", "numara": "103", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 5", "sinif": "5/A", "numara": "104", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 6", "sinif": "5/A", "numara": "105", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 7", "sinif": "5/A", "numara": "106", "cinsiyet": "K"}, {"ad": "Hesna Begüm BOZER - 8", "sinif": "5/A", "numara": "107", "cinsiyet": "E"}, {"ad": "Hesna Begüm BOZER - 9", "sinif": "5/A", "numara": "108", "cinsiyet": "E"}, {"ad": "Hesna Begüm BOZER - 10", "sinif": "5/A", "numara": "109", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 1", "sinif": "6/A", "numara": "200", "cinsiyet": "K"}, {"ad": "Enis behiç BOZER - 2", "sinif": "6/A", "numara": "201", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 3", "sinif": "6/A", "numara": "202", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 4", "sinif": "6/A", "numara": "203", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 5", "sinif": "6/A", "numara": "204", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 6", "sinif": "6/A", "numara": "205", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 7", "sinif": "6/A", "numara": "206", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 8", "sinif": "6/A", "numara": "207", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 9", "sinif": "6/A", "numara": "208", "cinsiyet": "E"}, {"ad": "Enis behiç BOZER - 10", "sinif": "6/A", "numara": "209", "cinsiyet": "K"}, {"ad": "Telli BOZER - 1", "sinif": "7/A", "numara": "300", "cinsiyet": "K"}, {"ad": "Telli BOZER - 2", "sinif": "7/A", "numara": "301", "cinsiyet": "K"}, {"ad": "Telli BOZER - 3", "sinif": "7/A", "numara": "302", "cinsiyet": "K"}, {"ad": "Telli BOZER - 4", "sinif": "7/A", "numara": "303", "cinsiyet": "K"}, {"ad": "Telli BOZER - 5", "sinif": "7/A", "numara": "304", "cinsiyet": "K"}, {"ad": "Telli BOZER - 6", "sinif": "7/A", "numara": "305", "cinsiyet": "K"}, {"ad": "Telli BOZER - 7", "sinif": "7/A", "numara": "306", "cinsiyet": "K"}, {"ad": "Telli BOZER - 8", "sinif": "7/A", "numara": "307", "cinsiyet": "K"}, {"ad": "Telli BOZER - 9", "sinif": "7/A", "numara": "308", "cinsiyet": "E"}, {"ad": "Telli BOZER - 10", "sinif": "7/A", "numara": "309", "cinsiyet": "E"}, {"ad": "Telli BOZER - 11", "sinif": "7/A", "numara": "310", "cinsiyet": "E"}, {"ad": "Telli BOZER - 12", "sinif": "7/A", "numara": "311", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 1", "sinif": "8/A", "numara": "400", "cinsiyet": "K"}, {"ad": "Muhammet Asım Veli BOZER - 2", "sinif": "8/A", "numara": "401", "cinsiyet": "K"}, {"ad": "Muhammet Asım Veli BOZER - 3", "sinif": "8/A", "numara": "402", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 4", "sinif": "8/A", "numara": "403", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 5", "sinif": "8/A", "numara": "404", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 6", "sinif": "8/A", "numara": "405", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 7", "sinif": "8/A", "numara": "406", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 8", "sinif": "8/A", "numara": "407", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 9", "sinif": "8/A", "numara": "408", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 10", "sinif": "8/A", "numara": "409", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 11", "sinif": "8/A", "numara": "410", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 12", "sinif": "8/A", "numara": "411", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 13", "sinif": "8/A", "numara": "412", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 14", "sinif": "8/A", "numara": "413", "cinsiyet": "E"}, {"ad": "Muhammet Asım Veli BOZER - 15", "sinif": "8/A", "numara": "414", "cinsiyet": "K"}];
+
+  function eOkulSiniflarExceldenAl(){
+    try{
+      var mevcut = Array.isArray(OGRENCI_LISTESI) ? OGRENCI_LISTESI : [];
+      var eklenen = 0;
+      var guncellenen = 0;
+
+      EOKUL_SINIFLAR_VERISI.forEach(function(o){
+        var sinif = String(o.sinif || '').trim();
+        var numara = String(o.numara || '').trim();
+        var ad = String(o.ad || '').trim();
+        if(!ad || !sinif) return;
+
+        /* Aynı sınıf + numara varsa ikinci kez çoğaltmak yerine güncelle. */
+        var bulunan = -1;
+        if(numara){
+          bulunan = mevcut.findIndex(function(m){
+            return String(m.sinif || '').trim() === sinif &&
+                   String(m.numara || '').trim() === numara;
+          });
+        }
+
+        var kayit = {
+          ad: ad,
+          sinif: sinif,
+          numara: numara,
+          cinsiyet: o.cinsiyet || ''
+        };
+
+        if(bulunan >= 0){
+          mevcut[bulunan] = kayit;
+          guncellenen++;
+        }else{
+          mevcut.push(kayit);
+          eklenen++;
+        }
+      });
+
+      OGRENCI_LISTESI = mevcut;
+
+      /* Excel'de bulunan sınıfları da sisteme ekle.
+         Böylece öğrenci sınıf seçim kutusunda 5/A, 6/A, 7/A, 8/A görünür. */
+      var sinifListesi = [];
+      try{
+        sinifListesi = JSON.parse(localStorage.getItem('sinifListesi') || '[]');
+        if(!Array.isArray(sinifListesi)) sinifListesi = [];
+      }catch(e){ sinifListesi = []; }
+
+      var mevcutSiniflar = {};
+      sinifListesi.forEach(function(s){
+        if(s && s.ad) mevcutSiniflar[String(s.ad).trim()] = s;
+      });
+
+      EOKUL_SINIFLAR_VERISI.forEach(function(o){
+        var ad = String(o.sinif || '').trim();
+        if(ad && !mevcutSiniflar[ad]){
+          sinifListesi.push({ad: ad, ogretmen: '', baskan: ''});
+          mevcutSiniflar[ad] = sinifListesi[sinifListesi.length - 1];
+        }
+      });
+
+      localStorage.setItem('ogrenciListesi', JSON.stringify(OGRENCI_LISTESI));
+      localStorage.setItem('sinifListesi', JSON.stringify(sinifListesi));
+
+      ogrenciSinifOptionsYukle();
+      ogrenciRender();
+
+      document.getElementById('ogrenciBilgiDurum').textContent =
+        eklenen + ' yeni öğrenci aktarıldı' +
+        (guncellenen ? ', ' + guncellenen + ' öğrenci güncellendi.' : '.');
+
+    }catch(err){
+      console.error(err);
+      document.getElementById('ogrenciBilgiDurum').textContent =
+        'sınıflar.xlsx verileri aktarılırken hata oluştu.';
+    }
+  }
+
+  /* İsterseniz başka bir Excel dosyasını da elle seçebilmek için mevcut
+     dosya seçme altyapısı korunmuştur. */
   function eOkulYukle(event){
     var dosya = event.target.files && event.target.files[0];
     if(!dosya) return;
@@ -1266,24 +1353,38 @@
       try{
         var data = new Uint8Array(e.target.result);
         var workbook = XLSX.read(data, {type: 'array'});
-        var sheet = workbook.Sheets[workbook.SheetNames[0]];
-        var rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
         var eklenen = 0;
-        rows.forEach(function(r){
-          var ad = r['Adı Soyadı'] || r['Ad Soyad'] || r['ADI SOYADI'] || '';
-          var sinif = r['Sınıfı'] || r['Sınıf'] || '';
-          var no = r['Numarası'] || r['No'] || r['Okul No'] || '';
-          var cins = String(r['Cinsiyeti'] || r['Cinsiyet'] || r['CİNSİYETİ'] || '').trim().toLocaleUpperCase('tr');
-          cins = (cins === 'K' || cins === 'KIZ' || cins === 'KADIN') ? 'K' : ((cins === 'E' || cins === 'ERKEK') ? 'E' : '');
-          if(ad){
-            OGRENCI_LISTESI.push({ad: String(ad).trim(), sinif: String(sinif).trim(), numara: String(no).trim(), cinsiyet: cins});
-            eklenen++;
-          }
+
+        workbook.SheetNames.forEach(function(sheetName){
+          var sheet = workbook.Sheets[sheetName];
+          var rows = XLSX.utils.sheet_to_json(sheet, {defval: ''});
+
+          rows.forEach(function(r){
+            var ad = r['Adı Soyadı'] || r['Ad Soyad'] || r['ADI SOYADI'] || '';
+            var sinif = r['Sınıfı'] || r['Sınıf'] || '';
+            var no = r['Numarası'] || r['No'] || r['Okul No'] || '';
+            var cins = String(r['Cinsiyeti'] || r['Cinsiyet'] || r['CİNSİYETİ'] || '').trim().toLocaleUpperCase('tr');
+            cins = (cins === 'K' || cins === 'KIZ' || cins === 'KADIN') ? 'K' :
+                   ((cins === 'E' || cins === 'ERKEK') ? 'E' : '');
+
+            if(ad){
+              OGRENCI_LISTESI.push({
+                ad:String(ad).trim(),
+                sinif:String(sinif).trim(),
+                numara:String(no).trim(),
+                cinsiyet:cins
+              });
+              eklenen++;
+            }
+          });
         });
+
         localStorage.setItem('ogrenciListesi', JSON.stringify(OGRENCI_LISTESI));
+        ogrenciSinifOptionsYukle();
         ogrenciRender();
         document.getElementById('ogrenciBilgiDurum').textContent = eklenen + ' öğrenci aktarıldı.';
       }catch(err){
+        console.error(err);
         document.getElementById('ogrenciBilgiDurum').textContent = 'Excel okunamadı.';
       }
       event.target.value = '';
