@@ -360,6 +360,44 @@
   select.rapor-ilk-btn{
     padding-left:12px;
   }
+  .rapor-dropdown-wrap{
+    position:relative;
+  }
+  .rapor-dropdown-list{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    margin-top:4px;
+    background:#fff;
+    border:1px solid #9bd9ae;
+    border-radius:8px;
+    max-height:220px;
+    overflow-y:auto;
+    z-index:60;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+  }
+  .rapor-dropdown-list button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:8px 12px;
+    border:none;
+    border-top:1px solid #eef3ee;
+    background:#fff;
+    font-size:.8rem;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .rapor-dropdown-list button:first-child{
+    border-top:none;
+  }
+  .rapor-dropdown-list button:hover, .rapor-dropdown-list button.active{
+    background:#e5f6ea;
+    color:#1c6b3f;
+  }
   .cinsiyet-btns{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -854,18 +892,20 @@
 
     <!-- 2. Satır: Sınıf Listeleri Raporu (%50 Dropdown), PDF (%25), Excel (%25) -->
     <div class="modal-actions-rapor-row">
-      <select id="raporSinifSelect" class="select-50 rapor-ilk-btn">
-        <option value="TUMU">Tüm Sınıflar</option>
-      </select>
+      <div class="rapor-dropdown-wrap btn-50">
+        <button type="button" class="modal-btn rapor-ilk-btn" style="width:100%;" onClick="toggleRaporDropdown('raporSinifDropdown')">Sınıf Listeleri</button>
+        <div id="raporSinifDropdown" class="rapor-dropdown-list" style="display:none;"></div>
+      </div>
       <button type="button" class="modal-btn danger btn-25" onClick="sinifListesiRaporuOlustur('pdf')">PDF Kaydet</button>
       <button type="button" class="modal-btn secondary btn-25" onClick="sinifListesiRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
 
     <!-- 3. Satır: Not Raporları (%50 Dropdown), PDF (%25), Excel (%25) -->
     <div class="modal-actions-rapor-row">
-      <select id="notRaporSinifSelect" class="select-50 rapor-ilk-btn">
-        <option value="TUMU">Tüm Sınıflar</option>
-      </select>
+      <div class="rapor-dropdown-wrap btn-50">
+        <button type="button" class="modal-btn rapor-ilk-btn" style="width:100%;" onClick="toggleRaporDropdown('notRaporSinifDropdown')">Not Raporları</button>
+        <div id="notRaporSinifDropdown" class="rapor-dropdown-list" style="display:none;"></div>
+      </div>
       <button type="button" class="modal-btn danger btn-25" onClick="notRaporuOlustur('pdf')">PDF Kaydet</button>
       <button type="button" class="modal-btn secondary btn-25" onClick="notRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
@@ -2103,21 +2143,42 @@
     return (prefix || 'Rapor_') + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()) + '_' + p(d.getHours()) + '-' + p(d.getMinutes());
   }
 
+  var RAPOR_SINIF_SECIM = 'TUMU';
+  var NOT_RAPOR_SINIF_SECIM = 'TUMU';
+  function toggleRaporDropdown(id){
+    var hedef = document.getElementById(id);
+    var acikMi = hedef.style.display !== 'none';
+    document.querySelectorAll('.rapor-dropdown-list').forEach(function(d){ d.style.display = 'none'; });
+    hedef.style.display = acikMi ? 'none' : 'block';
+  }
+  function raporDropdownSatirlariUret(siniflar, secili, tikFonksiyonu){
+    var html = '<button type="button" class="' + (secili === 'TUMU' ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'TUMU\')">Tüm Sınıflar</button>';
+    html += siniflar.map(function(s){
+      var ad = s.ad || '';
+      var guvenliAd = ad.replace(/'/g, "\\'");
+      return '<button type="button" class="' + (secili === ad ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'' + guvenliAd + '\')">' + escapeHtml(ad) + '</button>';
+    }).join('');
+    return html;
+  }
   function raporSinifSelectYukle(){
     var siniflar = rapLoad('sinifListesi', []);
     siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
-    var sel = document.getElementById('raporSinifSelect');
-    sel.innerHTML = '<option value="TUMU">Tüm Sınıflar</option>' + siniflar.map(function(s){
-      return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>';
-    }).join('');
+    document.getElementById('raporSinifDropdown').innerHTML = raporDropdownSatirlariUret(siniflar, RAPOR_SINIF_SECIM, 'raporSinifSec');
+  }
+  function raporSinifSec(v){
+    RAPOR_SINIF_SECIM = v;
+    raporSinifSelectYukle();
+    document.getElementById('raporSinifDropdown').style.display = 'none';
   }
   function notRaporSinifSelectYukle(){
     var siniflar = rapLoad('sinifListesi', []);
     siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
-    var sel = document.getElementById('notRaporSinifSelect');
-    sel.innerHTML = '<option value="TUMU">Tüm Sınıflar</option>' + siniflar.map(function(s){
-      return '<option value="' + escapeHtml(s.ad) + '">' + escapeHtml(s.ad) + '</option>';
-    }).join('');
+    document.getElementById('notRaporSinifDropdown').innerHTML = raporDropdownSatirlariUret(siniflar, NOT_RAPOR_SINIF_SECIM, 'notRaporSinifSec');
+  }
+  function notRaporSinifSec(v){
+    NOT_RAPOR_SINIF_SECIM = v;
+    notRaporSinifSelectYukle();
+    document.getElementById('notRaporSinifDropdown').style.display = 'none';
   }
 
   /* --- OKUL RAPORU MODELİ --- */
@@ -2388,7 +2449,7 @@
 
   function sinifListesiRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
-    var seciliSinif = document.getElementById('raporSinifSelect').value;
+    var seciliSinif = RAPOR_SINIF_SECIM;
     var siniflar = rapLoad('sinifListesi', []);
     siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
 
@@ -2625,7 +2686,7 @@
 
   function notRaporuOlustur(tur){
     var durum = document.getElementById('raporDurum');
-    var seciliSinif = document.getElementById('notRaporSinifSelect').value;
+    var seciliSinif = NOT_RAPOR_SINIF_SECIM;
     var siniflar = rapLoad('sinifListesi', []);
     siniflar.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr', {numeric:true}); });
     var dersler = rapLoad('dersListesi', []);
