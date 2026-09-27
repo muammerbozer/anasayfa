@@ -941,12 +941,10 @@
     <div class="modal-field"><label for="dkGorev">Görevi</label><input type="text" id="dkGorev" placeholder="Görevi"></div>
     <div class="modal-field"><label for="dkUnvan">Ünvanı</label><input type="text" id="dkUnvan" placeholder="Örn. Din Kültürü ve Ahlak Bilgisi Öğretmeni"></div>
     <div class="modal-field"><label for="dkBaba">Baba Adı</label><input type="text" id="dkBaba" placeholder="Baba Adı"></div>
-    <div class="modal-field"><label for="dkDogumYeri">Doğum Yeri</label><input type="text" id="dkDogumYeri" placeholder="Doğum Yeri"></div>
-    <div class="modal-field"><label for="dkDogumTarihi">Doğum Tarihi</label><input type="text" id="dkDogumTarihi" placeholder="gg/aa/yyyy"></div>
-    <div class="modal-field"><label for="dkGoreveBaslama">Göreve Başlama Tarihi</label><input type="text" id="dkGoreveBaslama" placeholder="gg/aa/yyyy"></div>
-    <div class="modal-field"><label for="dkOzet">Dilekçenin Özü (Metni)</label><textarea id="dkOzet" rows="4" placeholder="Dilekçe metnini buraya yazınız"></textarea></div>
+    <div class="modal-field"><label for="dkOzu">Dilekçenin Özü</label><input type="text" id="dkOzu" placeholder="Örn. Ders Çizelgesi Hakkında"></div>
+    <div class="modal-field"><label for="dkMetin">Dilekçe Metni</label><textarea id="dkMetin" rows="4" placeholder="Dilekçe metnini buraya yazınız"></textarea></div>
     <div class="modal-field"><label for="dkTarih">Tarih</label><input type="text" id="dkTarih" placeholder="gg/aa/yyyy"></div>
-    <div class="modal-field"><label for="dkAdres">Adres</label><textarea id="dkAdres" rows="3" placeholder="Adres"></textarea></div>
+    <div class="modal-field"><label for="dkAdres">Adres</label><textarea id="dkAdres" rows="2" placeholder="Adres"></textarea></div>
     <div class="modal-field"><label for="dkEkler">Ekler</label><textarea id="dkEkler" rows="2" placeholder="Her satıra bir ek yazınız"></textarea></div>
 
     <div class="modal-actions-single-row" style="grid-template-columns:repeat(3, 1fr);">
@@ -2205,7 +2203,7 @@
     var html = '<button type="button" class="' + (secili === 'TUMU' ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'TUMU\')">Tüm Sınıflar</button>';
     html += siniflar.map(function(s){
       var ad = s.ad || '';
-      var guvenliAd = ad.replace(/'/g, "\'");
+      var guvenliAd = ad.replace(/'/g, "\\'");
       return '<button type="button" class="' + (secili === ad ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'' + guvenliAd + '\')">' + escapeHtml(ad) + '</button>';
     }).join('');
     return html;
@@ -2908,7 +2906,7 @@
     var html = '';
     DK_LISTESI.forEach(function(item, i){
       html += '<div class="list-item" onclick="dkSec(' + i + ')"><div><div class="main-text">' + escapeHtml(item.ad) + '</div>' +
-              '<div class="sub-text">' + escapeHtml(item.unvan || item.gorev || '') + (item.tarih ? ' · ' + escapeHtml(item.tarih) : '') + '</div></div></div>';
+              '<div class="sub-text">' + escapeHtml(item.ozu || item.unvan || '') + (item.tarih ? ' · ' + escapeHtml(item.tarih) : '') + '</div></div></div>';
     });
     kutu.innerHTML = html;
   }
@@ -2920,10 +2918,8 @@
     document.getElementById('dkGorev').value = it.gorev || '';
     document.getElementById('dkUnvan').value = it.unvan || '';
     document.getElementById('dkBaba').value = it.baba || '';
-    document.getElementById('dkDogumYeri').value = it.dogumYeri || '';
-    document.getElementById('dkDogumTarihi').value = it.dogumTarihi || '';
-    document.getElementById('dkGoreveBaslama').value = it.goreveBaslama || '';
-    document.getElementById('dkOzet').value = it.ozet || '';
+    document.getElementById('dkOzu').value = it.ozu || '';
+    document.getElementById('dkMetin').value = it.metin || '';
     document.getElementById('dkTarih').value = it.tarih || '';
     document.getElementById('dkAdres').value = it.adres || '';
     document.getElementById('dkEkler').value = it.ekler || '';
@@ -2937,10 +2933,8 @@
       gorev: document.getElementById('dkGorev').value.trim(),
       unvan: document.getElementById('dkUnvan').value.trim(),
       baba: document.getElementById('dkBaba').value.trim(),
-      dogumYeri: document.getElementById('dkDogumYeri').value.trim(),
-      dogumTarihi: document.getElementById('dkDogumTarihi').value.trim(),
-      goreveBaslama: document.getElementById('dkGoreveBaslama').value.trim(),
-      ozet: document.getElementById('dkOzet').value.trim(),
+      ozu: document.getElementById('dkOzu').value.trim(),
+      metin: document.getElementById('dkMetin').value.trim(),
       tarih: document.getElementById('dkTarih').value.trim(),
       adres: document.getElementById('dkAdres').value.trim(),
       ekler: document.getElementById('dkEkler').value.trim()
@@ -2971,7 +2965,7 @@
     dkRaporDropdownYukle();
   }
   function yeniKayitDilekce(){
-    ['dkAd','dkTc','dkGorev','dkUnvan','dkBaba','dkDogumYeri','dkDogumTarihi','dkGoreveBaslama','dkOzet','dkTarih','dkAdres','dkEkler'].forEach(function(id){
+    ['dkAd','dkTc','dkGorev','dkUnvan','dkBaba','dkOzu','dkMetin','dkTarih','dkAdres','dkEkler'].forEach(function(id){
       document.getElementById(id).value = '';
     });
     DK_SECILI = null;
@@ -3014,6 +3008,14 @@
   function dkOkulBilgisiAl(){
     return rapLoad('okulBilgiGirisi', {});
   }
+  /* Dilekçe metnini satır satır paragraflara böler; her paragrafın ilk satırı
+     "paragraf başı" girintisiyle (yaklaşık 1,25 cm / 709 twip) hizalanır. */
+  function dkOzetParagraflariAyir(metin){
+    return String(metin || '')
+      .split('\n')
+      .map(function(s){ return s.trim(); })
+      .filter(function(s){ return s.length > 0; });
+  }
   function dkSatirlariUret(kayit){
     var okul = dkOkulBilgisiAl();
     var okulAdi = (okul.okulAdi || 'Okulun Müdürlüğüne').trim();
@@ -3027,12 +3029,9 @@
         ['GÖREVİ', kayit.gorev],
         ['ÜNVANI', kayit.unvan],
         ['BABA ADI', kayit.baba],
-        ['DOĞUM YERİ', kayit.dogumYeri],
-        ['DOĞUM TARİHİ', kayit.dogumTarihi],
-        ['GÖREVE BAŞLAMA TARİHİ', kayit.goreveBaslama],
-        ['DİLEKÇENİN ÖZÜ', '']
+        ['DİLEKÇENİN ÖZÜ', kayit.ozu]
       ],
-      ozet: kayit.ozet || '',
+      metin: kayit.metin || '',
       tarih: kayit.tarih || '',
       ad: kayit.ad || '',
       unvan: kayit.unvan || kayit.gorev || '',
@@ -3055,7 +3054,7 @@
           if(i > 0) icerik.push({text:'', pageBreak:'before'});
           var ustSatirlar = v.ustBilgi.map(function(r){
             return {columns:[
-              {width:160, text:r[0], bold:true},
+              {width:130, text:r[0], bold:true},
               {width:14, text:':'},
               {width:'*', text:r[1] || ''}
             ], margin:[0,0,0,4]};
@@ -3063,11 +3062,16 @@
           icerik.push.apply(icerik, ustSatirlar);
           icerik.push({text:'', margin:[0,10,0,0]});
           icerik.push({text:v.okulBaslik, bold:true, alignment:'center', margin:[0,0,0,14]});
-          icerik.push({text:v.ozet || '…………………………………………………………………………', alignment:'justify', margin:[30,0,30,10]});
+          var metinParagraflari = dkOzetParagraflariAyir(v.metin);
+          if(!metinParagraflari.length) metinParagraflari = ['…………………………………………………………………………'];
+          metinParagraflari.forEach(function(paragraf, pIdx){
+            icerik.push({text:'      ' + paragraf, alignment:'justify', margin:[30, pIdx === 0 ? 0 : 4, 30, 4]});
+          });
+          icerik.push({text:'', margin:[0,0,0,6]});
           icerik.push({text:'Gereğini arz ederim.', margin:[30,0,0,18]});
-          icerik.push({text:v.tarih || '…./…./……', alignment:'right', margin:[0,0,10,4]});
-          icerik.push({text:v.ad, bold:true, alignment:'right', margin:[0,0,10,2]});
-          icerik.push({text:v.unvan, alignment:'right', margin:[0,0,10,20]});
+          icerik.push({text:v.tarih || '…./…./……', alignment:'right', margin:[0,0,40,4]});
+          icerik.push({text:v.ad, bold:true, alignment:'right', margin:[0,0,40,2]});
+          icerik.push({text:v.unvan, alignment:'right', margin:[0,0,40,20]});
           icerik.push({text:'ADRES:', bold:true, margin:[0,10,0,4]});
           if(v.adresSatirlari.length){
             v.adresSatirlari.forEach(function(satir){ icerik.push({text:satir, margin:[0,0,0,2]}); });
@@ -3104,7 +3108,7 @@
 
           v.ustBilgi.forEach(function(r){
             cocuklar.push(new D.Paragraph({
-              tabStops:[{type:D.TabStopType.LEFT, position:3300}],
+              tabStops:[{type:D.TabStopType.LEFT, position:2500}],
               children:[
                 new D.TextRun({text:r[0], bold:true}),
                 new D.TextRun({text:'\t: ' + (r[1] || '')})
@@ -3119,19 +3123,24 @@
             children:[new D.TextRun({text:v.okulBaslik, bold:true})],
             spacing:{after:260}
           }));
-          cocuklar.push(new D.Paragraph({
-            alignment:D.AlignmentType.JUSTIFIED,
-            children:[new D.TextRun({text:v.ozet || '…………………………………………………………………………'})],
-            spacing:{after:200}
-          }));
+          var metinParagraflariWord = dkOzetParagraflariAyir(v.metin);
+          if(!metinParagraflariWord.length) metinParagraflariWord = ['…………………………………………………………………………'];
+          metinParagraflariWord.forEach(function(paragraf, pIdx){
+            cocuklar.push(new D.Paragraph({
+              alignment:D.AlignmentType.JUSTIFIED,
+              indent:{firstLine:709},
+              children:[new D.TextRun({text:paragraf})],
+              spacing:{after: pIdx === metinParagraflariWord.length - 1 ? 200 : 80}
+            }));
+          });
           cocuklar.push(new D.Paragraph({
             children:[new D.TextRun({text:'Gereğini arz ederim.'})],
             indent:{left:600},
             spacing:{after:340}
           }));
-          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.tarih || '…./…./……'})], spacing:{after:60}}));
-          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.ad, bold:true})], spacing:{after:20}}));
-          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.unvan})], spacing:{after:360}}));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.tarih || '…./…./……'})], indent:{right:1600}, spacing:{after:60}}));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.ad, bold:true})], indent:{right:1600}, spacing:{after:20}}));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.unvan})], indent:{right:1600}, spacing:{after:360}}));
 
           cocuklar.push(new D.Paragraph({children:[new D.TextRun({text:'ADRES:', bold:true})], spacing:{after:60}}));
           if(v.adresSatirlari.length){
