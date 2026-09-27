@@ -596,8 +596,9 @@
     <div class="modal-actions-single-row">
       <button type="button" class="modal-btn primary" onClick="kaydetOgretmen()">Kaydet</button>
       <button type="button" class="modal-btn danger" onClick="silOgretmen()">Sil</button>
-      <button type="button" class="modal-btn secondary" onClick="alert('e-Okul öğretmen aktarımı.')">e-Okul</button>
+      <button type="button" class="modal-btn secondary" onClick="document.getElementById('eOkulOgretmenDosyaSec').click()">e-Okul</button>
       <button type="button" class="modal-btn" onClick="yeniKayitOgretmen()">Yeni</button>
+      <input type="file" id="eOkulOgretmenDosyaSec" accept=".xlsx,.xls,.csv" style="display:none" onChange="eOkulOgretmenYukle(event)">
     </div>
     <div id="ogretmenBilgiDurum" class="modal-status"></div>
 
@@ -1064,6 +1065,97 @@
     document.getElementById('ogretmenBilgiDurum').textContent = 'Kaydedildi.';
     ogretmenRender();
     yeniKayitOgretmen();
+  }
+
+  /* "Okul Raporu" biçimindeki dosyaları okur: "Öğretmenler ve Branşları" başlığından
+     sonra gelen (Sıra, Adı Soyadı, Branşı) satırlarını bulur. */
+  function eOkulOgretmenSayfasiniOku(sheet){
+    var satirlar = XLSX.utils.sheet_to_json(sheet, {header:1, defval:'', blankrows:false});
+    if(!satirlar.length) return [];
+
+    /* "Öğretmenler ve Branşları" ve altındaki "Adı Soyadı" / "Branşı" başlıkları aynı satırda */
+    var baslikIdx = -1, adIdx = -1, bransIdx = -1;
+    for(var i = 0; i < satirlar.length; i++){
+      var r = satirlar[i];
+      var oIdx = r.findIndex(function(v){ return String(v).trim() === 'Öğretmenler ve Branşları'; });
+      if(oIdx === -1) continue;
+      var aIdx = r.findIndex(function(v){ return String(v).trim() === 'Adı Soyadı'; });
+      var bIdx = r.findIndex(function(v){ return String(v).trim() === 'Branşı'; });
+      if(aIdx !== -1 && bIdx !== -1){
+        baslikIdx = i; adIdx = aIdx; bransIdx = bIdx;
+        break;
+      }
+    }
+    if(baslikIdx === -1) return [];
+
+    var sonuc = [];
+    for(var j = baslikIdx + 1; j < satirlar.length; j++){
+      var row = satirlar[j];
+      var ad = String(row[adIdx] || '').trim();
+      var brans = String(row[bransIdx] || '').trim();
+      /* Ad ve branş ikisi de boşsa tablo bitmiştir */
+      if(!ad && !brans) break;
+      if(!ad) continue;
+      sonuc.push({ad: ad, brans: brans});
+    }
+    return sonuc;
+  }
+  function eOkulOgretmenYukle(event){
+    var dosya = event.target.files && event.target.files[0];
+    if(!dosya) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        var data = new Uint8Array(e.target.result);
+        var workbook = XLSX.read(data, {type: 'array'});
+        var kayitlar = [];
+        workbook.SheetNames.forEach(function(sheetAdi){
+          kayitlar = kayitlar.concat(eOkulOgretmenSayfasiniOku(workbook.Sheets[sheetAdi]));
+        });
+
+        /* Tanınan biçimde bulunamadıysa, düz başlıklı bir liste (ilk sayfa) olarak dene */
+        if(!kayitlar.length){
+          var sheet0 = workbook.Sheets[workbook.SheetNames[0]];
+          var rows = XLSX.utils.sheet_to_json(sheet0, {defval: ''});
+          rows.forEach(function(r){
+            var ad = r['Adı Soyadı'] || r['Ad Soyad'] || r['ADI SOYADI'] || '';
+            var brans = r['Branşı'] || r['Branş'] || r['BRANŞI'] || '';
+            if(ad) kayitlar.push({ad: String(ad).trim(), brans: String(brans).trim()});
+          });
+        }
+
+        if(!kayitlar.length){
+          document.getElementById('ogretmenBilgiDurum').textContent = 'Dosyada öğretmen bilgisi bulunamadı.';
+          event.target.value = '';
+          return;
+        }
+
+        var mevcut = Array.isArray(OGRETMEN_LISTESI) ? OGRETMEN_LISTESI : [];
+        var eklenen = 0, guncellenen = 0;
+        kayitlar.forEach(function(k){
+          var bulunan = mevcut.findIndex(function(m){ return (m.ad || '').trim() === k.ad; });
+          if(bulunan >= 0){
+            mevcut[bulunan] = {ad: k.ad, brans: k.brans};
+            guncellenen++;
+          } else {
+            mevcut.push({ad: k.ad, brans: k.brans});
+            eklenen++;
+          }
+        });
+        OGRETMEN_LISTESI = mevcut;
+        localStorage.setItem('ogretmenListesi', JSON.stringify(OGRETMEN_LISTESI));
+
+        ogretmenBransOptionsYukle();
+        ogretmenRender();
+        document.getElementById('ogretmenBilgiDurum').textContent =
+          eklenen + ' yeni öğretmen aktarıldı' + (guncellenen ? ', ' + guncellenen + ' öğretmen güncellendi.' : '.');
+      }catch(err){
+        console.error(err);
+        document.getElementById('ogretmenBilgiDurum').textContent = 'Excel okunamadı.';
+      }
+      event.target.value = '';
+    };
+    reader.readAsArrayBuffer(dosya);
   }
   function silOgretmen(){
     if(OGRETMEN_SECILI === null){ document.getElementById('ogretmenBilgiDurum').textContent = 'Silmek için listeden seçin.'; return; }
