@@ -264,7 +264,7 @@
     color:var(--ink-soft);
     font-weight:600;
   }
-  .modal-field input, .modal-field select{
+  .modal-field input, .modal-field select, .modal-field textarea{
     border:1px solid var(--card);
     background:var(--card);
     border-radius:10px;
@@ -277,6 +277,11 @@
   .modal-field input[readonly]{
     background:#d8ecee;
     font-weight:700;
+  }
+  .modal-field textarea{
+    resize:vertical;
+    min-height:54px;
+    line-height:1.4;
   }
   
   .donem-section{
@@ -498,6 +503,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 </head>
 <body>
@@ -572,7 +578,7 @@
       <a class="menu-box" href="https://www.turkiye.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>e-Devlet</span></a>
       <a class="menu-box" href="https://www.diyanet.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3c-3 2-3 5 0 7 3-2 3-5 0-7Z"/><path d="M6 21v-7a6 6 0 0 1 12 0v7"/><path d="M3 21h18"/></svg><span>Diyanet İşleri</span></a>
       <a class="menu-box" href="https://www.yok.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 8 12 4l9 4-9 4-9-4Z"/><path d="M7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg><span>YÖK</span></a>
-      <a class="menu-box" href="https://www.tubitak.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 3h6l-1 7 3 3-5 8-5-8 3-3-1-7Z"/></svg><span>TÜBİTAK</span></a>
+      <button type="button" class="menu-box" onClick="openDilekceModal()"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 3h6l-1 7 3 3-5 8-5-8 3-3-1-7Z"/></svg><span>Öğretmen Dilekçe Girişi</span></button>
       <a class="menu-box" href="https://www.cimer.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1-4.5V6a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4z"/></svg><span>CİMER</span></a>
       <a class="menu-box" href="https://mebim.meb.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.8 2.1Z"/></svg><span>MEBİM 444</span></a>
       <a class="menu-box" href="https://isealimkariyerkapisi.cbiko.gov.tr" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Kariyer Kapısı</span></a>
@@ -910,7 +916,50 @@
       <button type="button" class="modal-btn secondary btn-25" onClick="notRaporuOlustur('excel')">Excel Kaydet</button>
     </div>
 
+    <!-- 4. Satır: Öğretmen Dilekçeleri (%50 Dropdown), PDF (%25), Word (%25) -->
+    <div class="modal-actions-rapor-row">
+      <div class="rapor-dropdown-wrap btn-50">
+        <button type="button" class="modal-btn rapor-ilk-btn" style="width:100%;" onClick="toggleRaporDropdown('dkRaporDropdown')">Öğretmen Dilekçeleri</button>
+        <div id="dkRaporDropdown" class="rapor-dropdown-list" style="display:none;"></div>
+      </div>
+      <button type="button" class="modal-btn danger btn-25" onClick="dilekceRaporuOlustur('pdf')">PDF Kaydet</button>
+      <button type="button" class="modal-btn secondary btn-25" onClick="dilekceRaporuOlustur('word')">Word Kaydet</button>
+    </div>
+
     <div id="raporDurum" class="modal-status"></div>
+  </div>
+</div>
+
+<!-- ================= ÖĞRETMEN DİLEKÇE GİRİŞİ MODAL ================= -->
+<div id="dilekceOverlay" class="modal-overlay" onClick="if(event.target===this) closeDilekceModal()">
+  <div class="modal-box">
+    <button type="button" class="modal-close" onClick="closeDilekceModal()">×</button>
+    <h2 class="modal-title">Öğretmen Dilekçe Girişi</h2>
+
+    <div class="modal-field"><label for="dkAd">Adı Soyadı</label><input type="text" id="dkAd" placeholder="Adı Soyadı"></div>
+    <div class="modal-field"><label for="dkTc">T.C. Kimlik No</label><input type="text" id="dkTc" placeholder="T.C. Kimlik No"></div>
+    <div class="modal-field"><label for="dkGorev">Görevi</label><input type="text" id="dkGorev" placeholder="Görevi"></div>
+    <div class="modal-field"><label for="dkUnvan">Ünvanı</label><input type="text" id="dkUnvan" placeholder="Örn. Din Kültürü ve Ahlak Bilgisi Öğretmeni"></div>
+    <div class="modal-field"><label for="dkBaba">Baba Adı</label><input type="text" id="dkBaba" placeholder="Baba Adı"></div>
+    <div class="modal-field"><label for="dkDogumYeri">Doğum Yeri</label><input type="text" id="dkDogumYeri" placeholder="Doğum Yeri"></div>
+    <div class="modal-field"><label for="dkDogumTarihi">Doğum Tarihi</label><input type="text" id="dkDogumTarihi" placeholder="gg/aa/yyyy"></div>
+    <div class="modal-field"><label for="dkGoreveBaslama">Göreve Başlama Tarihi</label><input type="text" id="dkGoreveBaslama" placeholder="gg/aa/yyyy"></div>
+    <div class="modal-field"><label for="dkOzet">Dilekçenin Özü (Metni)</label><textarea id="dkOzet" rows="4" placeholder="Dilekçe metnini buraya yazınız"></textarea></div>
+    <div class="modal-field"><label for="dkTarih">Tarih</label><input type="text" id="dkTarih" placeholder="gg/aa/yyyy"></div>
+    <div class="modal-field"><label for="dkAdres">Adres</label><textarea id="dkAdres" rows="3" placeholder="Adres"></textarea></div>
+    <div class="modal-field"><label for="dkEkler">Ekler</label><textarea id="dkEkler" rows="2" placeholder="Her satıra bir ek yazınız"></textarea></div>
+
+    <div class="modal-actions-single-row" style="grid-template-columns:repeat(3, 1fr);">
+      <button type="button" class="modal-btn primary" onClick="kaydetDilekce()">Kaydet</button>
+      <button type="button" class="modal-btn danger" onClick="silDilekce()">Sil</button>
+      <button type="button" class="modal-btn" onClick="yeniKayitDilekce()">Yeni</button>
+    </div>
+    <div id="dkDurum" class="modal-status"></div>
+
+    <div class="data-list-container">
+      <div class="data-list-title">Kayıtlı Dilekçeler</div>
+      <div id="dkListesiKutu"></div>
+    </div>
   </div>
 </div>
 
@@ -2129,6 +2178,7 @@
     document.getElementById('raporDurum').textContent = '';
     raporSinifSelectYukle();
     notRaporSinifSelectYukle();
+    dkRaporDropdownYukle();
     document.getElementById('raporOverlay').classList.add('active');
   }
   function closeRaporModal(){
@@ -2155,7 +2205,7 @@
     var html = '<button type="button" class="' + (secili === 'TUMU' ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'TUMU\')">Tüm Sınıflar</button>';
     html += siniflar.map(function(s){
       var ad = s.ad || '';
-      var guvenliAd = ad.replace(/'/g, "\\'");
+      var guvenliAd = ad.replace(/'/g, "\'");
       return '<button type="button" class="' + (secili === ad ? 'active' : '') + '" onClick="' + tikFonksiyonu + '(\'' + guvenliAd + '\')">' + escapeHtml(ad) + '</button>';
     }).join('');
     return html;
@@ -2824,6 +2874,291 @@
         durum.textContent = 'Not raporu PDF olarak başarıyla indirildi (' + modeller.length + ' sayfa).';
       }catch(e){
         durum.textContent = 'PDF oluşturulamadı.';
+      }
+    }
+  }
+
+
+  /* ================= ÖĞRETMEN DİLEKÇE GİRİŞİ ================= */
+  var DK_LISTESI = [];
+  var DK_SECILI = null;
+  function openDilekceModal(){
+    dkYukle();
+    yeniKayitDilekce();
+    document.getElementById('dilekceOverlay').classList.add('active');
+  }
+  function closeDilekceModal(){
+    document.getElementById('dilekceOverlay').classList.remove('active');
+  }
+  function dkYukle(){
+    try{ DK_LISTESI = JSON.parse(localStorage.getItem('dilekceListesi') || '[]'); }catch(e){ DK_LISTESI = []; }
+    dkRender();
+  }
+  function dkRender(){
+    DK_LISTESI.sort(function(a,b){
+      var c = (a.ad||'').localeCompare(b.ad||'', 'tr');
+      if(c !== 0) return c;
+      return (a.tarih||'').localeCompare(b.tarih||'', 'tr');
+    });
+    var kutu = document.getElementById('dkListesiKutu');
+    if(!DK_LISTESI.length){
+      kutu.innerHTML = '<div class="list-item"><span class="sub-text">Kayıtlı dilekçe yok.</span></div>';
+      return;
+    }
+    var html = '';
+    DK_LISTESI.forEach(function(item, i){
+      html += '<div class="list-item" onclick="dkSec(' + i + ')"><div><div class="main-text">' + escapeHtml(item.ad) + '</div>' +
+              '<div class="sub-text">' + escapeHtml(item.unvan || item.gorev || '') + (item.tarih ? ' · ' + escapeHtml(item.tarih) : '') + '</div></div></div>';
+    });
+    kutu.innerHTML = html;
+  }
+  function dkSec(i){
+    var it = DK_LISTESI[i];
+    if(!it) return;
+    document.getElementById('dkAd').value = it.ad || '';
+    document.getElementById('dkTc').value = it.tc || '';
+    document.getElementById('dkGorev').value = it.gorev || '';
+    document.getElementById('dkUnvan').value = it.unvan || '';
+    document.getElementById('dkBaba').value = it.baba || '';
+    document.getElementById('dkDogumYeri').value = it.dogumYeri || '';
+    document.getElementById('dkDogumTarihi').value = it.dogumTarihi || '';
+    document.getElementById('dkGoreveBaslama').value = it.goreveBaslama || '';
+    document.getElementById('dkOzet').value = it.ozet || '';
+    document.getElementById('dkTarih').value = it.tarih || '';
+    document.getElementById('dkAdres').value = it.adres || '';
+    document.getElementById('dkEkler').value = it.ekler || '';
+    DK_SECILI = i;
+    document.getElementById('dkDurum').textContent = '';
+  }
+  function dkFormdanOku(){
+    return {
+      ad: document.getElementById('dkAd').value.trim(),
+      tc: document.getElementById('dkTc').value.trim(),
+      gorev: document.getElementById('dkGorev').value.trim(),
+      unvan: document.getElementById('dkUnvan').value.trim(),
+      baba: document.getElementById('dkBaba').value.trim(),
+      dogumYeri: document.getElementById('dkDogumYeri').value.trim(),
+      dogumTarihi: document.getElementById('dkDogumTarihi').value.trim(),
+      goreveBaslama: document.getElementById('dkGoreveBaslama').value.trim(),
+      ozet: document.getElementById('dkOzet').value.trim(),
+      tarih: document.getElementById('dkTarih').value.trim(),
+      adres: document.getElementById('dkAdres').value.trim(),
+      ekler: document.getElementById('dkEkler').value.trim()
+    };
+  }
+  function kaydetDilekce(){
+    var durum = document.getElementById('dkDurum');
+    var kayit = dkFormdanOku();
+    if(!kayit.ad){ durum.textContent = 'Adı Soyadı zorunludur.'; return; }
+    if(DK_SECILI !== null){
+      DK_LISTESI[DK_SECILI] = kayit;
+    } else {
+      DK_LISTESI.push(kayit);
+    }
+    localStorage.setItem('dilekceListesi', JSON.stringify(DK_LISTESI));
+    durum.textContent = 'Kaydedildi.';
+    dkRender();
+    dkRaporDropdownYukle();
+  }
+  function silDilekce(){
+    var durum = document.getElementById('dkDurum');
+    if(DK_SECILI === null){ durum.textContent = 'Silmek için listeden seçin.'; return; }
+    DK_LISTESI.splice(DK_SECILI, 1);
+    localStorage.setItem('dilekceListesi', JSON.stringify(DK_LISTESI));
+    durum.textContent = 'Silindi.';
+    dkRender();
+    yeniKayitDilekce();
+    dkRaporDropdownYukle();
+  }
+  function yeniKayitDilekce(){
+    ['dkAd','dkTc','dkGorev','dkUnvan','dkBaba','dkDogumYeri','dkDogumTarihi','dkGoreveBaslama','dkOzet','dkTarih','dkAdres','dkEkler'].forEach(function(id){
+      document.getElementById(id).value = '';
+    });
+    DK_SECILI = null;
+    document.getElementById('dkDurum').textContent = '';
+  }
+
+  /* ================= ÖĞRETMEN DİLEKÇESİ RAPORU (PDF + WORD) ================= */
+  var DK_RAPOR_SECIM = 'TUMU';
+  function dkRaporDropdownYukle(){
+    var liste = [];
+    try{ liste = JSON.parse(localStorage.getItem('dilekceListesi') || '[]'); }catch(e){}
+    liste.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr'); });
+    var el = document.getElementById('dkRaporDropdown');
+    if(!el) return;
+    var html = '<button type="button" class="' + (DK_RAPOR_SECIM === 'TUMU' ? 'active' : '') + '" onClick="dkRaporSec(\'TUMU\')">Tümü</button>';
+    if(!liste.length){
+      html += '<button type="button" disabled style="opacity:.55;cursor:default;">(Kayıtlı dilekçe yok)</button>';
+    } else {
+      liste.forEach(function(it, idx){
+        var etiket = it.ad + (it.tarih ? ' (' + it.tarih + ')' : '');
+        var guvenli = String(idx);
+        html += '<button type="button" class="' + (DK_RAPOR_SECIM === guvenli ? 'active' : '') + '" onClick="dkRaporSec(\'' + guvenli + '\')">' + escapeHtml(etiket) + '</button>';
+      });
+    }
+    el.innerHTML = html;
+  }
+  function dkRaporSec(v){
+    DK_RAPOR_SECIM = v;
+    dkRaporDropdownYukle();
+    document.getElementById('dkRaporDropdown').style.display = 'none';
+  }
+  function dkRaporKayitlariGetir(){
+    var liste = [];
+    try{ liste = JSON.parse(localStorage.getItem('dilekceListesi') || '[]'); }catch(e){}
+    liste.sort(function(a,b){ return (a.ad||'').localeCompare(b.ad||'', 'tr'); });
+    if(DK_RAPOR_SECIM === 'TUMU') return liste;
+    var idx = parseInt(DK_RAPOR_SECIM, 10);
+    return (liste[idx]) ? [liste[idx]] : [];
+  }
+  function dkOkulBilgisiAl(){
+    return rapLoad('okulBilgiGirisi', {});
+  }
+  function dkSatirlariUret(kayit){
+    var okul = dkOkulBilgisiAl();
+    var okulAdi = (okul.okulAdi || 'Okulun Müdürlüğüne').trim();
+    var ekSatirlari = (kayit.ekler || '').split('\n').map(function(s){ return s.trim(); }).filter(function(s){ return s; });
+    var adresSatirlari = (kayit.adres || '').split('\n').map(function(s){ return s.trim(); }).filter(function(s){ return s; });
+    return {
+      okulBaslik: (okulAdi ? okulAdi.toLocaleUpperCase('tr') : 'OKUL') + ' MÜDÜRLÜĞÜNE',
+      ustBilgi: [
+        ['ADI SOYADI', kayit.ad],
+        ['T.C KİMLİK NO', kayit.tc],
+        ['GÖREVİ', kayit.gorev],
+        ['ÜNVANI', kayit.unvan],
+        ['BABA ADI', kayit.baba],
+        ['DOĞUM YERİ', kayit.dogumYeri],
+        ['DOĞUM TARİHİ', kayit.dogumTarihi],
+        ['GÖREVE BAŞLAMA TARİHİ', kayit.goreveBaslama],
+        ['DİLEKÇENİN ÖZÜ', '']
+      ],
+      ozet: kayit.ozet || '',
+      tarih: kayit.tarih || '',
+      ad: kayit.ad || '',
+      unvan: kayit.unvan || kayit.gorev || '',
+      adresSatirlari: adresSatirlari,
+      ekSatirlari: ekSatirlari
+    };
+  }
+  function dilekceRaporuOlustur(tur){
+    var durum = document.getElementById('raporDurum');
+    var kayitlar = dkRaporKayitlariGetir();
+    if(!kayitlar.length){ durum.textContent = 'Seçime uygun kayıtlı dilekçe bulunamadı.'; return; }
+    var ad = rapDosyaAdi('Dilekce_');
+
+    if(tur === 'pdf'){
+      try{
+        if(typeof pdfMake === 'undefined') throw new Error('pdfMake yok');
+        var icerik = [];
+        kayitlar.forEach(function(kayit, i){
+          var v = dkSatirlariUret(kayit);
+          if(i > 0) icerik.push({text:'', pageBreak:'before'});
+          var ustSatirlar = v.ustBilgi.map(function(r){
+            return {columns:[
+              {width:160, text:r[0], bold:true},
+              {width:14, text:':'},
+              {width:'*', text:r[1] || ''}
+            ], margin:[0,0,0,4]};
+          });
+          icerik.push.apply(icerik, ustSatirlar);
+          icerik.push({text:'', margin:[0,10,0,0]});
+          icerik.push({text:v.okulBaslik, bold:true, alignment:'center', margin:[0,0,0,14]});
+          icerik.push({text:v.ozet || '…………………………………………………………………………', alignment:'justify', margin:[30,0,30,10]});
+          icerik.push({text:'Gereğini arz ederim.', margin:[30,0,0,18]});
+          icerik.push({text:v.tarih || '…./…./……', alignment:'right', margin:[0,0,10,4]});
+          icerik.push({text:v.ad, bold:true, alignment:'right', margin:[0,0,10,2]});
+          icerik.push({text:v.unvan, alignment:'right', margin:[0,0,10,20]});
+          icerik.push({text:'ADRES:', bold:true, margin:[0,10,0,4]});
+          if(v.adresSatirlari.length){
+            v.adresSatirlari.forEach(function(satir){ icerik.push({text:satir, margin:[0,0,0,2]}); });
+          } else {
+            icerik.push({text:'……………………………………………', margin:[0,0,0,2]});
+          }
+          icerik.push({text:'EKLER:', bold:true, margin:[0,14,0,4]});
+          if(v.ekSatirlari.length){
+            v.ekSatirlari.forEach(function(satir, k){ icerik.push({text:(k+1) + '-' + satir, margin:[0,0,0,2]}); });
+          } else {
+            icerik.push({text:'1-…………………………………………', margin:[0,0,0,2]});
+            icerik.push({text:'2-…………………………………………', margin:[0,0,0,2]});
+          }
+        });
+        var dok = {
+          pageSize:'A4', pageMargins:[50,50,50,50],
+          content: icerik,
+          defaultStyle:{fontSize:10}
+        };
+        pdfMake.createPdf(dok).download(ad + '.pdf');
+        durum.textContent = 'Dilekçe raporu PDF olarak indirildi (' + kayitlar.length + ' dilekçe).';
+      }catch(e){
+        console.error(e);
+        durum.textContent = 'PDF oluşturulamadı.';
+      }
+    } else if(tur === 'word'){
+      try{
+        if(typeof docx === 'undefined') throw new Error('docx yok');
+        var D = docx;
+        var boluk = [];
+        kayitlar.forEach(function(kayit, i){
+          var v = dkSatirlariUret(kayit);
+          var cocuklar = [];
+
+          v.ustBilgi.forEach(function(r){
+            cocuklar.push(new D.Paragraph({
+              tabStops:[{type:D.TabStopType.LEFT, position:3300}],
+              children:[
+                new D.TextRun({text:r[0], bold:true}),
+                new D.TextRun({text:'\t: ' + (r[1] || '')})
+              ],
+              spacing:{after:60}
+            }));
+          });
+
+          cocuklar.push(new D.Paragraph({text:'', spacing:{after:200}}));
+          cocuklar.push(new D.Paragraph({
+            alignment:D.AlignmentType.CENTER,
+            children:[new D.TextRun({text:v.okulBaslik, bold:true})],
+            spacing:{after:260}
+          }));
+          cocuklar.push(new D.Paragraph({
+            alignment:D.AlignmentType.JUSTIFIED,
+            children:[new D.TextRun({text:v.ozet || '…………………………………………………………………………'})],
+            spacing:{after:200}
+          }));
+          cocuklar.push(new D.Paragraph({
+            children:[new D.TextRun({text:'Gereğini arz ederim.'})],
+            indent:{left:600},
+            spacing:{after:340}
+          }));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.tarih || '…./…./……'})], spacing:{after:60}}));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.ad, bold:true})], spacing:{after:20}}));
+          cocuklar.push(new D.Paragraph({alignment:D.AlignmentType.RIGHT, children:[new D.TextRun({text:v.unvan})], spacing:{after:360}}));
+
+          cocuklar.push(new D.Paragraph({children:[new D.TextRun({text:'ADRES:', bold:true})], spacing:{after:60}}));
+          if(v.adresSatirlari.length){
+            v.adresSatirlari.forEach(function(satir){ cocuklar.push(new D.Paragraph({text:satir, spacing:{after:20}})); });
+          } else {
+            cocuklar.push(new D.Paragraph({text:'……………………………………………', spacing:{after:20}}));
+          }
+
+          cocuklar.push(new D.Paragraph({children:[new D.TextRun({text:'EKLER:', bold:true})], spacing:{before:200, after:60}}));
+          if(v.ekSatirlari.length){
+            v.ekSatirlari.forEach(function(satir, k){ cocuklar.push(new D.Paragraph({text:(k+1) + '-' + satir, spacing:{after:20}})); });
+          } else {
+            cocuklar.push(new D.Paragraph({text:'1-…………………………………………', spacing:{after:20}}));
+            cocuklar.push(new D.Paragraph({text:'2-…………………………………………', spacing:{after:20}}));
+          }
+
+          boluk.push({properties: i > 0 ? {type:D.SectionType.NEXT_PAGE} : {}, children:cocuklar});
+        });
+
+        var belge = new D.Document({sections: boluk});
+        D.Packer.toBlob(belge).then(function(blob){
+          rapIndir(blob, ad + '.docx');
+          durum.textContent = 'Dilekçe raporu Word olarak indirildi (' + kayitlar.length + ' dilekçe).';
+        });
+      }catch(e){
+        console.error(e);
+        durum.textContent = 'Word dosyası oluşturulamadı.';
       }
     }
   }
