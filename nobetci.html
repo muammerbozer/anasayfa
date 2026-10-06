@@ -234,8 +234,8 @@
     /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ (BOLD - KIRMIZI - ÜST KADAR BÜYÜK) */
     .manual-input-red {
       font-size: 1.28em !important;
-      font-weight: 800 !important; /* Bold yapıldı */
-      color: #dc2626 !important;   /* Kırmızı renk */
+      font-weight: 800 !important;
+      color: #dc2626 !important;
     }
 
     /* EDITABLE / INPUT CELLS */
@@ -255,24 +255,26 @@
       background-color: #fffde7;
     }
 
-    /* NOTLAR BÖLÜMÜ */
+    /* NOTLAR BÖLÜMÜ (YÜZDE 30 BÜYÜTÜLDÜ) */
     .note-cell {
       cursor: pointer;
       text-align: left;
-      padding: 3px 6px;
+      padding: 4px 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 250px;
       background-color: #fff;
       transition: background-color 0.2s;
+      font-size: 1.04rem !important;
+      font-weight: 600;
     }
 
     .note-cell:hover {
       background-color: #fef9c3;
     }
 
-    /* MODAL */
+    /* MODAL (YÜZDE 30 BÜYÜTÜLDÜ) */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -306,7 +308,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       resize: vertical;
-      font-size: 0.85rem;
+      font-size: 1.10rem !important;
       margin-bottom: 10px;
     }
 
@@ -560,7 +562,7 @@
       <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
     </div>
 
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
       <select id="gun-select" onchange="updateData(true)" style="padding:6px;border-radius:4px;border:1px solid var(--primary-navy)">
         <option value="">Bugün</option>
         <option value="0">Pazartesi</option>
@@ -569,6 +571,15 @@
         <option value="3">Perşembe</option>
         <option value="4">Cuma</option>
       </select>
+      
+      <!-- YEDEKLEME VE BİLGİ YÜKLEME BUTONLARI -->
+      <button class="btn btn-warning" onclick="downloadBackup()" title="Tüm verileri indir">YEDEKLE</button>
+      
+      <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Yedek dosyasını yükle">
+        YEDEK YÜKLE
+      </label>
+      <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+
       <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
       <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
     </div>
@@ -593,7 +604,7 @@
   let excelData = { ogretmenler: {}, siniflar: {}, nobet: {} };
   let notesList = [""];
   let currentNoteIndex = null;
-  let activeLessonIndex = 3; // Varsayılan 4. ders
+  let activeLessonIndex = 3;
 
   const LESSON_SCHEDULES = {
     normal: [
@@ -766,6 +777,7 @@
   const fullLine = s => String(s || '').replace(/\s*\n\s*/g, ' ').trim();
 
   window.onload = function() {
+    notesList = store.get('nobet1_notes', [""]);
     initBosDerslerTable();
     renderNotes();
     ROSTER_IDS.forEach(id => $(id).addEventListener('input', renderNobetci));
@@ -805,7 +817,6 @@
     if (r) ROSTER_IDS.forEach((id, i) => { $(id).value = r[i] || ''; });
   }
 
-  // NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI (ALT SATIR: KIRMIZI, BOLD, ÜST İLE AYNI BOYUTTA)
   function renderNobetci() {
     const di = dayIdx(), dt = curDate();
     let h = '';
@@ -904,6 +915,7 @@
     } else {
       notesList[currentNoteIndex] = text;
     }
+    store.set('nobet1_notes', notesList);
     renderNotes();
     closeNoteModal();
   }
@@ -917,9 +929,56 @@
     if (currentNoteIndex !== null) {
       notesList.splice(currentNoteIndex, 1);
       if (notesList.length === 0) notesList.push("");
+      store.set('nobet1_notes', notesList);
       renderNotes();
       closeNoteModal();
     }
+  }
+
+  /* YEDEKLEME İŞLEMLERİ (JSON İNDİRME VE YÜKLEME) */
+  function downloadBackup() {
+    const backupData = {
+      excel_data: store.get('nobet1_d', null),
+      manual_inputs: store.get('nobet1_m', {}),
+      bos_dersler: store.get('nobet1_b', Array(6).fill("")),
+      notes: store.get('nobet1_notes', [""]),
+      export_date: new Date().toISOString()
+    };
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    const today = new Date().toISOString().slice(0, 10);
+    
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `Okul_Panosu_Yedek_${today}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  }
+
+  function restoreBackup(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const data = JSON.parse(evt.target.result);
+        
+        if (data.excel_data) store.set('nobet1_d', data.excel_data);
+        if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
+        if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
+        if (data.notes) { notesList = data.notes; store.set('nobet1_notes', notesList); }
+
+        loadData();
+        renderNotes();
+        alert('Yedek başarıyla yüklendi ve tüm veriler güncellendi.');
+      } catch (err) {
+        alert('Geçersiz yedek dosyası! Lütfen doğru JSON yedek dosyasını seçtiğinizden emin olun.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   }
 
   function handleFileUpload(e) {
@@ -986,7 +1045,6 @@
     }
   }
 
-  // DERS BAŞLIĞI "X. Ders saati" İFADESİYLE GÜNCELLENDİ VE ALT METİNLER %30 KÜÇÜLTÜLDÜ
   function renderDynamicLessonTable() {
     const di = dayIdx();
     const lessonNum = activeLessonIndex + 1;
