@@ -27,7 +27,7 @@
     body {
       background-color: var(--bg-light);
       color: var(--text-dark);
-      padding: 10px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -39,68 +39,129 @@
       background: #fff;
       border: 3px solid var(--gold-accent);
       border-radius: 8px;
-      padding: 12px;
+      padding: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
-    /* HEADER / BANNER */
-    .header {
-      background: linear-gradient(135deg, var(--primary-navy), var(--secondary-navy));
+    /* OKUL BAŞLIĞI */
+    .school-title {
+      background: var(--primary-navy);
       color: #fff;
       text-align: center;
-      padding: 12px;
+      padding: 6px;
       border-radius: 6px;
       border: 2px solid var(--gold-accent);
-      margin-bottom: 12px;
-    }
-
-    .header h1 {
-      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+      font-size: clamp(1rem, 1.8vw, 1.6rem);
       letter-spacing: 1px;
-      color: #fff;
       text-transform: uppercase;
-    }
-
-    .time-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      background: var(--light-gold);
-      border: 1px solid var(--gold-accent);
-      padding: 8px 15px;
-      border-radius: 4px;
-      margin-top: 8px;
-      color: var(--primary-navy);
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
-    .clock {
-      font-size: clamp(1.2rem, 2vw, 1.8rem);
-      color: #d9534f;
+    /* ÜST BANNER (SAAT, TARİH VE DERS SAYACI) */
+    .time-banner-card {
+      display: flex;
+      background: var(--primary-navy);
+      border: 2px solid var(--gold-accent);
+      border-radius: 6px;
+      color: #fff;
+      margin-bottom: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .time-left-box {
+      flex: 0 0 35%;
+      padding: 8px 16px;
+      border-right: 2px solid var(--gold-accent);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .time-left-box .clock {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+    }
+
+    .time-left-box .date {
+      font-size: clamp(0.8rem, 1.1vw, 1rem);
+      color: var(--gold-accent);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .time-right-box {
+      flex: 1;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .time-right-box .status-header {
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 900;
+      color: var(--gold-accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-family: 'Georgia', serif;
+    }
+
+    .time-right-box .status-sub {
+      font-size: clamp(0.75rem, 1vw, 0.95rem);
+      color: #e2e8f0;
+      margin-top: 2px;
+    }
+
+    .time-right-box .progress-bar-container {
+      width: 100%;
+      height: 5px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .time-right-box .progress-bar-fill {
+      height: 100%;
+      background: var(--gold-accent);
+      width: 0%;
+      transition: width 0.5s ease;
     }
 
     /* MAIN GRID LAYOUT */
     .main-grid {
       display: grid;
       grid-template-columns: 2.2fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     @media (max-width: 992px) {
       .main-grid {
         grid-template-columns: 1fr;
       }
+      .time-banner-card {
+        flex-direction: column;
+      }
+      .time-left-box {
+        border-right: none;
+        border-bottom: 2px solid var(--gold-accent);
+      }
     }
 
-    /* TABLE STYLES */
+    /* TABLO STİLLERİ */
     .section-title {
       background-color: var(--primary-navy);
       color: #fff;
       font-weight: bold;
       text-align: center;
-      padding: 6px;
-      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      padding: 4px;
+      font-size: clamp(0.7rem, 1.1vw, 0.9rem);
       letter-spacing: 0.5px;
       border: 1px solid var(--primary-navy);
       text-transform: uppercase;
@@ -109,16 +170,20 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       background: #fff;
-      font-size: clamp(0.65rem, 1vw, 0.85rem);
+      font-size: clamp(0.6rem, 0.95vw, 0.8rem);
+      table-layout: fixed;
     }
 
     th, td {
       border: 1px solid var(--border-color);
       text-align: center;
-      padding: 4px 2px;
-      height: 28px;
+      padding: 2px 1px;
+      height: 22px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     th {
@@ -131,11 +196,50 @@
       background-color: #f1f5f9;
       font-weight: 600;
       text-align: left;
-      padding-left: 6px;
+      padding-left: 5px;
+    }
+
+    /* ÖĞRETMEN İSİMLERİ SOLA YASLI VE BÜYÜTÜLMÜŞ */
+    .teacher-name-cell {
+      text-align: left !important;
+      padding-left: 6px !important;
+      font-size: 1.1em !important;
+      font-weight: 700 !important;
+    }
+
+    /* SINIF DERS PROGRAMI BÖLÜMÜNDEKİ SINIF İSMİ (2 KAT BÜYÜK) */
+    .sinif-select-large {
+      font-size: 1.7em !important;
+      font-weight: 800 !important;
+      color: var(--primary-navy);
+      text-align: center;
+    }
+
+    /* SAĞ TARAF CANLI DERS BÖLÜMÜ METİNLERİ (%30 KÜÇÜLTÜLDÜ) */
+    .current-lesson-text {
+      font-size: 1.05em !important;
+      font-weight: 700 !important;
+    }
+
+    /* NÖBETÇİ ÖĞRETMENLER TABLO SÜTUN GENİŞLİKLERİ */
+    .col-teacher { width: 25%; }
+    .col-lesson { width: 9.375%; }
+
+    /* ÜSTTEKİ EXCEL SINIF İSİMLERİ (BOLD & BÜYÜK) */
+    .sinif-text {
+      font-size: 1.28em !important;
+      font-weight: 800 !important;
+    }
+
+    /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ (BOLD - KIRMIZI - ÜST KADAR BÜYÜK) */
+    .manual-input-red {
+      font-size: 1.28em !important;
+      font-weight: 800 !important; /* Bold yapıldı */
+      color: #dc2626 !important;   /* Kırmızı renk */
     }
 
     /* EDITABLE / INPUT CELLS */
-    input.cell-input {
+    input.cell-input, select.cell-select {
       width: 100%;
       height: 100%;
       border: none;
@@ -143,9 +247,10 @@
       background: transparent;
       font-size: inherit;
       font-weight: inherit;
+      color: inherit;
     }
 
-    input.cell-input:focus {
+    input.cell-input:focus, select.cell-select:focus {
       outline: 2px solid var(--gold-accent);
       background-color: #fffde7;
     }
@@ -154,7 +259,7 @@
     .note-cell {
       cursor: pointer;
       text-align: left;
-      padding: 4px 8px;
+      padding: 3px 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -167,7 +272,7 @@
       background-color: #fef9c3;
     }
 
-    /* MODAL (NOT DÜZENLEME KUTUSU) */
+    /* MODAL */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -184,41 +289,41 @@
       border-radius: 8px;
       width: 90%;
       max-width: 450px;
-      padding: 16px;
+      padding: 14px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
     .modal-content h3 {
       color: var(--primary-navy);
-      margin-bottom: 10px;
-      font-size: 1.1rem;
+      margin-bottom: 8px;
+      font-size: 1rem;
     }
 
     .modal-content textarea {
       width: 100%;
-      height: 100px;
-      padding: 8px;
+      height: 90px;
+      padding: 6px;
       border: 1px solid #ccc;
       border-radius: 4px;
       resize: vertical;
-      font-size: 0.9rem;
-      margin-bottom: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
     }
 
     .modal-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: flex-end;
     }
 
     /* BUTTONS */
     .btn {
-      padding: 6px 14px;
+      padding: 5px 12px;
       border: none;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       transition: all 0.2s;
     }
 
@@ -233,14 +338,14 @@
 
     /* BOTTOM CONTROLS */
     .bottom-controls {
-      margin-top: 15px;
-      padding: 12px;
+      margin-top: 10px;
+      padding: 10px;
       background: var(--light-gold);
       border: 1px solid var(--gold-accent);
       border-radius: 6px;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       justify-content: space-between;
       align-items: center;
     }
@@ -248,18 +353,15 @@
     .file-input-wrapper {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-
-    #nobetci-body td.bg-label{width:25%;font-size:.95em;line-height:1.15;overflow-wrap:anywhere}
-    #sinif-row td{font-size:.85em;line-height:1.1}
 
     /* MOBİL PUNTO UYUMLULUĞU */
     @media (max-width: 600px) {
       body { padding: 4px; }
-      .container { padding: 6px; }
-      th, td { height: 24px; padding: 2px 1px; }
-      .btn { padding: 5px 8px; font-size: 0.75rem; }
+      .container { padding: 5px; }
+      th, td { height: 20px; padding: 1px 1px; }
+      .btn { padding: 4px 6px; font-size: 0.7rem; }
       .bottom-controls { flex-direction: column; align-items: stretch; }
     }
   </style>
@@ -267,20 +369,29 @@
 <body>
 
 <div class="container">
-  <!-- ÜST BAŞLIK & CANLI SAAT -->
-  <div class="header">
-    <h1>FETİHKENT İMAM HATİP ORTAOKULU</h1>
-    <div class="time-banner">
-      <div id="current-date">---</div>
+  
+  <!-- OKUL BAŞLIĞI -->
+  <div class="school-title">
+    FETİHKENT İMAM HATİP ORTAOKULU
+  </div>
+
+  <!-- ÜST BANNER (CANLI SAAT, TARİH VE DERS SAYACI) -->
+  <div class="time-banner-card">
+    <div class="time-left-box">
       <div class="clock" id="current-clock">00:00:00</div>
-      <div>
-        <span id="lesson-info">4. DERS (Bitişe: 14 Ddk 25 sn)</span>
+      <div class="date" id="current-date">---</div>
+    </div>
+    <div class="time-right-box">
+      <div class="status-header" id="status-title">---</div>
+      <div class="status-sub" id="status-sub">---</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="status-progress"></div>
       </div>
     </div>
   </div>
 
   <div class="main-grid">
-    <!-- SOL KOLON (NÖBETÇİ, BOŞ DERSLER, ÖĞRETMEN, SINIF) -->
+    <!-- SOL KOLON -->
     <div class="left-column">
       
       <!-- 1. NÖBETÇİ ÖĞRETMENLER (YERLEŞİM) -->
@@ -308,48 +419,68 @@
         </tbody>
       </table>
 
-      <!-- 2. NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI (İLK 3 KARAKTER GÖSTERİLİR) -->
+      <!-- 2. NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI -->
       <div class="section-title">NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI</div>
       <table id="nobetci-ders-table">
         <thead>
           <tr>
-            <th style="width: 25%;">Öğretmen</th>
-            <th>1.D</th><th>2.D</th><th>3.D</th><th>4.D</th><th>5.D</th><th>6.D</th><th>7.D</th><th>8.D</th>
+            <th class="col-teacher">Öğretmen</th>
+            <th class="col-lesson">1.D</th>
+            <th class="col-lesson">2.D</th>
+            <th class="col-lesson">3.D</th>
+            <th class="col-lesson">4.D</th>
+            <th class="col-lesson">5.D</th>
+            <th class="col-lesson">6.D</th>
+            <th class="col-lesson">7.D</th>
+            <th class="col-lesson">8.D</th>
           </tr>
         </thead>
         <tbody id="nobetci-body">
-          <!-- Manuel giriş için boş ve örnek satırlar -->
+          <!-- JS ile yuklenir -->
         </tbody>
       </table>
 
-      <!-- 3. BOŞ DERSLER (6 SATIR - İLK 3 KARAKTER GÖSTERİLİR) -->
+      <!-- 3. BOŞ DERSLER -->
       <div class="section-title">BOŞ DERSLER</div>
       <table>
         <thead>
           <tr>
-            <th style="width: 25%;">Öğretmen Adı</th>
-            <th>1.D</th><th>2.D</th><th>3.D</th><th>4.D</th><th>5.D</th><th>6.D</th><th>7.D</th><th>8.D</th>
+            <th class="col-teacher">Öğretmen Adı</th>
+            <th class="col-lesson">1.D</th>
+            <th class="col-lesson">2.D</th>
+            <th class="col-lesson">3.D</th>
+            <th class="col-lesson">4.D</th>
+            <th class="col-lesson">5.D</th>
+            <th class="col-lesson">6.D</th>
+            <th class="col-lesson">7.D</th>
+            <th class="col-lesson">8.D</th>
           </tr>
         </thead>
         <tbody id="bos-dersler-body">
-          <!-- JS ile 6 satır oluşturulur -->
+          <!-- JS ile yuklenir -->
         </tbody>
       </table>
 
-      <!-- 4. ÖĞRETMEN DERS PROGRAMI (İLK 3 KARAKTER GÖSTERİLİR) -->
+      <!-- 4. ÖĞRETMEN DERS PROGRAMI -->
       <div class="section-title">ÖĞRETMEN DERS PROGRAMI</div>
       <table>
         <thead>
           <tr>
-            <th style="width: 25%;">ÖĞRETMEN</th>
-            <th>1. DERS</th><th>2. DERS</th><th>3. DERS</th><th>4. DERS</th>
-            <th>5. DERS</th><th>6. DERS</th><th>7. DERS</th><th>8. DERS</th>
+            <th class="col-teacher">ÖĞRETMEN</th>
+            <th class="col-lesson">1. DERS</th>
+            <th class="col-lesson">2. DERS</th>
+            <th class="col-lesson">3. DERS</th>
+            <th class="col-lesson">4. DERS</th>
+            <th class="col-lesson">5. DERS</th>
+            <th class="col-lesson">6. DERS</th>
+            <th class="col-lesson">7. DERS</th>
+            <th class="col-lesson">8. DERS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <select id="ogretmen-select" style="width:100%; border:none; background:transparent;" onchange="loadOgretmenProgram(this.value)">
+              <select id="ogretmen-select" class="cell-select teacher-name-cell" onchange="loadOgretmenProgram(this.value)">
                 <option value="">Öğretmen Seçiniz...</option>
               </select>
             </td>
@@ -359,20 +490,26 @@
         </tbody>
       </table>
 
-      <!-- 5. SINIF DERS PROGRAMI (BÜTÜN BİLGİLER BİREBİR GÖSTERİLİR) -->
+      <!-- 5. SINIF DERS PROGRAMI -->
       <div class="section-title">SINIF DERS PROGRAMI</div>
       <table>
         <thead>
           <tr>
-            <th style="width: 25%;">SINIF ADI</th>
-            <th>1. DERS</th><th>2. DERS</th><th>3. DERS</th><th>4. DERS</th>
-            <th>5. DERS</th><th>6. DERS</th><th>7. DERS</th><th>8. DERS</th>
+            <th class="col-teacher">SINIF ADI</th>
+            <th class="col-lesson">1. DERS</th>
+            <th class="col-lesson">2. DERS</th>
+            <th class="col-lesson">3. DERS</th>
+            <th class="col-lesson">4. DERS</th>
+            <th class="col-lesson">5. DERS</th>
+            <th class="col-lesson">6. DERS</th>
+            <th class="col-lesson">7. DERS</th>
+            <th class="col-lesson">8. DERS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <select id="sinif-select" style="width:100%; border:none; background:transparent;" onchange="loadSinifProgram(this.value)">
+              <select id="sinif-select" class="cell-select sinif-select-large" onchange="loadSinifProgram(this.value)">
                 <option value="">Sınıf Seçiniz...</option>
               </select>
             </td>
@@ -384,20 +521,20 @@
 
     </div>
 
-    <!-- SAĞ KOLON (4. DERS SINIF LİSTESİ & NOTLAR) -->
+    <!-- SAĞ KOLON (ANLIK DERS PROGRAMI & NOTLAR) -->
     <div class="right-column">
       
-      <!-- 4. DERS BÖLÜMÜ (TAM BİLGİ GÖSTERİLİR) -->
-      <div class="section-title">4. DERS</div>
-      <table id="ders4-table">
+      <!-- SAAT HANGİ DERSİ GÖSTERİYORSA O ANKİ DERS SAATİ -->
+      <div class="section-title" id="current-lesson-header">DERS SAATİ</div>
+      <table id="ders-dynamic-table">
         <thead>
           <tr>
-            <th style="width: 35%;">SINIF</th>
-            <th>DERS / ÖĞRETMEN</th>
+            <th style="width: 35%;" class="current-lesson-text">SINIF</th>
+            <th class="current-lesson-text">DERS / ÖĞRETMEN</th>
           </tr>
         </thead>
-        <tbody id="ders4-body">
-          <!-- Excel veya dinamik veriden dolacak -->
+        <tbody id="ders-dynamic-body">
+          <!-- Anlık derse göre otomatik dolacak -->
         </tbody>
       </table>
 
@@ -408,7 +545,7 @@
       </div>
       <table>
         <tbody id="notlar-body">
-          <!-- Açılışta 1 tane boş hücre bulunur -->
+          <!-- Açılışta 1 boş hücre -->
         </tbody>
       </table>
 
@@ -424,7 +561,14 @@
     </div>
 
     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      <select id="gun-select" onchange="updateData(true)" style="padding:6px;border-radius:4px;border:1px solid var(--primary-navy)"><option value="">Bugün</option><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option></select>
+      <select id="gun-select" onchange="updateData(true)" style="padding:6px;border-radius:4px;border:1px solid var(--primary-navy)">
+        <option value="">Bugün</option>
+        <option value="0">Pazartesi</option>
+        <option value="1">Salı</option>
+        <option value="2">Çarşamba</option>
+        <option value="3">Perşembe</option>
+        <option value="4">Cuma</option>
+      </select>
       <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
       <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
     </div>
@@ -445,48 +589,145 @@
   </div>
 </div>
 
-<datalist id="tl"></datalist>
 <script>
-  // VERİ DEPOLAMA (EXCEL'DEN VEYA DEMO'DAN GELECEK)
-  let excelData = {
-    ogretmenler: {},
-    siniflar: {},
-    nobet: {}
+  let excelData = { ogretmenler: {}, siniflar: {}, nobet: {} };
+  let notesList = [""];
+  let currentNoteIndex = null;
+  let activeLessonIndex = 3; // Varsayılan 4. ders
+
+  const LESSON_SCHEDULES = {
+    normal: [
+      { name: "Toplanma", start: "12:45", end: "13:00", type: "break", lessonIndex: 0 },
+      { name: "1. DERS", start: "13:00", end: "13:40", type: "lesson", lessonIndex: 0 },
+      { name: "Tenefüs", start: "13:40", end: "13:50", type: "break", lessonIndex: 0 },
+      { name: "2. DERS", start: "13:50", end: "14:30", type: "lesson", lessonIndex: 1 },
+      { name: "Tenefüs", start: "14:30", end: "14:40", type: "break", lessonIndex: 1 },
+      { name: "3. DERS", start: "14:40", end: "15:20", type: "lesson", lessonIndex: 2 },
+      { name: "Tenefüs", start: "15:20", end: "15:30", type: "break", lessonIndex: 2 },
+      { name: "4. DERS", start: "15:30", end: "16:10", type: "lesson", lessonIndex: 3 },
+      { name: "Tenefüs", start: "16:10", end: "16:20", type: "break", lessonIndex: 3 },
+      { name: "5. DERS", start: "16:20", end: "17:00", type: "lesson", lessonIndex: 4 },
+      { name: "Tenefüs", start: "17:00", end: "17:10", type: "break", lessonIndex: 4 },
+      { name: "6. DERS", start: "17:10", end: "17:50", type: "lesson", lessonIndex: 5 },
+      { name: "Tenefüs", start: "17:50", end: "18:00", type: "break", lessonIndex: 5 },
+      { name: "7. DERS", start: "18:00", end: "18:40", type: "lesson", lessonIndex: 6 }
+    ],
+    cuma: [
+      { name: "Toplanma", start: "13:20", end: "13:30", type: "break", lessonIndex: 0 },
+      { name: "1. DERS", start: "13:30", end: "14:00", type: "lesson", lessonIndex: 0 },
+      { name: "Tenefüs", start: "14:00", end: "14:10", type: "break", lessonIndex: 0 },
+      { name: "2. DERS", start: "14:10", end: "14:40", type: "lesson", lessonIndex: 1 },
+      { name: "Tenefüs", start: "14:40", end: "14:50", type: "break", lessonIndex: 1 },
+      { name: "3. DERS", start: "14:50", end: "15:20", type: "lesson", lessonIndex: 2 },
+      { name: "Tenefüs", start: "15:20", end: "15:30", type: "break", lessonIndex: 2 },
+      { name: "4. DERS", start: "15:30", end: "16:00", type: "lesson", lessonIndex: 3 },
+      { name: "Tenefüs", start: "16:00", end: "16:10", type: "break", lessonIndex: 3 },
+      { name: "5. DERS", start: "16:10", end: "16:40", type: "lesson", lessonIndex: 4 },
+      { name: "Tenefüs", start: "16:40", end: "16:50", type: "break", lessonIndex: 4 },
+      { name: "6. DERS", start: "16:50", end: "17:20", type: "lesson", lessonIndex: 5 },
+      { name: "Tenefüs", start: "17:20", end: "17:30", type: "break", lessonIndex: 5 },
+      { name: "7. DERS", start: "17:30", end: "18:00", type: "lesson", lessonIndex: 6 },
+      { name: "Tenefüs", start: "18:00", end: "18:10", type: "break", lessonIndex: 6 },
+      { name: "8. DERS", start: "18:10", end: "18:40", type: "lesson", lessonIndex: 7 }
+    ]
   };
 
-  let notesList = [""]; // Açılışta 1 boş hücre bulunsun
-  let currentNoteIndex = null;
+  function timeToMin(t) {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
 
-  // CANLI SAAT VE TARİH
-  function updateClock() {
+  function updateClockAndStatus() {
     const now = new Date();
     document.getElementById('current-clock').innerText = now.toLocaleTimeString('tr-TR');
     
     const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
     document.getElementById('current-date').innerText = now.toLocaleDateString('tr-TR', options);
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
 
-  // YARDIMCI FONKSİYON: İLK 3 KARAKTERİ ALMA
+    const curMin = now.getHours() * 60 + now.getMinutes();
+    const curSec = now.getSeconds();
+    const curDay = now.getDay();
+
+    const schedule = (curDay === 5) ? LESSON_SCHEDULES.cuma : LESSON_SCHEDULES.normal;
+    
+    let activeSlot = null;
+    let nextSlot = null;
+
+    for (let i = 0; i < schedule.length; i++) {
+      const startM = timeToMin(schedule[i].start);
+      const endM = timeToMin(schedule[i].end);
+
+      if (curMin >= startM && curMin < endM) {
+        activeSlot = schedule[i];
+        break;
+      }
+      if (curMin < startM && !nextSlot) {
+        nextSlot = schedule[i];
+      }
+    }
+
+    const titleEl = document.getElementById('status-title');
+    const subEl = document.getElementById('status-sub');
+    const progressEl = document.getElementById('status-progress');
+
+    let oldLessonIndex = activeLessonIndex;
+
+    if (activeSlot) {
+      const startM = timeToMin(activeSlot.start);
+      const endM = timeToMin(activeSlot.end);
+      const totalSec = (endM - startM) * 60;
+      const elapsedSec = (curMin - startM) * 60 + curSec;
+      const remSec = totalSec - elapsedSec;
+
+      const remM = Math.floor(remSec / 60);
+      const remS = remSec % 60;
+      const pct = Math.min(100, Math.max(0, (elapsedSec / totalSec) * 100));
+
+      if (activeSlot.type === 'lesson') {
+        titleEl.innerText = activeSlot.name;
+        subEl.innerText = `Bitişe: ${remM} Dk ${remS} Sn (Başlangıç ${activeSlot.start} — Bitiş ${activeSlot.end})`;
+      } else {
+        titleEl.innerText = "TENEFÜS";
+        subEl.innerText = `Derse Kalan: ${remM} Dk ${remS} Sn (Bitiş ${activeSlot.end})`;
+      }
+      progressEl.style.width = pct + '%';
+      activeLessonIndex = activeSlot.lessonIndex;
+    } else if (curMin < timeToMin(schedule[0].start)) {
+      titleEl.innerText = "DERSLER HENÜZ BAŞLAMADI";
+      subEl.innerText = `İlk Ders Başlangıcı: ${schedule[1].start}`;
+      progressEl.style.width = '0%';
+      activeLessonIndex = 0;
+    } else {
+      titleEl.innerText = "DERSLER BİTTİ";
+      subEl.innerText = "Yarın görüşmek üzere. Başlangıç — Bitiş —";
+      progressEl.style.width = '100%';
+      activeLessonIndex = schedule[schedule.length - 1].lessonIndex;
+    }
+
+    if (oldLessonIndex !== activeLessonIndex) {
+      renderDynamicLessonTable();
+    }
+  }
+
+  setInterval(updateClockAndStatus, 1000);
+
   function formatCellShort(text) {
     if (!text) return "";
     return text.toString().trim().substring(0, 3);
   }
 
-  // ---- YARDIMCILAR ----
   const $ = id => document.getElementById(id);
-  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const norm = s => String(s || '').toLocaleUpperCase('tr').replace(/\s+/g, ' ').trim();
   const ROSTER_IDS = ['nobet-b1','nobet-b2','nobet-k','nobet-z','nobet-1k','nobet-2k'];
   const ALIAS = {'MUAMMER BOZER':'MÜDÜR YARDIMCISI','F. SOYYİĞİT':'FATİH SOYYİĞİT'};
-  const EMB = {"o":[["ÖĞRETMENLERİN DERS PROGRAMI     2.10.2026","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],["Sıra","Adı Soyadı","Top","Pazartesi","","","","","","","","Salı","","","","","","","","Çarşamba","","","","","","","","Perşembe","","","","","","","","Cuma","","","","","","",""],["","","",1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8],[1,"MEVLÜT TEKİN",2,"","6/E\nSMATBİL","","","","","","","","","","","","","","","","","","","","","","","","","6/F\nSMATBİL","","","","","","","","","","","","",""],[2,"FATİH SOYYİĞİT",6,"8/B\nSGÖRGÜ","","","","","","","","","","","","8/A\nSGÖRGÜ","","8/C\nSMEDYA","","","","","","","","8/A\nSMEDYA","","","","","","8/B\nSMEDYA","","8/C\nSGÖRGÜ","","","","","","","","",""],[3,"MÜDÜR YARDIMCISI",6,"7/A PK\nSİYER","7/A PK\nSİYER","","","","","","","","","7/B PE\nSİYER","7/B PE\nSİYER","","","","","","","","","","","","","7/C\nSİYER","7/C\nSİYER","","","","","","","","","","","","","",""],[4,"MERVE KAYLAK",29,"7/C\nARAP","7/C\nARAP","","5/C\nARAP","5/C\nARAP","5/D\nARAP","5/D\nARAP","","6/A PK\nARAP","6/A PK\nARAP","5/A PK\nARAP","5/A PK\nARAP","","6/C\nARAP","6/C\nARAP","","5/B PE\nARAP","5/B PE\nARAP","6/B PE\nARAP","6/B PE\nARAP","5/A PK\nREHBER","7/B PE\nARAP","7/B PE\nARAP","","7/D\nARAP","7/D\nARAP","8/A\nARAP","8/A\nARAP","","","","","","","7/A PK\nARAP","7/A PK\nARAP","6/F\nARAP","6/F\nARAP","8/C\nARAP","8/C\nARAP"],[5,"GÖREVLENDİRME ARAPÇA","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],[6,"RAZİYE KIVANÇ GÖKTEPE",8,"","","","","5/F\nBLŞTEK","","","","6/C\nBLŞTEK","","","","","","","","5/C\nBLŞTEK","","6/F\nBLŞTEK","","6/D\nBLŞTEK","","","","5/E\nBLŞTEK","","","","","","","","","","","5/D\nBLŞTEK","6/E\nBLŞTEK","","",""],[7,"İBRAHİM YALDIZ",21,"5/A PK\nS SPOR","8/B\nBED 678","7/C\nBED 678","6/E\nBED 678","6/F\nBED 678","7/A PK\nS SPOR","8/C\nBED 678","","","","","","","","","","","","5/E\nBED 5","5/E\nBED 5","5/C\nBED 5","5/C\nBED 5","","","","","7/B PE\nS SPOR","6/D\nBED 678","5/B PE\nS SPOR","","","","5/F\nBED 5","5/F\nBED 5","8/A\nBED 678","6/C\nBED 678","7/D\nBED 678","","5/D\nBED 5","5/D\nBED 5"],[8,"İBRAHİM YILDIZ",21,"","","","","","","","","","","","6/D\nDİN","6/D\nDİN","6/E\nDİN","6/E\nDİN","","","","","6/F\nT DİN 67","5/B PE\nREHBER","7/C\nKURAN","7/C\nKURAN","","7/B PE\nKURAN","7/B PE\nKURAN","6/A PK\nDİN","6/A PK\nDİN","6/D\nT DİN 67","6/C\nDİN","6/C\nDİN","","6/F\nDİN","6/F\nDİN","","","5/B PE\nKURAN","5/B PE\nKURAN","6/B PE\nDİN","6/B PE\nDİN"],[9,"FADİME TARIM",21,"5/D\nKURAN","5/D\nKURAN","8/C\nKURAN","8/C\nKURAN","7/A PK\nT DİN 67","8/A\nKURAN","8/A\nKURAN","","","","","","8/B\nKURAN","8/B\nKURAN","7/C\nT DİN 67","","","","","","","","","","","","7/C\nDİN","7/C\nDİN","7/B PE\nT DİN 67","5/F\nKURAN","5/F\nKURAN","","5/A PK\nKURAN","5/A PK\nKURAN","7/D\nREHBER","","7/B PE\nDİN","7/B PE\nDİN","","7/D\nT DİN 67"],[10,"MEHMET FATİH TEKİN",21,"","","","","","","","","6/F\nSİYER","6/F\nSİYER","8/C\nSİYER","8/C\nSİYER","6/A PK\nSİYER","","6/B PE\nT DİN 67","","","","8/A\nSİYER","8/A\nSİYER","6/B PE\nSİYER","6/B PE\nSİYER","6/A PK\nSİYER","","","6/D\nSİYER","6/D\nSİYER","6/C\nSİYER","6/C\nSİYER","","","","6/C\nT DİN 67","6/A PK\nT DİN 67","8/B\nSİYER","8/B\nSİYER","","6/E\nSİYER","6/E\nSİYER",""],[11,"NURİ KEMAL ÖZBEK",27,"","","","5/A PK\nDİN","5/A PK\nDİN","8/B\nARAP","8/B\nARAP","","5/D\nDİN","5/D\nDİN","5/C\nDİN","5/C\nDİN","","6/D\nARAP","6/D\nARAP","","","","5/B PE\nDİN","5/B PE\nDİN","","5/F\nDİN","5/F\nDİN","","7/A PK\nDİN","7/A PK\nDİN","5/E\nARAP","5/E\nARAP","6/E\nT DİN 67","7/D\nSİYER","7/D\nSİYER","","","","6/E\nARAP","6/E\nARAP","5/F\nARAP","5/F\nARAP","5/E\nDİN","5/E\nDİN"],[12,"SAMİ DURGUT",21,"6/C\nKURAN","6/C\nKURAN","5/D\nSİYER","5/D\nSİYER","","","","","","","","","","","","","","","5/F\nSİYER","5/F\nSİYER","6/C\nREHBER","5/A PK\nSİYER","5/A PK\nSİYER","","5/B PE\nSİYER","5/B PE\nSİYER","","7/D\nKURAN","7/D\nKURAN","7/A PK\nKURAN","7/A PK\nKURAN","","5/C\nSİYER","5/C\nSİYER","5/E\nSİYER","5/E\nSİYER","","7/D\nDİN","7/D\nDİN",""],[13,"YUSUF VELET",21,"6/F\nKURAN","6/F\nKURAN","","","","6/A PK\nKURAN","6/A PK\nKURAN","","5/C\nKURAN","5/C\nKURAN","5/E\nKURAN","5/E\nKURAN","6/B PE\nKURAN","6/B PE\nKURAN","","","6/E\nKURAN","6/E\nKURAN","","","8/A\nDİN","8/A\nDİN","5/E\nREHBER","","","","","","","","","","8/C\nDİN","8/C\nDİN","","6/D\nKURAN","6/D\nKURAN","","8/B\nDİN","8/B\nDİN"],[14,"KÜBRA ACABOĞA",21,"","","8/A\nFEN","8/A\nFEN","5/B PE\nFEN","5/B PE\nFEN","","","5/F\nFEN","5/F\nFEN","","5/B PE\nFEN","5/B PE\nFEN","5/C\nFEN","5/C\nFEN","","8/A\nFEN","8/A\nFEN","","","5/F\nREHBER","5/D\nFEN","5/D\nFEN","","5/F\nFEN","5/F\nFEN","5/C\nFEN","5/C\nFEN","","5/D\nFEN","5/D\nFEN","","","","","","","","",""],[15,"NACİYE ACAR",21,"","","","","","","","","7/B PE\nFEN","7/B PE\nFEN","6/E\nFEN","6/E\nFEN","","","","","6/F\nFEN","6/F\nFEN","7/C\nFEN","7/C\nFEN","8/B\nFEN","8/B\nFEN","6/E\nREHBER","","","","","6/F\nFEN","6/F\nFEN","6/E\nFEN","6/E\nFEN","","7/C\nFEN","7/C\nFEN","7/B PE\nFEN","7/B PE\nFEN","8/B\nFEN","8/B\nFEN","",""],[16,"SACİDE AKPINAR KOÇAK",21,"6/A PK\nFEN","6/A PK\nFEN","5/E\nFEN","5/E\nFEN","7/D\nFEN","7/D\nFEN","7/A PK\nREHBER","","8/C\nFEN","8/C\nFEN","7/D\nFEN","7/D\nFEN","","7/A PK\nFEN","7/A PK\nFEN","","7/A PK\nFEN","7/A PK\nFEN","6/A PK\nFEN","6/A PK\nFEN","","","","","","","8/C\nFEN","8/C\nFEN","","5/E\nFEN","5/E\nFEN","","","","","","","","",""],[17,"ŞERİFE ESMA PORTAKALL",17,"6/B PE\nREHBER","5/A PK\nFEN","5/A PK\nFEN","6/D\nFEN","6/D\nFEN","6/C\nFEN","6/C\nFEN","","","","","","","","","","6/B PE\nFEN","6/B PE\nFEN","","","","6/D\nFEN","6/D\nFEN","","6/C\nFEN","6/C\nFEN","5/A PK\nFEN","5/A PK\nFEN","","6/B PE\nFEN","6/B PE\nFEN","","","","","","","","",""],[18,"NACİYE NUR KART",16,"","","","","","","","","","6/C\nGÖRSAN","6/D\nGÖRSAN","","6/E\nGÖRSAN","","8/B\nGÖRSAN","","","","","","","","","","","5/E\nGÖRSAN","7/D\nGÖRSAN","7/B PE\nS GEL","8/A\nGÖRSAN","6/F\nGÖRSAN","7/C\nGÖRSAN","","","8/A\nREHBER","5/D\nGÖRSAN","5/F\nGÖRSAN","","8/C\nGÖRSAN","7/A PK\nS GEL","5/C\nGÖRSAN"],[19,"BEHİYE ORAK",22,"8/A\nİNG 78","8/A\nİNG 78","6/B PE\nSİNG 56","6/B PE\nSİNG 56","6/A PK\nİNG 56","7/B PE\nSİNG 7","7/B PE\nSİNG 7","","","","6/B PE\nSİNG 56","6/B PE\nSİNG 56","","5/B PE\nSİNG 56","5/B PE\nSİNG 56","","6/A PK\nİNG 56","6/A PK\nİNG 56","7/A PK\nİNG 78","7/A PK\nİNG 78","7/B PE\nSİNG 7","5/B PE\nSİNG 56","5/B PE\nSİNG 56","","","","","","","","","","7/A PK\nİNG 78","7/A PK\nİNG 78","","8/A\nİNG 78","8/A\nİNG 78","","",""],[20,"HİKMET ŞEYDA SAYGILI",22,"7/B PE\nİNG 78","7/B PE\nİNG 78","","5/B PE\nİNG 56","","6/F\nİNG 56","6/F\nİNG 56","","","","5/D\nİNG 56","5/D\nİNG 56","6/F\nİNG 56","6/A PK\nSİNG 56","6/A PK\nSİNG 56","","","","","","","","","","5/A PK\nSİNG 56","5/A PK\nSİNG 56","5/B PE\nİNG 56","5/B PE\nİNG 56","5/D\nİNG 56","","6/F\nREHBER","","","","5/A PK\nSİNG 56","5/A PK\nSİNG 56","6/A PK\nSİNG 56","6/A PK\nSİNG 56","7/B PE\nİNG 78","7/B PE\nİNG 78"],[21,"RUKİYE ÖZBEY",21,"","","6/E\nİNG 56","7/C\nİNG 78","7/C\nİNG 78","5/F\nİNG 56","5/F\nİNG 56","","7/C\nİNG 78","7/C\nİNG 78","","","5/F\nİNG 56","7/D\nİNG 78","7/D\nİNG 78","","7/D\nİNG 78","7/D\nİNG 78","6/C\nİNG 56","6/C\nİNG 56","8/C\nİNG 78","8/C\nİNG 78","","","","","","","","","","","6/E\nİNG 56","6/E\nİNG 56","8/C\nİNG 78","8/C\nİNG 78","","","","6/C\nİNG 56"],[22,"ZÜMRÜT ŞEKER",22,"","","","","","","","","5/E\nİNG 56","5/E\nİNG 56","7/A PK\nSİNG 7","7/A PK\nSİNG 7","","","5/A PK\nİNG 56","","8/B\nİNG 78","8/B\nİNG 78","6/D\nİNG 56","","","","","","5/C\nİNG 56","5/C\nİNG 56","8/B\nİNG 78","8/B\nİNG 78","6/B PE\nİNG 56","5/A PK\nİNG 56","5/A PK\nİNG 56","","5/E\nİNG 56","6/D\nİNG 56","6/D\nİNG 56","","6/B PE\nİNG 56","6/B PE\nİNG 56","5/C\nİNG 56","7/A PK\nSİNG 7"],[23,"ARİF KOÇ",18,"8/C\nMAT","8/C\nMAT","6/C\nMAT","6/C\nMAT","6/C\nSMATBİL","6/D\nMAT","6/D\nMAT","","","","","","","","","","","","","","","","","","6/D\nMAT","","6/C\nMAT","","8/C\nMAT","8/C\nMAT","","","6/D\nREHBER","6/C\nMAT","6/C\nMAT","","8/C\nMAT","6/D\nMAT","6/D\nMAT","6/D\nSMATBİL"],[24,"MERYEM SERT",21,"5/B PE\nMAT","5/C\nMAT","5/C\nMAT","","","","","","5/B PE\nMAT","5/B PE\nMAT","6/A PK\nMAT","6/A PK\nMAT","5/C\nMAT","8/A\nMAT","8/A\nMAT","","","","","","","","","","8/A\nMAT","8/A\nMAT","","","6/A PK\nMAT","6/A PK\nMAT","","","8/A\nMAT","","6/A PK\nMAT","6/A PK\nREHBER","5/C\nMAT","5/C\nMAT","5/B PE\nMAT","5/B PE\nMAT"],[25,"MUHAMMET ALİ BALIKCI",21,"","6/B PE\nMAT","7/D\nMAT","7/D\nMAT","","","6/E\nMAT","","6/B PE\nMAT","6/B PE\nMAT","7/C\nMAT","","7/D\nMAT","","","","7/C\nMAT","7/C\nMAT","7/D\nMAT","7/D\nMAT","6/E\nMAT","6/E\nMAT","8/C\nREHBER","","6/E\nMAT","6/E\nMAT","6/B PE\nMAT","6/B PE\nMAT","7/C\nMAT","7/C\nMAT","","","","","","","","","",""],[26,"MUSTAFA SERT",21,"5/F\nMAT","5/F\nMAT","8/B\nMAT","","","","","","5/A PK\nMAT","5/A PK\nMAT","8/B\nMAT","8/B\nMAT","5/D\nMAT","5/F\nMAT","5/F\nMAT","","5/A PK\nMAT","5/A PK\nMAT","5/D\nMAT","5/D\nMAT","","","8/B\nREHBER","","5/D\nMAT","5/D\nMAT","5/F\nMAT","","5/A PK\nMAT","8/B\nMAT","8/B\nMAT","","","","","","","","",""],[27,"SERAP KELEŞ",21,"5/E\nMAT","5/E\nMAT","7/B PE\nMAT","6/F\nMAT","","","","","7/A PK\nMAT","7/A PK\nMAT","","","7/B PE\nREHBER","6/F\nMAT","6/F\nMAT","","7/B PE\nMAT","7/B PE\nMAT","","","5/E\nMAT","5/E\nMAT","7/A PK\nMAT","","6/F\nMAT","6/F\nMAT","7/A PK\nMAT","7/A PK\nMAT","5/E\nMAT","7/B PE\nMAT","7/B PE\nMAT","","","","","","","","",""],[28,"AYŞE ÇİÇEK ŞENKALYONCU",16,"6/E\nMÜZİK","","6/F\nMÜZİK","8/B\nMÜZİK","6/B PE\nSMÜZİK","8/C\nMÜZİK","7/C\nMÜZİK","","","","","","","","","","","5/F\nMÜZİK","","6/D\nMÜZİK","7/D\nMÜZİK","","5/C\nMÜZİK","","","","","","","","","","6/A PK\nSMÜZİK","5/E\nMÜZİK","7/C\nREHBER","","5/D\nMÜZİK","","6/C\nMÜZİK","8/A\nMÜZİK"],[29,"ADİLE POTAŞ",28,"","","6/D\nSOSBİL","","6/E\nSOSBİL","6/E\nSOSBİL","7/D\nSOSBİL","","","","","","5/A PK\nSOSBİL","5/A PK\nSOSBİL","5/E\nSOSBİL","","5/E\nSOSBİL","5/E\nSOSBİL","8/B\nTC İNK","8/B\nTC İNK","7/A PK\nSOSBİL","7/A PK\nSOSBİL","6/B PE\nSOSBİL","","8/C\nTC İNK","8/C\nTC İNK","5/D\nSOSBİL","5/D\nSOSBİL","7/A PK\nSOSBİL","6/D\nSOSBİL","6/D\nSOSBİL","","7/D\nSOSBİL","7/D\nSOSBİL","6/B PE\nSOSBİL","6/B PE\nSOSBİL","5/A PK\nSOSBİL","5/D\nSOSBİL","","6/E\nSOSBİL"],[30,"MUSTAFA YÜZÜAK","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],[31,"BÜŞRA ÖZTÜRK",26,"","","5/F\nSOSBİL","5/F\nSOSBİL","7/B PE\nSOSBİL","","","","8/A\nTC İNK","8/A\nTC İNK","5/B PE\nSOSBİL","7/C\nSOSBİL","6/C\nSOSBİL","7/B PE\nSOSBİL","7/B PE\nSOSBİL","","6/C\nSOSBİL","6/C\nSOSBİL","5/C\nSOSBİL","5/C\nSOSBİL","6/A PK\nSOSBİL","6/A PK\nSOSBİL","6/F\nSOSBİL","","","","","","5/C\nSOSBİL","","6/A PK\nSOSBİL","","5/B PE\nSOSBİL","5/B PE\nSOSBİL","5/F\nSOSBİL","","7/C\nSOSBİL","7/C\nSOSBİL","6/F\nSOSBİL","6/F\nSOSBİL"],[32,"SERAP AKSU",17,"5/C\nREHBER","","","","5/E\nSGÖRGÜ","7/C\nT TAS 7","5/B PE\nSGÖRGÜ","","","","","","","","","","5/F\nSGÖRGÜ","5/C\nSGÖRGÜ","8/C\nT TAS 8","8/C\nT TAS 8","5/D\nSGÖRGÜ","7/D\nT TAS 7","7/D\nSGÖRGÜ","","","","","","","","","","8/B\nT TAS 8","8/B\nT TAS 8","","7/C\nSGÖRGÜ","","8/A\nT TAS 8","8/A\nT TAS 8","5/A PK\nSGÖRGÜ"],[33,"ASENA SİNEM DOMBAY",22,"","","7/A PK\nTÜRK 78","7/A PK\nTÜRK 78","8/B\nTÜRK 78","5/C\nTÜRK 56","5/C\nTÜRK 56","","8/B\nTÜRK 78","8/B\nTÜRK 78","5/F\nTÜRK 56","5/F\nTÜRK 56","7/A PK\nTÜRK 78","","","","","","","","","","","","8/B\nTÜRK 78","8/B\nTÜRK 78","","5/F\nTÜRK 56","5/F\nTÜRK 56","5/C\nTÜRK 56","5/C\nTÜRK 56","","","","5/C\nTÜRK 56","5/C\nTÜRK 56","7/A PK\nTÜRK 78","7/A PK\nTÜRK 78","5/F\nTÜRK 56","5/F\nTÜRK 56"],[34,"AYŞEGÜL ROZYYEV",22,"7/D\nTÜRK 78","7/D\nTÜRK 78","6/A PK\nTÜRK 56","6/A PK\nTÜRK 56","8/A\nTÜRK 78","5/E\nTÜRK 56","5/E\nTÜRK 56","","7/D\nTÜRK 78","7/D\nTÜRK 78","8/A\nTÜRK 78","8/A\nTÜRK 78","5/E\nTÜRK 56","5/E\nTÜRK 56","","","","","","","","","","","6/A PK\nTÜRK 56","6/A PK\nTÜRK 56","","","","8/A\nTÜRK 78","8/A\nTÜRK 78","","","","","7/D\nTÜRK 78","5/E\nTÜRK 56","5/E\nTÜRK 56","6/A PK\nTÜRK 56","6/A PK\nTÜRK 56"],[35,"BİRGÜL YAVUZ",23,"","5/B PE\nTÜRK 56","5/B PE\nTÜRK 56","","8/C\nTÜRK 78","6/B PE\nTÜRK 56","6/B PE\nTÜRK 56","","6/E\nTÜRK 56","6/E\nTÜRK 56","","","8/C\nTÜRK 78","8/C\nTÜRK 78","","","8/C\nTÜRK 78","8/C\nTÜRK 78","6/E\nTÜRK 56","6/E\nTÜRK 56","","","","","6/B PE\nTÜRK 56","6/B PE\nTÜRK 56","6/E\nTÜRK 56","6/E\nTÜRK 56","","5/B PE\nTÜRK 56","5/B PE\nTÜRK 56","","6/B PE\nTÜRK 56","6/B PE\nTÜRK 56","5/B PE\nTÜRK 56","5/B PE\nTÜRK 56","","","",""],[36,"EMİNE KURTAR",19,"","","","","5/D\nREHBER","5/A PK\nTÜRK 56","5/A PK\nTÜRK 56","","","","6/F\nTÜRK 56","6/F\nTÜRK 56","","5/D\nTÜRK 56","5/D\nTÜRK 56","","5/D\nTÜRK 56","5/D\nTÜRK 56","5/A PK\nTÜRK 56","5/A PK\nTÜRK 56","6/F\nTÜRK 56","6/F\nTÜRK 56","","","","","","","","","","","5/D\nTÜRK 56","5/D\nTÜRK 56","6/F\nTÜRK 56","6/F\nTÜRK 56","","5/A PK\nTÜRK 56","5/A PK\nTÜRK 56",""],[37,"KÜBRA DEMİR",22,"6/D\nTÜRK 56","6/D\nTÜRK 56","","7/B PE\nTÜRK 78","","","","","6/D\nTÜRK 56","6/D\nTÜRK 56","6/C\nTÜRK 56","6/C\nTÜRK 56","7/C\nTÜRK 78","7/C\nTÜRK 78","","","6/D\nTÜRK 56","6/D\nTÜRK 56","7/B PE\nTÜRK 78","7/B PE\nTÜRK 78","7/C\nTÜRK 78","6/C\nTÜRK 56","6/C\nTÜRK 56","","","","","","","","","","7/B PE\nTÜRK 78","7/B PE\nTÜRK 78","","","6/C\nTÜRK 56","6/C\nTÜRK 56","7/C\nTÜRK 78","7/C\nTÜRK 78"]],"s":[["SINIFLARIN DERS PROGRAMI     2.10.2026","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],["Sıra","Sınıfın Adı","Top","Pazartesi","","","","","","","","Salı","","","","","","","","Çarşamba","","","","","","","","Perşembe","","","","","","","","Cuma","","","","","","",""],["","","",1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8],[1,"5/A",36,"S SPOR\nİ.YAL","FEN\nŞ.POR","FEN\nŞ.POR","DİN\nN.ÖZB","DİN\nN.ÖZB","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","","MAT\nM.SER","MAT\nM.SER","ARAP\nM.KAY","ARAP\nM.KAY","SOSBİL\nA.POT","SOSBİL\nA.POT","İNG 56\nZ.ŞEK","","MAT\nM.SER","MAT\nM.SER","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","REHBER\nM.KAY","SİYER\nS.DUR","SİYER\nS.DUR","","SİNG 56\nŞEYDA","SİNG 56\nŞEYDA","FEN\nŞ.POR","FEN\nŞ.POR","MAT\nM.SER","İNG 56\nZ.ŞEK","İNG 56\nZ.ŞEK","","KURAN\nG.KÜL","KURAN\nG.KÜL","SİNG 56\nŞEYDA","SİNG 56\nŞEYDA","SOSBİL\nA.POT","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","SGÖRGÜ\nS.AKS"],[2,"5/B",36,"MAT\nM.SER","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","İNG 56\nŞEYDA","FEN\nK.ACA","FEN\nK.ACA","SGÖRGÜ\nS.AKS","","MAT\nM.SER","MAT\nM.SER","SOSBİL\nG.BİL","FEN\nK.ACA","FEN\nK.ACA","SİNG 56\nB.ORA","SİNG 56\nB.ORA","","ARAP\nM.KAY","ARAP\nM.KAY","DİN\nN.ÖZB","DİN\nN.ÖZB","REHBER\nİ.YIL","SİNG 56\nB.ORA","SİNG 56\nB.ORA","","SİYER\nS.DUR","SİYER\nS.DUR","İNG 56\nŞEYDA","İNG 56\nŞEYDA","S SPOR\nİ.YAL","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","","SOSBİL\nG.BİL","SOSBİL\nG.BİL","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","KURAN\nİ.YIL","KURAN\nİ.YIL","MAT\nM.SER","MAT\nM.SER"],[3,"5/C",36,"REHBER\nS.AKS","MAT\nM.SER","MAT\nM.SER","ARAP\nM.KAY","ARAP\nM.KAY","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM","","KURAN\nY.VEL","KURAN\nY.VEL","DİN\nN.ÖZB","DİN\nN.ÖZB","MAT\nM.SER","FEN\nK.ACA","FEN\nK.ACA","","BLŞTEK\nR.GÖK","SGÖRGÜ\nS.AKS","SOSBİL\nG.BİL","SOSBİL\nG.BİL","BED 5\nİ.YAL","BED 5\nİ.YAL","MÜZİK\nA.ŞEN","","İNG 56\nZ.ŞEK","İNG 56\nZ.ŞEK","FEN\nK.ACA","FEN\nK.ACA","SOSBİL\nG.BİL","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM","","SİYER\nS.DUR","SİYER\nS.DUR","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM","MAT\nM.SER","MAT\nM.SER","İNG 56\nZ.ŞEK","GÖRSAN\nN.KAR"],[4,"5/D",36,"KURAN\nG.KÜL","KURAN\nG.KÜL","SİYER\nS.DUR","SİYER\nS.DUR","REHBER\nE.KUR","ARAP\nM.KAY","ARAP\nM.KAY","","DİN\nN.ÖZB","DİN\nN.ÖZB","İNG 56\nŞEYDA","İNG 56\nŞEYDA","MAT\nM.SER","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","MAT\nM.SER","MAT\nM.SER","SGÖRGÜ\nS.AKS","FEN\nK.ACA","FEN\nK.ACA","","MAT\nM.SER","MAT\nM.SER","SOSBİL\nA.POT","SOSBİL\nA.POT","İNG 56\nŞEYDA","FEN\nK.ACA","FEN\nK.ACA","","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","GÖRSAN\nN.KAR","BLŞTEK\nR.GÖK","MÜZİK\nA.ŞEN","SOSBİL\nA.POT","BED 5\nİ.YAL","BED 5\nİ.YAL"],[5,"5/E",36,"MAT\nS.KEL","MAT\nS.KEL","FEN\nS.KOÇ","FEN\nS.KOÇ","SGÖRGÜ\nS.AKS","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ","","İNG 56\nZ.ŞEK","İNG 56\nZ.ŞEK","KURAN\nY.VEL","KURAN\nY.VEL","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ","SOSBİL\nA.POT","","SOSBİL\nA.POT","SOSBİL\nA.POT","BED 5\nİ.YAL","BED 5\nİ.YAL","MAT\nS.KEL","MAT\nS.KEL","REHBER\nY.VEL","","BLŞTEK\nR.GÖK","GÖRSAN\nN.KAR","ARAP\nN.ÖZB","ARAP\nN.ÖZB","MAT\nS.KEL","FEN\nS.KOÇ","FEN\nS.KOÇ","","İNG 56\nZ.ŞEK","MÜZİK\nA.ŞEN","SİYER\nS.DUR","SİYER\nS.DUR","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ","DİN\nN.ÖZB","DİN\nN.ÖZB"],[6,"5/F",36,"MAT\nM.SER","MAT\nM.SER","SOSBİL\nG.BİL","SOSBİL\nG.BİL","BLŞTEK\nR.GÖK","İNG 56\nR.ÖZB","İNG 56\nR.ÖZB","","FEN\nK.ACA","FEN\nK.ACA","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM","İNG 56\nR.ÖZB","MAT\nM.SER","MAT\nM.SER","","SGÖRGÜ\nS.AKS","MÜZİK\nA.ŞEN","SİYER\nS.DUR","SİYER\nS.DUR","REHBER\nK.ACA","DİN\nN.ÖZB","DİN\nN.ÖZB","","FEN\nK.ACA","FEN\nK.ACA","MAT\nM.SER","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM","KURAN\nG.KÜL","KURAN\nG.KÜL","","BED 5\nİ.YAL","BED 5\nİ.YAL","SOSBİL\nG.BİL","GÖRSAN\nN.KAR","ARAP\nN.ÖZB","ARAP\nN.ÖZB","TÜRK 56\nA.DOM","TÜRK 56\nA.DOM"],[7,"6/A",36,"FEN\nS.KOÇ","FEN\nS.KOÇ","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ","İNG 56\nB.ORA","KURAN\nY.VEL","KURAN\nY.VEL","","ARAP\nM.KAY","ARAP\nM.KAY","MAT\nM.SER","MAT\nM.SER","SİYER\nM.TEK","SİNG 56\nŞEYDA","SİNG 56\nŞEYDA","","İNG 56\nB.ORA","İNG 56\nB.ORA","FEN\nS.KOÇ","FEN\nS.KOÇ","SOSBİL\nG.BİL","SOSBİL\nG.BİL","SİYER\nM.TEK","","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ","DİN\nİ.YIL","DİN\nİ.YIL","MAT\nM.SER","MAT\nM.SER","SOSBİL\nG.BİL","","SMÜZİK\nA.ŞEN","T DİN 67\nM.TEK","MAT\nM.SER","REHBER\nM.SER","SİNG 56\nŞEYDA","SİNG 56\nŞEYDA","TÜRK 56\nA.ROZ","TÜRK 56\nA.ROZ"],[8,"6/B",36,"REHBER\nŞ.POR","MAT\nM.BAL","SİNG 56\nB.ORA","SİNG 56\nB.ORA","SMÜZİK\nA.ŞEN","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","","MAT\nM.BAL","MAT\nM.BAL","SİNG 56\nB.ORA","SİNG 56\nB.ORA","KURAN\nY.VEL","KURAN\nY.VEL","T DİN 67\nM.TEK","","FEN\nŞ.POR","FEN\nŞ.POR","ARAP\nM.KAY","ARAP\nM.KAY","SİYER\nM.TEK","SİYER\nM.TEK","SOSBİL\nA.POT","","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","MAT\nM.BAL","MAT\nM.BAL","İNG 56\nZ.ŞEK","FEN\nŞ.POR","FEN\nŞ.POR","","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","SOSBİL\nA.POT","SOSBİL\nA.POT","İNG 56\nZ.ŞEK","İNG 56\nZ.ŞEK","DİN\nİ.YIL","DİN\nİ.YIL"],[9,"6/C",36,"KURAN\nS.DUR","KURAN\nS.DUR","MAT\nA.KOÇ","MAT\nA.KOÇ","SMATBİL\nA.KOÇ","FEN\nŞ.POR","FEN\nŞ.POR","","BLŞTEK\nR.GÖK","GÖRSAN\nN.KAR","TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","SOSBİL\nG.BİL","ARAP\nM.KAY","ARAP\nM.KAY","","SOSBİL\nG.BİL","SOSBİL\nG.BİL","İNG 56\nR.ÖZB","İNG 56\nR.ÖZB","REHBER\nS.DUR","TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","","FEN\nŞ.POR","FEN\nŞ.POR","MAT\nA.KOÇ","SİYER\nM.TEK","SİYER\nM.TEK","DİN\nİ.YIL","DİN\nİ.YIL","","T DİN 67\nM.TEK","MAT\nA.KOÇ","MAT\nA.KOÇ","BED 678\nİ.YAL","TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","MÜZİK\nA.ŞEN","İNG 56\nR.ÖZB"],[10,"6/D",36,"TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","SOSBİL\nA.POT","FEN\nŞ.POR","FEN\nŞ.POR","MAT\nA.KOÇ","MAT\nA.KOÇ","","TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","GÖRSAN\nN.KAR","DİN\nİ.YIL","DİN\nİ.YIL","ARAP\nN.ÖZB","ARAP\nN.ÖZB","","TÜRK 56\nK.DEM","TÜRK 56\nK.DEM","İNG 56\nZ.ŞEK","MÜZİK\nA.ŞEN","BLŞTEK\nR.GÖK","FEN\nŞ.POR","FEN\nŞ.POR","","MAT\nA.KOÇ","SİYER\nM.TEK","SİYER\nM.TEK","BED 678\nİ.YAL","T DİN 67\nİ.YIL","SOSBİL\nA.POT","SOSBİL\nA.POT","","REHBER\nA.KOÇ","İNG 56\nZ.ŞEK","İNG 56\nZ.ŞEK","KURAN\nY.VEL","KURAN\nY.VEL","MAT\nA.KOÇ","MAT\nA.KOÇ","SMATBİL\nA.KOÇ"],[11,"6/E",36,"MÜZİK\nA.ŞEN","SMATBİL\nM.TEK","İNG 56\nR.ÖZB","BED 678\nİ.YAL","SOSBİL\nA.POT","SOSBİL\nA.POT","MAT\nM.BAL","","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","FEN\nN.ACA","FEN\nN.ACA","GÖRSAN\nN.KAR","DİN\nİ.YIL","DİN\nİ.YIL","","KURAN\nY.VEL","KURAN\nY.VEL","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","MAT\nM.BAL","MAT\nM.BAL","REHBER\nN.ACA","","MAT\nM.BAL","MAT\nM.BAL","TÜRK 56\nB.YAV","TÜRK 56\nB.YAV","T DİN 67\nN.ÖZB","FEN\nN.ACA","FEN\nN.ACA","","İNG 56\nR.ÖZB","İNG 56\nR.ÖZB","ARAP\nN.ÖZB","ARAP\nN.ÖZB","BLŞTEK\nR.GÖK","SİYER\nM.TEK","SİYER\nM.TEK","SOSBİL\nA.POT"],[12,"6/F",36,"KURAN\nY.VEL","KURAN\nY.VEL","MÜZİK\nA.ŞEN","MAT\nS.KEL","BED 678\nİ.YAL","İNG 56\nŞEYDA","İNG 56\nŞEYDA","","SİYER\nM.TEK","SİYER\nM.TEK","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","İNG 56\nŞEYDA","MAT\nS.KEL","MAT\nS.KEL","","FEN\nN.ACA","FEN\nN.ACA","BLŞTEK\nR.GÖK","T DİN 67\nİ.YIL","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","SOSBİL\nG.BİL","","MAT\nS.KEL","MAT\nS.KEL","SMATBİL\nM.TEK","FEN\nN.ACA","FEN\nN.ACA","GÖRSAN\nN.KAR","REHBER\nŞEYDA","","DİN\nİ.YIL","DİN\nİ.YIL","TÜRK 56\nE.KUR","TÜRK 56\nE.KUR","ARAP\nM.KAY","ARAP\nM.KAY","SOSBİL\nG.BİL","SOSBİL\nG.BİL"],[13,"7/A",36,"SİYER\nMD YARD","SİYER\nMD YARD","TÜRK 78\nA.DOM","TÜRK 78\nA.DOM","T DİN 67\nG.KÜL","S SPOR\nİ.YAL","REHBER\nS.KOÇ","","MAT\nS.KEL","MAT\nS.KEL","SİNG 7\nZ.ŞEK","SİNG 7\nZ.ŞEK","TÜRK 78\nA.DOM","FEN\nS.KOÇ","FEN\nS.KOÇ","","FEN\nS.KOÇ","FEN\nS.KOÇ","İNG 78\nB.ORA","İNG 78\nB.ORA","SOSBİL\nA.POT","SOSBİL\nA.POT","MAT\nS.KEL","","DİN\nN.ÖZB","DİN\nN.ÖZB","MAT\nS.KEL","MAT\nS.KEL","SOSBİL\nA.POT","KURAN\nS.DUR","KURAN\nS.DUR","","İNG 78\nB.ORA","İNG 78\nB.ORA","ARAP\nM.KAY","ARAP\nM.KAY","TÜRK 78\nA.DOM","TÜRK 78\nA.DOM","S GEL\nN.KAR","SİNG 7\nZ.ŞEK"],[14,"7/B",36,"İNG 78\nŞEYDA","İNG 78\nŞEYDA","MAT\nS.KEL","TÜRK 78\nK.DEM","SOSBİL\nG.BİL","SİNG 7\nB.ORA","SİNG 7\nB.ORA","","FEN\nN.ACA","FEN\nN.ACA","SİYER\nMD YARD","SİYER\nMD YARD","REHBER\nS.KEL","SOSBİL\nG.BİL","SOSBİL\nG.BİL","","MAT\nS.KEL","MAT\nS.KEL","TÜRK 78\nK.DEM","TÜRK 78\nK.DEM","SİNG 7\nB.ORA","ARAP\nM.KAY","ARAP\nM.KAY","","KURAN\nİ.YIL","KURAN\nİ.YIL","S SPOR\nİ.YAL","S GEL\nN.KAR","T DİN 67\nG.KÜL","MAT\nS.KEL","MAT\nS.KEL","","TÜRK 78\nK.DEM","TÜRK 78\nK.DEM","FEN\nN.ACA","FEN\nN.ACA","DİN\nG.KÜL","DİN\nG.KÜL","İNG 78\nŞEYDA","İNG 78\nŞEYDA"],[15,"7/C",36,"ARAP\nM.KAY","ARAP\nM.KAY","BED 678\nİ.YAL","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","T TAS 7\nS.AKS","MÜZİK\nA.ŞEN","","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","MAT\nM.BAL","SOSBİL\nG.BİL","TÜRK 78\nK.DEM","TÜRK 78\nK.DEM","T DİN 67\nG.KÜL","","MAT\nM.BAL","MAT\nM.BAL","FEN\nN.ACA","FEN\nN.ACA","TÜRK 78\nK.DEM","KURAN\nİ.YIL","KURAN\nİ.YIL","","SİYER\nMD YARD","SİYER\nMD YARD","DİN\nG.KÜL","DİN\nG.KÜL","MAT\nM.BAL","MAT\nM.BAL","GÖRSAN\nN.KAR","","FEN\nN.ACA","FEN\nN.ACA","REHBER\nA.ŞEN","SGÖRGÜ\nS.AKS","SOSBİL\nG.BİL","SOSBİL\nG.BİL","TÜRK 78\nK.DEM","TÜRK 78\nK.DEM"],[16,"7/D",36,"TÜRK 78\nA.ROZ","TÜRK 78\nA.ROZ","MAT\nM.BAL","MAT\nM.BAL","FEN\nS.KOÇ","FEN\nS.KOÇ","SOSBİL\nA.POT","","TÜRK 78\nA.ROZ","TÜRK 78\nA.ROZ","FEN\nS.KOÇ","FEN\nS.KOÇ","MAT\nM.BAL","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","MAT\nM.BAL","MAT\nM.BAL","MÜZİK\nA.ŞEN","T TAS 7\nS.AKS","SGÖRGÜ\nS.AKS","","ARAP\nM.KAY","ARAP\nM.KAY","GÖRSAN\nN.KAR","KURAN\nS.DUR","KURAN\nS.DUR","SİYER\nN.ÖZB","SİYER\nN.ÖZB","","SOSBİL\nA.POT","SOSBİL\nA.POT","REHBER\nG.KÜL","TÜRK 78\nA.ROZ","BED 678\nİ.YAL","DİN\nS.DUR","DİN\nS.DUR","T DİN 67\nG.KÜL"],[17,"8/A",36,"İNG 78\nB.ORA","İNG 78\nB.ORA","FEN\nK.ACA","FEN\nK.ACA","TÜRK 78\nA.ROZ","KURAN\nG.KÜL","KURAN\nG.KÜL","","TC İNK\nG.BİL","TC İNK\nG.BİL","TÜRK 78\nA.ROZ","TÜRK 78\nA.ROZ","SGÖRGÜ\nF.SOY","MAT\nM.SER","MAT\nM.SER","","FEN\nK.ACA","FEN\nK.ACA","SİYER\nM.TEK","SİYER\nM.TEK","DİN\nY.VEL","DİN\nY.VEL","SMEDYA\nF.SOY","","MAT\nM.SER","MAT\nM.SER","ARAP\nM.KAY","ARAP\nM.KAY","GÖRSAN\nN.KAR","TÜRK 78\nA.ROZ","TÜRK 78\nA.ROZ","","MAT\nM.SER","REHBER\nN.KAR","BED 678\nİ.YAL","İNG 78\nB.ORA","İNG 78\nB.ORA","T TAS 8\nS.AKS","T TAS 8\nS.AKS","MÜZİK\nA.ŞEN"],[18,"8/B",36,"SGÖRGÜ\nF.SOY","BED 678\nİ.YAL","MAT\nM.SER","MÜZİK\nA.ŞEN","TÜRK 78\nA.DOM","ARAP\nN.ÖZB","ARAP\nN.ÖZB","","TÜRK 78\nA.DOM","TÜRK 78\nA.DOM","MAT\nM.SER","MAT\nM.SER","KURAN\nG.KÜL","KURAN\nG.KÜL","GÖRSAN\nN.KAR","","İNG 78\nZ.ŞEK","İNG 78\nZ.ŞEK","TC İNK\nA.POT","TC İNK\nA.POT","FEN\nN.ACA","FEN\nN.ACA","REHBER\nM.SER","","TÜRK 78\nA.DOM","TÜRK 78\nA.DOM","İNG 78\nZ.ŞEK","İNG 78\nZ.ŞEK","SMEDYA\nF.SOY","MAT\nM.SER","MAT\nM.SER","","T TAS 8\nS.AKS","T TAS 8\nS.AKS","SİYER\nM.TEK","SİYER\nM.TEK","FEN\nN.ACA","FEN\nN.ACA","DİN\nY.VEL","DİN\nY.VEL"],[19,"8/C",36,"MAT\nA.KOÇ","MAT\nA.KOÇ","KURAN\nG.KÜL","KURAN\nG.KÜL","TÜRK 78\nB.YAV","MÜZİK\nA.ŞEN","BED 678\nİ.YAL","","FEN\nS.KOÇ","FEN\nS.KOÇ","SİYER\nM.TEK","SİYER\nM.TEK","TÜRK 78\nB.YAV","TÜRK 78\nB.YAV","SMEDYA\nF.SOY","","TÜRK 78\nB.YAV","TÜRK 78\nB.YAV","T TAS 8\nS.AKS","T TAS 8\nS.AKS","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","REHBER\nM.BAL","","TC İNK\nA.POT","TC İNK\nA.POT","FEN\nS.KOÇ","FEN\nS.KOÇ","MAT\nA.KOÇ","MAT\nA.KOÇ","SGÖRGÜ\nF.SOY","","DİN\nY.VEL","DİN\nY.VEL","İNG 78\nR.ÖZB","İNG 78\nR.ÖZB","MAT\nA.KOÇ","GÖRSAN\nN.KAR","ARAP\nM.KAY","ARAP\nM.KAY"]],"n":[["EKİM","BAHÇE-1","BAHÇE-2","KANTİN","ZEMİN KAT","1. KAT","2. KAT","NÖBETÇİ MÜDÜR YARDIMCISI"],[46300,"KÜBRA ACABOĞA","MUHAMMET  ALİ BALIKCI","SERAP AKSU","YUSUF VELET","SAMİ DURGUT","HİKMET ŞEYDA SAYGILI","MUAMMER BOZER"],[46301,"ZÜMRÜT ŞEKER","NACİYE NUT KART","BEHİYE ORAK","NACİYE ACAR","ADİLE POTAŞ","BİRGÜL YAVUZ","FATİH SOYYİĞİT"],[46302,"MUSTAFA SERT","ŞERİFE ESMA PORTAKAL","İBRAHİM YALDIZ","AYŞE ÇİÇEK ŞENKALYONCU","SERAP KELEŞ","NURİ KEMAL ÖZBEK","MUAMMER BOZER"],[46303,"SACİDE AKPINAR KOÇAK","ARİF KOÇ","MERVE KAYLAK","MERYEM SERT","FADİME TARIM","AYŞEGÜL ROZYYEV","F. SOYYİĞİT"],[46304,"RUKİYE ÖZBEY","MEHMET FATİH TEKİN","KÜBRA DEMİR","İBRAHİM YILDIZ","EMİNE KURTAR","ASENA SİNEM DOMBAY","MUAMMER BOZER"],[46307,"HİKMET ŞEYDA SAYGILI","KÜBRA ACABOĞA","MUHAMMET  ALİ BALIKCI","SERAP AKSU","YUSUF VELET","SAMİ DURGUT","F. SOYYİĞİT"],[46308,"BİRGÜL YAVUZ","ZÜMRÜT ŞEKER","NACİYE NUT KART","BEHİYE ORAK","NACİYE ACAR","ADİLE POTAŞ","MUAMMER BOZER"],[46309,"NURİ KEMAL ÖZBEK","MUSTAFA SERT","ŞERİFE ESMA PORTAKAL","İBRAHİM YALDIZ","AYŞE ÇİÇEK ŞENKALYONCU","SERAP KELEŞ","F. SOYYİĞİT"],[46310,"AYŞEGÜL ROZYYEV","SACİDE AKPINAR KOÇAK","ARİF KOÇ","MERVE KAYLAK","MERYEM SERT","FADİME TARIM","MUAMMER BOZER"],[46311,"ASENA SİNEM DOMBAY","RUKİYE ÖZBEY","MEHMET FATİH TEKİN","KÜBRA DEMİR","İBRAHİM YILDIZ","EMİNE KURTAR","F. SOYYİĞİT"],[46314,"SAMİ DURGUT","HİKMET ŞEYDA SAYGILI","KÜBRA ACABOĞA","MUHAMMET  ALİ BALIKCI","SERAP AKSU","YUSUF VELET","MUAMMER BOZER"],[46315,"ADİLE POTAŞ","BİRGÜL YAVUZ","ZÜMRÜT ŞEKER","NACİYE NUT KART","BEHİYE ORAK","NACİYE ACAR","F. SOYYİĞİT"],[46316,"SERAP KELEŞ","NURİ KEMAL ÖZBEK","MUSTAFA SERT","ŞERİFE ESMA PORTAKAL","İBRAHİM YALDIZ","AYŞE ÇİÇEK ŞENKALYONCU","MUAMMER BOZER"],[46317,"FADİME TARIM","AYŞEGÜL ROZYYEV","SACİDE AKPINAR KOÇAK","ARİF KOÇ","MERVE KAYLAK","MERYEM SERT","F. SOYYİĞİT"],[46318,"EMİNE KURTAR","ASENA SİNEM DOMBAY","RUKİYE ÖZBEY","MEHMET FATİH TEKİN","KÜBRA DEMİR","İBRAHİM YILDIZ","MUAMMER BOZER"],[46321,"YUSUF VELET","SAMİ DURGUT","HİKMET ŞEYDA SAYGILI","KÜBRA ACABOĞA","MUHAMMET  ALİ BALIKCI","SERAP AKSU","F. SOYYİĞİT"],[46322,"NACİYE ACAR","ADİLE POTAŞ","BİRGÜL YAVUZ","ZÜMRÜT ŞEKER","NACİYE NUT KART","BEHİYE ORAK","MUAMMER BOZER"],[46323,"AYŞE ÇİÇEK ŞENKALYONCU","SERAP KELEŞ","NURİ KEMAL ÖZBEK","MUSTAFA SERT","ŞERİFE ESMA PORTAKAL","İBRAHİM YALDIZ","F. SOYYİĞİT"],[46324,"MERYEM SERT","FADİME TARIM","AYŞEGÜL ROZYYEV","SACİDE AKPINAR KOÇAK","ARİF KOÇ","MERVE KAYLAK","MUAMMER BOZER"],[46325,"İBRAHİM YILDIZ","EMİNE KURTAR","ASENA SİNEM DOMBAY","RUKİYE ÖZBEY","MEHMET FATİH TEKİN","KÜBRA DEMİR","F. SOYYİĞİT"],[46328,"SERAP AKSU","YUSUF VELET","SAMİ DURGUT","HİKMET ŞEYDA SAYGILI","KÜBRA ACABOĞA","MUHAMMET  ALİ BALIKCI","MUAMMER BOZER"],[46329,"BEHİYE ORAK","NACİYE ACAR","ADİLE POTAŞ","BİRGÜL YAVUZ","ZÜMRÜT ŞEKER","NACİYE NUT KART","F. SOYYİĞİT"],[46330,"İBRAHİM YALDIZ","AYŞE ÇİÇEK ŞENKALYONCU","SERAP KELEŞ","NURİ KEMAL ÖZBEK","MUSTAFA SERT","ŞERİFE ESMA PORTAKAL","MUAMMER BOZER"],[46331,"MERVE KAYLAK","MERYEM SERT","FADİME TARIM","AYŞEGÜL ROZYYEV","SACİDE AKPINAR KOÇAK","ARİF KOÇ","F. SOYYİĞİT"],[46332,"KÜBRA DEMİR","İBRAHİM YILDIZ","EMİNE KURTAR","ASENA SİNEM DOMBAY","RUKİYE ÖZBEY","MEHMET FATİH TEKİN","MUAMMER BOZER"],[46335,"MUHAMMET  ALİ BALIKCI","SERAP AKSU","YUSUF VELET","SAMİ DURGUT","HİKMET ŞEYDA SAYGILI","KÜBRA ACABOĞA","F. SOYYİĞİT"],[46336,"NACİYE NUT KART","BEHİYE ORAK","NACİYE ACAR","ADİLE POTAŞ","BİRGÜL YAVUZ","ZÜMRÜT ŞEKER","MUAMMER BOZER"],[46337,"ŞERİFE ESMA PORTAKAL","İBRAHİM YALDIZ","AYŞE ÇİÇEK ŞENKALYONCU","SERAP KELEŞ","NURİ KEMAL ÖZBEK","MUSTAFA SERT","F. SOYYİĞİT"],[46338,"ARİF KOÇ","MERVE KAYLAK","MERYEM SERT","FADİME TARIM","AYŞEGÜL ROZYYEV","SACİDE AKPINAR KOÇAK","MUAMMER BOZER"],[46339,"MEHMET FATİH TEKİN","KÜBRA DEMİR","İBRAHİM YILDIZ","EMİNE KURTAR","ASENA SİNEM DOMBAY","RUKİYE ÖZBEY","F. SOYYİĞİT"]]};
+
   const store = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  let manual = store.get('nobet1_m', {});   // nöbetçi tablosundaki elle girişler (tarihe göre)
-  let bosNames = store.get('nobet1_b', []); // boş dersler öğretmen isimleri
+  let manual = store.get('nobet1_m', {});
+  let bosNames = store.get('nobet1_b', Array(6).fill(""));
 
   function lev(a, b) {
     const d = [...Array(b.length + 1).keys()];
@@ -496,7 +737,7 @@
     }
     return d[b.length];
   }
-  // İsimden öğretmeni bul (yazım farklarına toleranslı)
+
   function findTeacher(q) {
     q = norm(q); if (!q) return null; q = ALIAS[q] || q;
     const names = Object.keys(excelData.ogretmenler);
@@ -506,12 +747,13 @@
     names.forEach(n => { const d = lev(n, q); if (d < bd) { bd = d; best = n; } });
     return best;
   }
+
   const isoOf = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   function dayIdx() {
     const v = $('gun-select').value;
     if (v !== '') return +v;
     const d = new Date().getDay();
-    return (d === 0 || d === 6) ? 0 : d - 1;   // hafta sonu -> pazartesi
+    return (d === 0 || d === 6) ? 0 : d - 1;
   }
   function curDate() {
     const t = new Date(); t.setHours(12);
@@ -523,7 +765,6 @@
   const fullHTML = s => esc(s).replace(/\n/g, '<br>');
   const fullLine = s => String(s || '').replace(/\s*\n\s*/g, ' ').trim();
 
-  // ---- AÇILIŞ ----
   window.onload = function() {
     initBosDerslerTable();
     renderNotes();
@@ -533,9 +774,9 @@
       if (k) { manual[k] = e.target.value; store.set('nobet1_m', manual); }
     });
     loadData();
+    updateClockAndStatus();
   };
 
-  // ---- EXCEL VERİSİNİ ÇÖZ ----
   function buildData(o, s, n) {
     const grid = r => [0,1,2,3,4].map(d => [1,2,3,4,5,6,7,8].map(p => { const v = r[2 + d*8 + p]; return v == null ? '' : String(v).trim(); }));
     excelData.ogretmenler = {}; excelData.siniflar = {}; excelData.nobet = {};
@@ -551,57 +792,72 @@
       excelData.nobet[d.toISOString().slice(0,10)] = r.slice(1, 7).map(x => norm(x));
     });
   }
+
   function loadData() {
-    const d = store.get('nobet1_d', null) || EMB;
-    buildData(d.o, d.s, d.n);
+    const d = store.get('nobet1_d', null);
+    if (d) buildData(d.o, d.s, d.n);
     populateSelects();
     updateData(true);
   }
 
-  // ---- NÖBETÇİ YERLEŞİMİ (o günün listesi) ----
   function renderRoster() {
     const r = excelData.nobet[curDate()];
     if (r) ROSTER_IDS.forEach((id, i) => { $(id).value = r[i] || ''; });
   }
 
-  // ---- NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI: üst satır Excel (ilk 3 karakter), alt satır elle giriş ----
+  // NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI (ALT SATIR: KIRMIZI, BOLD, ÜST İLE AYNI BOYUTTA)
   function renderNobetci() {
     const di = dayIdx(), dt = curDate();
     let h = '';
     ROSTER_IDS.forEach((id, i) => {
       const name = $(id).value.trim(), t = findTeacher(name);
       const ls = t ? excelData.ogretmenler[t][di] : [];
-      h += `<tr><td rowspan="2" class="bg-label">${esc(name)}</td>`;
-      for (let d = 0; d < 8; d++) h += `<td>${esc(formatCellShort(ls[d]))}</td>`;
+      
+      h += `<tr><td rowspan="2" class="bg-label teacher-name-cell col-teacher">${esc(name)}</td>`;
+      for (let d = 0; d < 8; d++) {
+        h += `<td class="bg-label sinif-text col-lesson">${esc(formatCellShort(ls[d]))}</td>`;
+      }
+      
       h += '</tr><tr>';
-      for (let d = 0; d < 8; d++) h += `<td><input class="cell-input" data-m="${dt}|${i}|${d}" value="${esc(manual[dt + '|' + i + '|' + d] || '')}"></td>`;
+      for (let d = 0; d < 8; d++) {
+        h += `<td class="col-lesson"><input class="cell-input manual-input-red" data-m="${dt}|${i}|${d}" value="${esc(manual[dt + '|' + i + '|' + d] || '')}"></td>`;
+      }
       h += '</tr>';
     });
     $('nobetci-body').innerHTML = h;
   }
 
-  // ---- BOŞ DERSLER (6 SATIR) ----
   function initBosDerslerTable() {
     const tbody = $('bos-dersler-body');
     let h = '';
     for (let idx = 0; idx < 6; idx++) {
-      h += `<tr><td><input class="cell-input" id="bos-n${idx}" list="tl" placeholder="Öğretmen ismi..." value="${esc(bosNames[idx] || '')}" oninput="onBosDersTeacherChange(this, ${idx})" onchange="onBosDersTeacherChange(this, ${idx})"></td>`;
-      for (let i = 1; i <= 8; i++) h += `<td id="bos-t${idx}-d${i}"></td>`;
+      h += `<tr><td class="col-teacher">
+        <select class="cell-select teacher-name-cell" id="bos-n${idx}" onchange="onBosDersTeacherChange(this, ${idx})">
+          <option value="">Öğretmen Seçiniz...</option>
+        </select>
+      </td>`;
+      for (let i = 1; i <= 8; i++) {
+        h += `<td id="bos-t${idx}-d${i}" class="sinif-text col-lesson"></td>`;
+      }
       h += '</tr>';
     }
     tbody.innerHTML = h;
   }
+
   function fillBos(idx) {
     const t = findTeacher($(`bos-n${idx}`).value);
     const ls = t ? excelData.ogretmenler[t][dayIdx()] : [];
-    for (let d = 1; d <= 8; d++) $(`bos-t${idx}-d${d}`).innerText = formatCellShort(ls[d - 1]);
+    for (let d = 1; d <= 8; d++) {
+      $(`bos-t${idx}-d${d}`).innerText = formatCellShort(ls[d - 1]);
+    }
   }
-  function onBosDersTeacherChange(input, rowIndex) {
-    bosNames[rowIndex] = input.value; store.set('nobet1_b', bosNames);
+
+  function onBosDersTeacherChange(select, rowIndex) {
+    bosNames[rowIndex] = select.value;
+    store.set('nobet1_b', bosNames);
     fillBos(rowIndex);
   }
 
-  // NOTLAR BÖLÜMÜ RENDER
   function renderNotes() {
     const tbody = document.getElementById('notlar-body');
     tbody.innerHTML = '';
@@ -609,26 +865,22 @@
       let tr = document.createElement('tr');
       let td = document.createElement('td');
       td.className = 'note-cell';
-      td.innerText = note ? note.split('\n')[0] : ""; // Tek satır görünümü
+      td.innerText = note ? note.split('\n')[0] : "";
       td.onclick = () => openNoteModal(index);
       tr.appendChild(td);
       tbody.appendChild(tr);
     });
   }
 
-  // MODAL İŞLEMLERİ
   function openNoteModal(index) {
     currentNoteIndex = index;
     const modal = document.getElementById('note-modal');
     const textarea = document.getElementById('note-text');
-    
     if (index === null) {
-      // YENİ BUTONUNA BASILDIĞINDA
       textarea.value = "";
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Yeni Not Ekle";
     } else {
-      // VAR OLAN NOTA TIKLANDIĞINDA
       textarea.value = notesList[index] || "";
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Not Düzenle / İncele";
@@ -643,13 +895,12 @@
   function saveNote() {
     const text = document.getElementById('note-text').value;
     if (currentNoteIndex === null) {
-      // Yeni hücreye ekle ve listenin sonuna yeni boş bir alan ekle
       if (notesList.length > 0 && notesList[notesList.length - 1] === "") {
         notesList[notesList.length - 1] = text;
       } else {
         notesList.push(text);
       }
-      notesList.push(""); // Yeni satır açılmaya devam etsin
+      notesList.push("");
     } else {
       notesList[currentNoteIndex] = text;
     }
@@ -671,7 +922,6 @@
     }
   }
 
-  // ---- EXCEL YÜKLEME ----
   function handleFileUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -698,42 +948,67 @@
   }
 
   function populateSelects() {
-    const ogrSelect = $('ogretmen-select'), sinifSelect = $('sinif-select');
-    const o = ogrSelect.value, s = sinifSelect.value;
-    ogrSelect.innerHTML = '<option value="">Öğretmen Seçiniz...</option>' + Object.keys(excelData.ogretmenler).map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+    const ogrSelect = $('ogretmen-select'), sinifSelect =$('sinif-select');
+    const teachersList = Object.keys(excelData.ogretmenler);
+    
+    const oVal = ogrSelect.value;
+    ogrSelect.innerHTML = '<option value="">Öğretmen Seçiniz...</option>' + teachersList.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+    ogrSelect.value = oVal;
+
+    const sVal = sinifSelect.value;
     sinifSelect.innerHTML = '<option value="">Sınıf Seçiniz...</option>' + Object.keys(excelData.siniflar).map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
-    ogrSelect.value = o; sinifSelect.value = s;
-    $('tl').innerHTML = Object.keys(excelData.ogretmenler).map(n => `<option value="${esc(n)}">`).join('') + '<option value="MUAMMER BOZER">';
+    sinifSelect.value = sVal;
+
+    for (let idx = 0; idx < 6; idx++) {
+      const bSelect = $(`bos-n${idx}`);
+      if (bSelect) {
+        const curVal = bosNames[idx] || "";
+        bSelect.innerHTML = '<option value="">Öğretmen Seçiniz...</option>' + teachersList.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+        bSelect.value = curVal;
+      }
+    }
   }
 
-  // ÖĞRETMEN PROGRAMI (İLK 3 KARAKTER) - o günün dersleri
   function loadOgretmenProgram(teacher) {
     const t = findTeacher(teacher);
     const lessons = t ? excelData.ogretmenler[t][dayIdx()] : [];
-    for (let i = 1; i <= 8; i++) $(`ogrt-d${i}`).innerText = formatCellShort(lessons[i - 1] || '');
+    for (let i = 1; i <= 8; i++) {
+      const el = $(`ogrt-d${i}`);
+      el.innerText = formatCellShort(lessons[i - 1] || '');
+      el.className = 'sinif-text col-lesson';
+    }
   }
 
-  // SINIF PROGRAMI (BÜTÜN BİLGİLER GÖSTERİLİR) - o günün dersleri
   function loadSinifProgram(sinif) {
     const lessons = excelData.siniflar[sinif] ? excelData.siniflar[sinif][dayIdx()] : [];
-    for (let i = 1; i <= 8; i++) $(`sinif-d${i}`).innerHTML = fullHTML(lessons[i - 1] || '');
+    for (let i = 1; i <= 8; i++) {
+      $(`sinif-d${i}`).innerHTML = fullHTML(lessons[i - 1] || '');
+    }
   }
 
-  // 4. DERS LİSTESİ (TAM BİLGİ)
-  function renderDers4Table() {
+  // DERS BAŞLIĞI "X. Ders saati" İFADESİYLE GÜNCELLENDİ VE ALT METİNLER %30 KÜÇÜLTÜLDÜ
+  function renderDynamicLessonTable() {
     const di = dayIdx();
-    $('ders4-body').innerHTML = Object.keys(excelData.siniflar).map(c =>
-      `<tr><td class="bg-label">${esc(c)} SINIFI</td><td>${esc(fullLine(excelData.siniflar[c][di][3]))}</td></tr>`).join('');
+    const lessonNum = activeLessonIndex + 1;
+    
+    $('current-lesson-header').innerText = `${lessonNum}. Ders saati`;
+    
+    $('ders-dynamic-body').innerHTML = Object.keys(excelData.siniflar).map(c => {
+      const lessonInfo = excelData.siniflar[c][di][activeLessonIndex] || "";
+      return `<tr>
+        <td class="bg-label current-lesson-text">${esc(c)} SINIFI</td>
+        <td class="current-lesson-text">${esc(fullLine(lessonInfo))}</td>
+      </tr>`;
+    }).join('');
   }
 
-  // GÜNCELLE: tüm tabloları seçili güne göre yeniden doldur
   function updateData(silent) {
     renderRoster();
     renderNobetci();
     for (let i = 0; i < 6; i++) fillBos(i);
     loadOgretmenProgram($('ogretmen-select').value);
     loadSinifProgram($('sinif-select').value);
-    renderDers4Table();
+    renderDynamicLessonTable();
     if (silent !== true) alert('Veriler ve ekran güncellendi.');
   }
 </script>
