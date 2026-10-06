@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetihkent İmam Hatip Ortaokulu - Okul Panosu</title>
+  <!-- SheetJS Excel Okuma Kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --primary-navy: #0b2341;
+      --secondary-navy: #15375c;
+      --gold-accent: #c59b27;
+      --light-gold: #f9f6ea;
+      --border-color: #0b2341;
+      --bg-light: #f4f6f9;
+      --text-dark: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      background: #fff;
+      border: 3px solid var(--gold-accent);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    /* HEADER / BANNER */
+    .header {
+      background: linear-gradient(135deg, var(--primary-navy), var(--secondary-navy));
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+      border: 2px solid var(--gold-accent);
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+      letter-spacing: 1px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .time-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--light-gold);
+      border: 1px solid var(--gold-accent);
+      padding: 8px 15px;
+      border-radius: 4px;
+      margin-top: 8px;
+      color: var(--primary-navy);
+      font-weight: bold;
+    }
+
+    .clock {
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      color: #d9534f;
+    }
+
+    /* MAIN GRID LAYOUT */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 992px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* TABLE STYLES */
+    .section-title {
+      background-color: var(--primary-navy);
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      padding: 6px;
+      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      letter-spacing: 0.5px;
+      border: 1px solid var(--primary-navy);
+      text-transform: uppercase;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      background: #fff;
+      font-size: clamp(0.65rem, 1vw, 0.85rem);
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      text-align: center;
+      padding: 4px 2px;
+      height: 28px;
+    }
+
+    th {
+      background-color: #e2e8f0;
+      color: var(--primary-navy);
+      font-weight: 700;
+    }
+
+    .bg-label {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      text-align: left;
+      padding-left: 6px;
+    }
+
+    /* EDITABLE / INPUT CELLS */
+    input.cell-input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-align: center;
+      background: transparent;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    input.cell-input:focus {
+      outline: 2px solid var(--gold-accent);
+      background-color: #fffde7;
+    }
+
+    /* NOTLAR BÖLÜMÜ */
+    .note-cell {
+      cursor: pointer;
+      text-align: left;
+      padding: 4px 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+      background-color: #fff;
+      transition: background-color 0.2s;
+    }
+
+    .note-cell:hover {
+      background-color: #fef9c3;
+    }
+
+    /* MODAL (NOT DÜZENLEME KUTUSU) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      border: 2px solid var(--gold-accent);
+      border-radius: 8px;
+      width: 90%;
+      max-width: 450px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h3 {
+      color: var(--primary-navy);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .modal-content textarea {
+      width: 100%;
+      height: 100px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: var(--primary-navy); color: #fff; }
+    .btn-primary:hover { background: var(--secondary-navy); }
+    .btn-success { background: #16a34a; color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-warning { background: var(--gold-accent); color: #fff; }
+    .btn-warning:hover { background: #a17d1e; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+
+    /* BOTTOM CONTROLS */
+    .bottom-controls {
+      margin-top: 15px;
+      padding: 12px;
+      background: var(--light-gold);
+      border: 1px solid var(--gold-accent);
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* MOBİL PUNTO UYUMLULUĞU */
+    @media (max-width: 600px) {
+      body { padding: 4px; }
+      .container { padding: 6px; }
+      th, td { height: 24px; padding: 2px 1px; }
+      .btn { padding: 5px 8px; font-size: 0.75rem; }
+      .bottom-controls { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ÜST BAŞLIK & CANLI SAAT -->
+  <div class="header">
+    <h1>FETİHKENT İMAM HATİP ORTAOKULU</h1>
+    <div class="time-banner">
+      <div id="current-date">---</div>
+      <div class="clock" id="current-clock">00:00:00</div>
+      <div>
+        <span id="lesson-info">4. DERS (Bitişe: 14 Ddk 25 sn)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- SOL KOLON (NÖBETÇİ, BOŞ DERSLER, ÖĞRETMEN, SINIF) -->
+    <div class="left-column">
+      
+      <!-- 1. NÖBETÇİ ÖĞRETMENLER (YERLEŞİM) -->
+      <div class="section-title">NÖBETÇİ ÖĞRETMENLER</div>
+      <table>
+        <thead>
+          <tr>
+            <th>BAHÇE-1</th>
+            <th>BAHÇE-2</th>
+            <th>KANTİN</th>
+            <th>ZEMİN</th>
+            <th>1. KAT</th>
+            <th>2. KAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input class="cell-input" id="nobet-b1" value="KÜBRA ACABOĞA"></td>
+            <td><input class="cell-input" id="nobet-b2" value="MUHAMMET ALİ BALIKCI"></td>
+            <td><input class="cell-input" id="nobet-k" value="SERAP AKSU"></td>
+            <td><input class="cell-input" id="nobet-z" value="YUSUF VELET"></td>
+            <td><input class="cell-input" id="nobet-1k" value="SAMİ DURGUT"></td>
+            <td><input class="cell-input" id="nobet-2k" value="HİKMET ŞEYDA SAYGILI"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 2. NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI (İLK 3 KARAKTER GÖSTERİLİR) -->
+      <div class="section-title">NÖBETÇİ ÖĞRETMENLER DERS PROGRAMI</div>
+      <table id="nobetci-ders-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Öğretmen</th>
+            <th>1.D</th><th>2.D</th><th>3.D</th><th>4.D</th><th>5.D</th><th>6.D</th><th>7.D</th><th>8.D</th>
+          </tr>
+        </thead>
+        <tbody id="nobetci-body">
+          <!-- Manuel giriş için boş ve örnek satırlar -->
+        </tbody>
+      </table>
+
+      <!-- 3. BOŞ DERSLER (6 SATIR - İLK 3 KARAKTER GÖSTERİLİR) -->
+      <div class="section-title">BOŞ DERSLER</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">Öğretmen Adı</th>
+            <th>1.D</th><th>2.D</th><th>3.D</th><th>4.D</th><th>5.D</th><th>6.D</th><th>7.D</th><th>8.D</th>
+          </tr>
+        </thead>
+        <tbody id="bos-dersler-body">
+          <!-- JS ile 6 satır oluşturulur -->
+        </tbody>
+      </table>
+
+      <!-- 4. ÖĞRETMEN DERS PROGRAMI (İLK 3 KARAKTER GÖSTERİLİR) -->
+      <div class="section-title">ÖĞRETMEN DERS PROGRAMI</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">ÖĞRETMEN</th>
+            <th>1. DERS</th><th>2. DERS</th><th>3. DERS</th><th>4. DERS</th>
+            <th>5. DERS</th><th>6. DERS</th><th>7. DERS</th><th>8. DERS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select id="ogretmen-select" style="width:100%; border:none; background:transparent;" onchange="loadOgretmenProgram(this.value)">
+                <option value="">Öğretmen Seçiniz...</option>
+              </select>
+            </td>
+            <td id="ogrt-d1"></td><td id="ogrt-d2"></td><td id="ogrt-d3"></td><td id="ogrt-d4"></td>
+            <td id="ogrt-d5"></td><td id="ogrt-d6"></td><td id="ogrt-d7"></td><td id="ogrt-d8"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 5. SINIF DERS PROGRAMI (BÜTÜN BİLGİLER BİREBİR GÖSTERİLİR) -->
+      <div class="section-title">SINIF DERS PROGRAMI</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">SINIF ADI</th>
+            <th>1. DERS</th><th>2. DERS</th><th>3. DERS</th><th>4. DERS</th>
+            <th>5. DERS</th><th>6. DERS</th><th>7. DERS</th><th>8. DERS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select id="sinif-select" style="width:100%; border:none; background:transparent;" onchange="loadSinifProgram(this.value)">
+                <option value="">Sınıf Seçiniz...</option>
+              </select>
+            </td>
+            <td id="sinif-d1"></td><td id="sinif-d2"></td><td id="sinif-d3"></td><td id="sinif-d4"></td>
+            <td id="sinif-d5"></td><td id="sinif-d6"></td><td id="sinif-d7"></td><td id="sinif-d8"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- SAĞ KOLON (4. DERS SINIF LİSTESİ & NOTLAR) -->
+    <div class="right-column">
+      
+      <!-- 4. DERS BÖLÜMÜ (TAM BİLGİ GÖSTERİLİR) -->
+      <div class="section-title">4. DERS</div>
+      <table id="ders4-table">
+        <thead>
+          <tr>
+            <th style="width: 35%;">SINIF</th>
+            <th>DERS / ÖĞRETMEN</th>
+          </tr>
+        </thead>
+        <tbody id="ders4-body">
+          <!-- Excel veya dinamik veriden dolacak -->
+        </tbody>
+      </table>
+
+      <!-- NOTLAR BÖLÜMÜ -->
+      <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; padding: 4px 8px;">
+        <span>NOTLAR</span>
+        <button class="btn btn-warning" onclick="openNoteModal(null)" style="padding:2px 8px; font-size:0.75rem;">YENİ</button>
+      </div>
+      <table>
+        <tbody id="notlar-body">
+          <!-- Açılışta 1 tane boş hücre bulunur -->
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- EN ALTTA YER ALAN KONTROL VE GÜNCELLEME BUTONLARI -->
+  <div class="bottom-controls">
+    <div class="file-input-wrapper">
+      <label for="excel-file" class="btn btn-primary">Excel Dosyası Seç</label>
+      <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none;" onchange="handleFileUpload(event)">
+      <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
+    </div>
+
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
+      <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOT GİRİŞ / DÜZENLEME MODAL KUTUSU -->
+<div class="modal-overlay" id="note-modal">
+  <div class="modal-content">
+    <h3 id="modal-title">Not Gir/Düzenle</h3>
+    <textarea id="note-text" placeholder="Notunuzu buraya yazınız..."></textarea>
+    <div class="modal-buttons">
+      <button class="btn btn-success" onclick="saveNote()">Kaydet</button>
+      <button class="btn btn-warning" id="btn-edit" onclick="enableEditNote()">Düzenle</button>
+      <button class="btn btn-danger" id="btn-delete" onclick="deleteNote()">Sil</button>
+      <button class="btn btn-primary" onclick="closeNoteModal()" style="background:#6b7280;">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // VERİ DEPOLAMA (EXCEL'DEN VEYA DEMO'DAN GELECEK)
+  let excelData = {
+    ogretmenler: {},
+    siniflar: {},
+    ders4List: []
+  };
+
+  let notesList = [""]; // Açılışta 1 boş hücre bulunsun
+  let currentNoteIndex = null;
+
+  // CANLI SAAT VE TARİH
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('current-clock').innerText = now.toLocaleTimeString('tr-TR');
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    document.getElementById('current-date').innerText = now.toLocaleDateString('tr-TR', options);
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // YARDIMCI FONKSİYON: İLK 3 KARAKTERİ ALMA
+  function formatCellShort(text) {
+    if (!text) return "";
+    return text.toString().trim().substring(0, 3);
+  }
+
+  // AÇILIŞTA TABLOLARI OLUŞTURMA
+  window.onload = function() {
+    initNobetciTable();
+    initBosDerslerTable();
+    renderNotes();
+    loadDemoData();
+  };
+
+  // NÖBETÇİ ÖĞRETMENLER TABLOSU (6 SATIR - MANUEL VEYA OTOMATİK)
+  function initNobetciTable() {
+    const tbody = document.getElementById('nobetci-body');
+    tbody.innerHTML = '';
+    const initialTeachers = ["YUSUF VELET", "MUAMMER BOZER", "SAMİ DURGUT", "MEVLÜT TEKİN", "FATİH SOYYİĞİT", "HİKMET ŞEYDA SAYGILI"];
+    
+    initialTeachers.forEach((teacher, idx) => {
+      let tr = document.createElement('tr');
+      let html = `<td><input class="cell-input" value="${teacher}"></td>`;
+      for (let i = 1; i <= 8; i++) {
+        html += `<td id="nobet-t${idx}-d${i}"><input class="cell-input" placeholder=""></td>`;
+      }
+      tr.innerHTML = html;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // BOŞ DERSLER TABLOSU (6 SATIR)
+  function initBosDerslerTable() {
+    const tbody = document.getElementById('bos-dersler-body');
+    tbody.innerHTML = '';
+    for (let idx = 0; idx < 6; idx++) {
+      let tr = document.createElement('tr');
+      let html = `<td><input class="cell-input" placeholder="Öğretmen ismi..." onchange="onBosDersTeacherChange(this, ${idx})"></td>`;
+      for (let i = 1; i <= 8; i++) {
+        html += `<td id="bos-t${idx}-d${i}"></td>`;
+      }
+      tr.innerHTML = html;
+      tbody.appendChild(tr);
+    }
+  }
+
+  // BOŞ DERSLER İÇİN ÖĞRETMEN İSMİ GİRİLDİĞİNDE DERSLERİ GETİR (İLK 3 KARAKTER)
+  function onBosDersTeacherChange(input, rowIndex) {
+    const teacherName = input.value.trim().toUpperCase();
+    for (let d = 1; d <= 8; d++) {
+      const cell = document.getElementById(`bos-t${rowIndex}-d${d}`);
+      if (teacherName && excelData.ogretmenler[teacherName]) {
+        const fullLesson = excelData.ogretmenler[teacherName][d - 1] || "";
+        cell.innerText = formatCellShort(fullLesson);
+      } else {
+        cell.innerText = "";
+      }
+    }
+  }
+
+  // NOTLAR BÖLÜMÜ RENDER
+  function renderNotes() {
+    const tbody = document.getElementById('notlar-body');
+    tbody.innerHTML = '';
+    notesList.forEach((note, index) => {
+      let tr = document.createElement('tr');
+      let td = document.createElement('td');
+      td.className = 'note-cell';
+      td.innerText = note ? note.split('\n')[0] : ""; // Tek satır görünümü
+      td.onclick = () => openNoteModal(index);
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    });
+  }
+
+  // MODAL İŞLEMLERİ
+  function openNoteModal(index) {
+    currentNoteIndex = index;
+    const modal = document.getElementById('note-modal');
+    const textarea = document.getElementById('note-text');
+    
+    if (index === null) {
+      // YENİ BUTONUNA BASILDIĞINDA
+      textarea.value = "";
+      textarea.disabled = false;
+      document.getElementById('modal-title').innerText = "Yeni Not Ekle";
+    } else {
+      // VAR OLAN NOTA TIKLANDIĞINDA
+      textarea.value = notesList[index] || "";
+      textarea.disabled = false;
+      document.getElementById('modal-title').innerText = "Not Düzenle / İncele";
+    }
+    modal.style.display = 'flex';
+  }
+
+  function closeNoteModal() {
+    document.getElementById('note-modal').style.display = 'none';
+  }
+
+  function saveNote() {
+    const text = document.getElementById('note-text').value;
+    if (currentNoteIndex === null) {
+      // Yeni hücreye ekle ve listenin sonuna yeni boş bir alan ekle
+      if (notesList.length > 0 && notesList[notesList.length - 1] === "") {
+        notesList[notesList.length - 1] = text;
+      } else {
+        notesList.push(text);
+      }
+      notesList.push(""); // Yeni satır açılmaya devam etsin
+    } else {
+      notesList[currentNoteIndex] = text;
+    }
+    renderNotes();
+    closeNoteModal();
+  }
+
+  function enableEditNote() {
+    document.getElementById('note-text').disabled = false;
+    document.getElementById('note-text').focus();
+  }
+
+  function deleteNote() {
+    if (currentNoteIndex !== null) {
+      notesList.splice(currentNoteIndex, 1);
+      if (notesList.length === 0) notesList.push("");
+      renderNotes();
+      closeNoteModal();
+    }
+  }
+
+  // EXCEL YÜKLEME VE İŞLEME
+  function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('file-name').innerText = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const data = new Uint8Array(evt.target.result);
+      const workbook = XLSX.read(data, {type: 'array'});
+      
+      // İlk sayfayı oku
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      const json = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+      parseExcelData(json);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function parseExcelData(data) {
+    // Demo veya Excel formatına uygun şekilde Öğretmen/Sınıf programlarını ayıkla
+    excelData.ogretmenler = {};
+    excelData.siniflar = {};
+    excelData.ders4List = [];
+
+    // Örnek Excel okuma mantığı
+    data.forEach((row, rIdx) => {
+      if (rIdx < 1 || row.length === 0) return;
+      let key = row[0] ? row[0].toString().trim().toUpperCase() : "";
+      if (!key) return;
+
+      let lessons = row.slice(1, 9);
+
+      if (key.includes('/') || key.includes('SINIF')) {
+        excelData.siniflar[key] = lessons;
+      } else {
+        excelData.ogretmenler[key] = lessons;
+      }
+    });
+
+    populateSelects();
+    updateData();
+  }
+
+  function populateSelects() {
+    const ogrSelect = document.getElementById('ogretmen-select');
+    const sinifSelect = document.getElementById('sinif-select');
+
+    ogrSelect.innerHTML = '<option value="">Öğretmen Seçiniz...</option>';
+    sinifSelect.innerHTML = '<option value="">Sınıf Seçiniz...</option>';
+
+    Object.keys(excelData.ogretmenler).forEach(ogr => {
+      let opt = document.createElement('option');
+      opt.value = ogr;
+      opt.innerText = ogr;
+      ogrSelect.appendChild(opt);
+    });
+
+    Object.keys(excelData.siniflar).forEach(snf => {
+      let opt = document.createElement('option');
+      opt.value = snf;
+      opt.innerText = snf;
+      sinifSelect.appendChild(opt);
+    });
+  }
+
+  // ÖĞRETMEN PROGRAMI (İLK 3 KARAKTER)
+  function loadOgretmenProgram(teacher) {
+    const lessons = excelData.ogretmenler[teacher] || [];
+    for (let i = 1; i <= 8; i++) {
+      document.getElementById(`ogrt-d${i}`).innerText = formatCellShort(lessons[i - 1] || "");
+    }
+  }
+
+  // SINIF PROGRAMI (BÜTÜN BİLGİLER GÖSTERİLİR)
+  function loadSinifProgram(sinif) {
+    const lessons = excelData.siniflar[sinif] || [];
+    for (let i = 1; i <= 8; i++) {
+      document.getElementById(`sinif-d${i}`).innerText = lessons[i - 1] || ""; // Tam metin
+    }
+  }
+
+  // DERS 4 SAĞ TARAFTAKİ LİSTE (TAM BİLGİ GÖSTERİLİR)
+  function renderDers4Table() {
+    const tbody = document.getElementById('ders4-body');
+    tbody.innerHTML = '';
+
+    const sinifKeys = Object.keys(excelData.siniflar);
+    sinifKeys.forEach(sinif => {
+      let ders4Full = excelData.siniflar[sinif][3] || "---"; // 4. ders indeksi 3
+      let tr = document.createElement('tr');
+      tr.innerHTML = `<td class="bg-label">${sinif}</td><td>${ders4Full}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // GÜNCELLE BUTONUNA BASILDIĞINDA
+  function updateData() {
+    renderDers4Table();
+    
+    // Nöbetçi öğretmen ders programını güncelle (İlk 3 karakter)
+    const nobetciInputs = document.querySelectorAll('#nobetci-body tr');
+    nobetciInputs.forEach((row, idx) => {
+      const ogrNameInput = row.cells[0].querySelector('input');
+      if (ogrNameInput) {
+        const name = ogrNameInput.value.trim().toUpperCase();
+        const lessons = excelData.ogretmenler[name] || [];
+        for (let d = 1; d <= 8; d++) {
+          const cell = document.getElementById(`nobet-t${idx}-d${d}`);
+          if (cell) {
+            cell.innerHTML = `<input class="cell-input" value="${formatCellShort(lessons[d - 1] || '')}">`;
+          }
+        }
+      }
+    });
+
+    alert("Veriler ve ekran güncellendi.");
+  }
+
+  // MOCK DEMO VERİLERİ YÜKLE
+  function loadDemoData() {
+    excelData.ogretmenler = {
+      "MUAMMER BOZER": ["7/A MAT", "7/A MAT", "8/A FEN", "8/A FEN", "6/C DİN", "6/C DİN", "7/A İNG", "7/A İNG"],
+      "MEVLÜT TEKİN": ["6/D TÜRK", "5/A TÜRK", "", "8/A MAT", "6/C MAT", "6/C MAT", "7/A SOS", "7/A SOS"],
+      "FATİH SOYYİĞİT": ["5/A FEN", "8/A FEN", "8/A FEN", "", "", "7/A FEN", "7/A FEN", "7/A FEN"],
+      "SAMİ DURGUT": ["5/A MAT", "8/A MAT", "8/A MAT", "", "", "", "7/A MAT", "7/A MAT"]
+    };
+
+    excelData.siniflar = {
+      "5/A SINIFI": ["S SPOR İ.YAL", "MAT M.SER", "REHBER S.AKS", "S SPOR İ.YAL", "MAT S.KEL", "MAT M.SER", "FEN S.KOÇ", "REHBER Ş.POR"],
+      "5/B SINIFI": ["MAT M.SER", "TÜRK K.DEM", "FEN S.KOÇ", "MAT M.SER", "SİYER MD YARD", "İNG 78 ŞEYDA", "ARAP M.KAY", "TÜRK 78 A.ROZ"],
+      "6/A SINIFI": ["FEN S.KOÇ", "KURAN S.DUR", "MÜZİK A.ŞEN", "FEN S.KOÇ", "KURAN Y.VEL", "İNG 78 B.ORA", "SGÖRGÜ F.SOY", "MAT A.KOÇ"],
+      "7/A SINIFI": ["SİYER MD YARD", "İNG 78 ŞEYDA", "ARAP M.KAY", "SİYER MD YARD", "TÜRK 78 A.ROZ", "İNG 78 B.ORA", "SGÖRGÜ F.SOY", "MAT A.KOÇ"]
+    };
+
+    populateSelects();
+    renderDers4Table();
+  }
+</script>
+
+</body>
+</html>
