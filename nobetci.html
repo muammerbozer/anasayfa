@@ -343,6 +343,7 @@
       cursor: pointer;
       font-size: 0.8rem;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .btn-primary { background: var(--primary-navy); color: #fff; }
@@ -370,25 +371,22 @@
     }
     .btn-icon-cancel:hover { background: #b91c1c; }
 
-    /* İKİ SATIRLI BOTTOM CONTROLS MENÜSÜ */
+    /* MASAÜSTÜNDE TEK SATIR, MOBİLDE İKİ SATIR SAĞA YASLI ALT MENÜ */
     .bottom-controls {
       margin-top: 10px;
-      padding: 10px;
+      padding: 8px 12px;
       background: var(--light-gold);
       border: 1px solid var(--gold-accent);
       border-radius: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
       width: 100%;
     }
 
-    .bottom-controls-row {
+    .bottom-controls-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       width: 100%;
     }
 
@@ -398,13 +396,35 @@
       gap: 6px;
     }
 
-    /* MOBİL PUNTO UYUMLULUĞU */
-    @media (max-width: 600px) {
+    .controls-right-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* MOBİL DÜZENİ (768px VE ALTI): İKİ SATIR VE SAĞA YASLI */
+    @media (max-width: 768px) {
       body { padding: 4px; }
       .container { padding: 5px; }
       th, td { height: 20px; padding: 1px 1px; }
-      .btn { padding: 4px 6px; font-size: 0.7rem; }
-      .bottom-controls-row { flex-direction: column; align-items: stretch; }
+      .btn { padding: 4px 8px; font-size: 0.72rem; }
+
+      .bottom-controls-container {
+        flex-direction: column;
+        align-items: flex-end; /* Sağ taraf uyumluluğu */
+        gap: 8px;
+      }
+
+      .file-input-wrapper {
+        width: 100%;
+        justify-content: flex-end; /* Mobil 1. satır sağa yaslı */
+      }
+
+      .controls-right-group {
+        width: 100%;
+        justify-content: flex-end; /* Mobil 2. satır sağa yaslı */
+      }
     }
   </style>
 </head>
@@ -594,37 +614,37 @@
     </div>
   </div>
 
-  <!-- EN ALTTA YER ALAN İKİ SATIRLI KONTROL VE YEDEKLEME MENÜSÜ -->
+  <!-- EN ALTTA YER ALAN KONTROL VE YEDEKLEME MENÜSÜ -->
   <div class="bottom-controls">
-    <!-- 1. SATIR: EXCEL SEÇ - YEDEKLE - YEDEK YÜKLE - TARİH/GÜN SEÇİMİ -->
-    <div class="bottom-controls-row">
+    <div class="bottom-controls-container">
+      <!-- MASAÜSTÜNDE TEK SATIRDA SOLDAN BAŞLAYAN EXCEL DOSYA SEÇİMİ -->
       <div class="file-input-wrapper">
         <label for="excel-file" class="btn btn-primary">Excel Dosyası Seç</label>
         <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none;" onchange="handleFileUpload(event)">
         <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
       </div>
 
-      <button class="btn btn-warning" onclick="downloadBackup()" title="Yedek dosyasını indir">YEDEKLE</button>
+      <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SAĞA YASLI BUTONLAR -->
+      <div class="controls-right-group">
+        <button class="btn btn-warning" onclick="downloadBackup()" title="Yedek dosyasını indir">YEDEKLE</button>
 
-      <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Drive'dan yüklemek için yedek seç">
-        YEDEK YÜKLE
-      </label>
-      <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+        <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Drive'dan yüklemek için yedek seç">
+          YEDEK YÜKLE
+        </label>
+        <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
 
-      <select id="gun-select" onchange="updateData(true)" style="padding:6px;border-radius:4px;border:1px solid var(--primary-navy)">
-        <option value="">Bugün</option>
-        <option value="0">Pazartesi</option>
-        <option value="1">Salı</option>
-        <option value="2">Çarşamba</option>
-        <option value="3">Perşembe</option>
-        <option value="4">Cuma</option>
-      </select>
-    </div>
+        <select id="gun-select" onchange="updateData(true)" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
+          <option value="">Bugün</option>
+          <option value="0">Pazartesi</option>
+          <option value="1">Salı</option>
+          <option value="2">Çarşamba</option>
+          <option value="3">Perşembe</option>
+          <option value="4">Cuma</option>
+        </select>
 
-    <!-- 2. SATIR: GÜNCELLE VE YENİ NOT EKLENİR -->
-    <div class="bottom-controls-row" style="justify-content: flex-end; border-top: 1px dashed #c59b27; padding-top: 6px;">
-      <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
-      <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
+        <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
+        <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1011,7 +1031,6 @@
   }
 
   function cancelCloseModal() {
-    // X veya Kapat'a basıldığında kırmızı/pembe ton yap ve kapat
     const text = document.getElementById('note-text').value;
     if (text.trim() !== '') {
       markNoteStatus('incomplete');
