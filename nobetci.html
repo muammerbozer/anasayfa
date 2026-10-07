@@ -233,11 +233,17 @@
       font-weight: 800 !important;
     }
 
-    /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ */
+    /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ & SARI ARKA PLAN DÜZENLEMESİ */
     .manual-input-red {
       font-size: 1.28em !important;
       font-weight: 800 !important;
-      color: #dc2626 !important;
+      color: #000000 !important; /* Yazı siyah */
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+    }
+
+    .manual-input-red.has-text {
+      background-color: #fef08a !important; /* Dolu hücre sarı */
     }
 
     /* EDITABLE / INPUT CELLS */
@@ -254,10 +260,9 @@
 
     input.cell-input:focus, select.cell-select:focus {
       outline: 2px solid var(--gold-accent);
-      background-color: #fffde7;
     }
 
-    /* NOTLAR BÖLÜMÜ STİLLERİ VE DURUM RENKLERİ */
+    /* NOTLAR BÖLÜMÜ STİLLERİ (PC'DE %20 KÜÇÜLTÜLDÜ) */
     .note-cell {
       cursor: pointer;
       text-align: left;
@@ -268,7 +273,7 @@
       max-width: 250px;
       background-color: #fff;
       transition: background-color 0.2s;
-      font-size: 1.04rem !important;
+      font-size: 0.83rem !important;
       font-weight: 600;
     }
 
@@ -371,7 +376,7 @@
     }
     .btn-icon-cancel:hover { background: #b91c1c; }
 
-    /* MASAÜSTÜNDE TEK SATIR, MOBİLDE İKİ SATIR SAĞA YASLI ALT MENÜ */
+    /* MASAÜSTÜNDE TEK SATIR VE TÜM ÖĞELER SOLA YASLI ALT MENÜ */
     .bottom-controls {
       margin-top: 10px;
       padding: 8px 12px;
@@ -385,7 +390,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       width: 100%;
     }
@@ -401,29 +406,38 @@
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+      justify-content: flex-start;
     }
 
-    /* MOBİL DÜZENİ (768px VE ALTI): İKİ SATIR VE SAĞA YASLI */
+    /* MOBİL DÜZENİ (768px VE ALTI) */
     @media (max-width: 768px) {
       body { padding: 4px; }
       .container { padding: 5px; }
-      th, td { height: 20px; padding: 1px 1px; }
+      th, td { height: auto; min-height: 22px; padding: 2px 1px; }
       .btn { padding: 4px 8px; font-size: 0.72rem; }
+
+      /* Nöbetçi öğretmen isimlerinin mobilde 2 satır olması */
+      .teacher-name-cell, td.teacher-name-cell {
+        white-space: normal !important;
+        word-break: break-word;
+        line-height: 1.15;
+        font-size: 0.95em !important;
+      }
 
       .bottom-controls-container {
         flex-direction: column;
-        align-items: flex-end; /* Sağ taraf uyumluluğu */
+        align-items: flex-start;
         gap: 8px;
       }
 
       .file-input-wrapper {
         width: 100%;
-        justify-content: flex-end; /* Mobil 1. satır sağa yaslı */
+        justify-content: flex-start;
       }
 
       .controls-right-group {
         width: 100%;
-        justify-content: flex-end; /* Mobil 2. satır sağa yaslı */
+        justify-content: flex-start;
       }
     }
   </style>
@@ -614,7 +628,7 @@
     </div>
   </div>
 
-  <!-- EN ALTTA YER ALAN KONTROL VE YEDEKLEME MENÜSÜ -->
+  <!-- EN ALTTA YER ALAN SOLA YASLI KONTROL MENÜSÜ -->
   <div class="bottom-controls">
     <div class="bottom-controls-container">
       <!-- MASAÜSTÜNDE TEK SATIRDA SOLDAN BAŞLAYAN EXCEL DOSYA SEÇİMİ -->
@@ -624,7 +638,7 @@
         <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
       </div>
 
-      <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SAĞA YASLI BUTONLAR -->
+      <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SOLA YASLI BUTONLAR -->
       <div class="controls-right-group">
         <button class="btn btn-warning" onclick="downloadBackup()" title="Yedek dosyasını indir">YEDEKLE</button>
 
@@ -643,7 +657,6 @@
         </select>
 
         <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
-        <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
       </div>
     </div>
   </div>
@@ -656,7 +669,7 @@
     <textarea id="note-text" placeholder="Notunuzu buraya yazınız..."></textarea>
     <div class="modal-buttons">
       <!-- DÜĞMELERİN BAŞ TARAFINDA TİK VE X İŞARETLERİ -->
-      <button class="btn btn-icon-check" onclick="markNoteStatus('done')" title="Tamamlandı (Mavi Mavi)">✔</button>
+      <button class="btn btn-icon-check" onclick="markNoteStatus('done')" title="Tamamlandı (Mavi)">✔</button>
       <button class="btn btn-icon-cancel" onclick="markNoteStatus('incomplete')" title="Tamamlanmadı (Kırmızı)">✖</button>
       
       <button class="btn btn-success" onclick="saveNote()">Kaydet</button>
@@ -875,10 +888,50 @@
     initBosDerslerTable();
     renderNotes();
     ROSTER_IDS.forEach(id => $(id).addEventListener('input', renderNobetci));
+    
+    // Elle giriş takibi ve SARI arka plan güncellemesi
     document.addEventListener('input', e => {
       const k = e.target.dataset && e.target.dataset.m;
-      if (k) { manual[k] = e.target.value; store.set('nobet1_m', manual); }
+      if (k) { 
+        manual[k] = e.target.value; 
+        store.set('nobet1_m', manual); 
+        
+        if (e.target.value.trim() !== '') {
+          e.target.classList.add('has-text');
+        } else {
+          e.target.classList.remove('has-text');
+        }
+      }
     });
+
+    // Enter tuşu ile sonraki hücreye geçiş ve Seçme / Silme İşlemleri
+    document.addEventListener('keydown', e => {
+      const input = e.target;
+      if (input && input.dataset && input.dataset.m) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const allInputs = Array.from(document.querySelectorAll('input.manual-input-red'));
+          const currIdx = allInputs.indexOf(input);
+          if (currIdx > -1 && currIdx < allInputs.length - 1) {
+            allInputs[currIdx + 1].focus();
+            allInputs[currIdx + 1].select();
+          }
+        } else if (e.key === 'Backspace' || e.key === 'Delete') {
+          if (input.selectionStart === 0 && input.selectionEnd === input.value.length) {
+            input.value = '';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }
+      }
+    });
+
+    // Hücreye gelindiğinde içeriğin otomatik tümünün seçilmesi
+    document.addEventListener('focusin', e => {
+      if (e.target && e.target.dataset && e.target.dataset.m) {
+        setTimeout(() => e.target.select(), 10);
+      }
+    });
+
     loadData();
     updateClockAndStatus();
   };
@@ -936,7 +989,9 @@
       
       h += '</tr><tr>';
       for (let d = 0; d < 8; d++) {
-        h += `<td class="col-lesson"><input class="cell-input manual-input-red" data-m="${dt}|${i}|${d}" value="${esc(manual[dt + '|' + i + '|' + d] || '')}"></td>`;
+        const val = manual[dt + '|' + i + '|' + d] || '';
+        const hasTextClass = val.trim() !== '' ? 'has-text' : '';
+        h += `<td class="col-lesson"><input class="cell-input manual-input-red ${hasTextClass}" data-m="${dt}|${i}|${d}" value="${esc(val)}"></td>`;
       }
       h += '</tr>';
     });
@@ -947,7 +1002,7 @@
     const tbody = $('bos-dersler-body');
     let h = '';
     for (let idx = 0; idx < 6; idx++) {
-      h += `<tr><td class="col-teacher">
+      h += `<tr><td class="col-teacher teacher-name-cell">
         <select class="cell-select teacher-name-cell" id="bos-n${idx}" onchange="onBosDersTeacherChange(this, ${idx})">
           <option value="">Öğretmen Seçiniz...</option>
         </select>
