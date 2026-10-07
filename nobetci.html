@@ -207,7 +207,7 @@
       font-weight: 700 !important;
     }
 
-    /* SINIF DERS PROGRAMI BÖLÜMÜNDEKİ SINIF İSMİ (2 KAT BÜYÜK) */
+    /* SINIF DERS PROGRAMI BÖLÜMÜNDEKİ SINIF İSMİ */
     .sinif-select-large {
       font-size: 1.7em !important;
       font-weight: 800 !important;
@@ -215,10 +215,12 @@
       text-align: center;
     }
 
-    /* SAĞ TARAF CANLI DERS BÖLÜMÜ METİNLERİ (%30 KÜÇÜLTÜLDÜ) */
+    /* SAĞ TARAF CANLI DERS BÖLÜMÜ METİNLERİ (SOLA YASLI) */
     .current-lesson-text {
       font-size: 1.05em !important;
       font-weight: 700 !important;
+      text-align: left !important;
+      padding-left: 8px !important;
     }
 
     /* NÖBETÇİ ÖĞRETMENLER TABLO SÜTUN GENİŞLİKLERİ */
@@ -231,7 +233,7 @@
       font-weight: 800 !important;
     }
 
-    /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ (BOLD - KIRMIZI - ÜST KADAR BÜYÜK) */
+    /* NÖBETÇİ ELLE GİRİLEN SINIF İSİMLERİ */
     .manual-input-red {
       font-size: 1.28em !important;
       font-weight: 800 !important;
@@ -255,7 +257,7 @@
       background-color: #fffde7;
     }
 
-    /* NOTLAR BÖLÜMÜ (YÜZDE 30 BÜYÜTÜLDÜ) */
+    /* NOTLAR BÖLÜMÜ STİLLERİ VE DURUM RENKLERİ */
     .note-cell {
       cursor: pointer;
       text-align: left;
@@ -270,11 +272,23 @@
       font-weight: 600;
     }
 
-    .note-cell:hover {
-      background-color: #fef9c3;
+    /* Tamamlandı (Hafif Mavi) */
+    .note-cell.status-done {
+      background-color: #eff6ff !important;
+      color: #1e40af;
     }
 
-    /* MODAL (YÜZDE 30 BÜYÜTÜLDÜ) */
+    /* Tamamlanmadı / Kapatıldı (Hafif Kırmızı) */
+    .note-cell.status-incomplete {
+      background-color: #fef2f2 !important;
+      color: #991b1b;
+    }
+
+    .note-cell:hover {
+      opacity: 0.85;
+    }
+
+    /* MODAL STİLLERİ */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -290,7 +304,7 @@
       border: 2px solid var(--gold-accent);
       border-radius: 8px;
       width: 90%;
-      max-width: 450px;
+      max-width: 480px;
       padding: 14px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
@@ -303,8 +317,8 @@
 
     .modal-content textarea {
       width: 100%;
-      height: 90px;
-      padding: 6px;
+      height: 95px;
+      padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
       resize: vertical;
@@ -316,6 +330,8 @@
       display: flex;
       gap: 6px;
       justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     /* BUTTONS */
@@ -338,7 +354,23 @@
     .btn-danger { background: #dc2626; color: #fff; }
     .btn-danger:hover { background: #b91c1c; }
 
-    /* BOTTOM CONTROLS */
+    .btn-icon-check {
+      background: #2563eb;
+      color: #fff;
+      font-size: 1rem;
+      padding: 3px 10px;
+    }
+    .btn-icon-check:hover { background: #1d4ed8; }
+
+    .btn-icon-cancel {
+      background: #dc2626;
+      color: #fff;
+      font-size: 1rem;
+      padding: 3px 10px;
+    }
+    .btn-icon-cancel:hover { background: #b91c1c; }
+
+    /* İKİ SATIRLI BOTTOM CONTROLS MENÜSÜ */
     .bottom-controls {
       margin-top: 10px;
       padding: 10px;
@@ -346,10 +378,18 @@
       border: 1px solid var(--gold-accent);
       border-radius: 6px;
       display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .bottom-controls-row {
+      display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
 
     .file-input-wrapper {
@@ -364,7 +404,7 @@
       .container { padding: 5px; }
       th, td { height: 20px; padding: 1px 1px; }
       .btn { padding: 4px 6px; font-size: 0.7rem; }
-      .bottom-controls { flex-direction: column; align-items: stretch; }
+      .bottom-controls-row { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
@@ -438,7 +478,7 @@
           </tr>
         </thead>
         <tbody id="nobetci-body">
-          <!-- JS ile yuklenir -->
+          <!-- JS ile yüklenir -->
         </tbody>
       </table>
 
@@ -459,7 +499,7 @@
           </tr>
         </thead>
         <tbody id="bos-dersler-body">
-          <!-- JS ile yuklenir -->
+          <!-- JS ile yüklenir -->
         </tbody>
       </table>
 
@@ -526,13 +566,13 @@
     <!-- SAĞ KOLON (ANLIK DERS PROGRAMI & NOTLAR) -->
     <div class="right-column">
       
-      <!-- SAAT HANGİ DERSİ GÖSTERİYORSA O ANKİ DERS SAATİ -->
+      <!-- SAAT HANGİ DERSİ GÖSTERİYORSA O ANKİ DERS SAATİ (SOLA YASLI) -->
       <div class="section-title" id="current-lesson-header">DERS SAATİ</div>
       <table id="ders-dynamic-table">
         <thead>
           <tr>
-            <th style="width: 35%;" class="current-lesson-text">SINIF</th>
-            <th class="current-lesson-text">DERS / ÖĞRETMEN</th>
+            <th style="width: 35%; text-align: left; padding-left: 8px;" class="current-lesson-text">SINIF</th>
+            <th style="text-align: left; padding-left: 8px;" class="current-lesson-text">DERS / ÖĞRETMEN</th>
           </tr>
         </thead>
         <tbody id="ders-dynamic-body">
@@ -547,22 +587,30 @@
       </div>
       <table>
         <tbody id="notlar-body">
-          <!-- Açılışta 1 boş hücre -->
+          <!-- Dinamik Notlar -->
         </tbody>
       </table>
 
     </div>
   </div>
 
-  <!-- EN ALTTA YER ALAN KONTROL VE GÜNCELLEME BUTONLARI -->
+  <!-- EN ALTTA YER ALAN İKİ SATIRLI KONTROL VE YEDEKLEME MENÜSÜ -->
   <div class="bottom-controls">
-    <div class="file-input-wrapper">
-      <label for="excel-file" class="btn btn-primary">Excel Dosyası Seç</label>
-      <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none;" onchange="handleFileUpload(event)">
-      <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
-    </div>
+    <!-- 1. SATIR: EXCEL SEÇ - YEDEKLE - YEDEK YÜKLE - TARİH/GÜN SEÇİMİ -->
+    <div class="bottom-controls-row">
+      <div class="file-input-wrapper">
+        <label for="excel-file" class="btn btn-primary">Excel Dosyası Seç</label>
+        <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none;" onchange="handleFileUpload(event)">
+        <span id="file-name" style="font-size:0.8rem; color:#555;">Dosya seçilmedi</span>
+      </div>
 
-    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+      <button class="btn btn-warning" onclick="downloadBackup()" title="Yedek dosyasını indir">YEDEKLE</button>
+
+      <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Drive'dan yüklemek için yedek seç">
+        YEDEK YÜKLE
+      </label>
+      <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+
       <select id="gun-select" onchange="updateData(true)" style="padding:6px;border-radius:4px;border:1px solid var(--primary-navy)">
         <option value="">Bugün</option>
         <option value="0">Pazartesi</option>
@@ -571,15 +619,10 @@
         <option value="3">Perşembe</option>
         <option value="4">Cuma</option>
       </select>
-      
-      <!-- YEDEKLEME VE BİLGİ YÜKLEME BUTONLARI -->
-      <button class="btn btn-warning" onclick="downloadBackup()" title="Tüm verileri indir">YEDEKLE</button>
-      
-      <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Yedek dosyasını yükle">
-        YEDEK YÜKLE
-      </label>
-      <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+    </div>
 
+    <!-- 2. SATIR: GÜNCELLE VE YENİ NOT EKLENİR -->
+    <div class="bottom-controls-row" style="justify-content: flex-end; border-top: 1px dashed #c59b27; padding-top: 6px;">
       <button class="btn btn-success" onclick="updateData()">GÜNCELLE</button>
       <button class="btn btn-primary" onclick="openNoteModal(null)">YENİ NOT EKLENİR</button>
     </div>
@@ -592,17 +635,21 @@
     <h3 id="modal-title">Not Gir/Düzenle</h3>
     <textarea id="note-text" placeholder="Notunuzu buraya yazınız..."></textarea>
     <div class="modal-buttons">
+      <!-- DÜĞMELERİN BAŞ TARAFINDA TİK VE X İŞARETLERİ -->
+      <button class="btn btn-icon-check" onclick="markNoteStatus('done')" title="Tamamlandı (Mavi Mavi)">✔</button>
+      <button class="btn btn-icon-cancel" onclick="markNoteStatus('incomplete')" title="Tamamlanmadı (Kırmızı)">✖</button>
+      
       <button class="btn btn-success" onclick="saveNote()">Kaydet</button>
       <button class="btn btn-warning" id="btn-edit" onclick="enableEditNote()">Düzenle</button>
       <button class="btn btn-danger" id="btn-delete" onclick="deleteNote()">Sil</button>
-      <button class="btn btn-primary" onclick="closeNoteModal()" style="background:#6b7280;">Kapat</button>
+      <button class="btn btn-primary" onclick="cancelCloseModal()" style="background:#6b7280;">Kapat</button>
     </div>
   </div>
 </div>
 
 <script>
   let excelData = { ogretmenler: {}, siniflar: {}, nobet: {} };
-  let notesList = [""];
+  let notesList = []; // Yapı: { text: "...", status: "done" | "incomplete" | "normal" }
   let currentNoteIndex = null;
   let activeLessonIndex = 3;
 
@@ -662,7 +709,6 @@
     const schedule = (curDay === 5) ? LESSON_SCHEDULES.cuma : LESSON_SCHEDULES.normal;
     
     let activeSlot = null;
-    let nextSlot = null;
 
     for (let i = 0; i < schedule.length; i++) {
       const startM = timeToMin(schedule[i].start);
@@ -671,9 +717,6 @@
       if (curMin >= startM && curMin < endM) {
         activeSlot = schedule[i];
         break;
-      }
-      if (curMin < startM && !nextSlot) {
-        nextSlot = schedule[i];
       }
     }
 
@@ -710,7 +753,7 @@
       activeLessonIndex = 0;
     } else {
       titleEl.innerText = "DERSLER BİTTİ";
-      subEl.innerText = "Yarın görüşmek üzere. Başlangıç — Bitiş —";
+      subEl.innerText = "Yarın görüşmek üzere.";
       progressEl.style.width = '100%';
       activeLessonIndex = schedule[schedule.length - 1].lessonIndex;
     }
@@ -731,7 +774,13 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const norm = s => String(s || '').toLocaleUpperCase('tr').replace(/\s+/g, ' ').trim();
   const ROSTER_IDS = ['nobet-b1','nobet-b2','nobet-k','nobet-z','nobet-1k','nobet-2k'];
-  const ALIAS = {'MUAMMER BOZER':'MÜDÜR YARDIMCISI','F. SOYYİĞİT':'FATİH SOYYİĞİT'};
+  
+  /* MUAMMER BOZER KADRO / UNVAN EŞLEŞTİRMESİ DÜZELTİLDİ */
+  const ALIAS = {
+    'MUAMMER BOZER': 'MÜDÜR YARDIMCISI',
+    'MÜDÜR YARDIMCISI': 'MUAMMER BOZER',
+    'F. SOYYİĞİT': 'FATİH SOYYİĞİT'
+  };
 
   const store = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } },
@@ -749,13 +798,33 @@
     return d[b.length];
   }
 
+  /* GELİŞMİŞ ÖĞRETMEN ARAMA VE SORGULAMA */
   function findTeacher(q) {
-    q = norm(q); if (!q) return null; q = ALIAS[q] || q;
+    let queryNorm = norm(q); 
+    if (!queryNorm) return null;
+    
     const names = Object.keys(excelData.ogretmenler);
-    if (excelData.ogretmenler[q]) return q;
-    if (q.length > 2) { const m = names.filter(n => n.includes(q)); if (m.length === 1) return m[0]; }
+    
+    // Direct match
+    if (excelData.ogretmenler[queryNorm]) return queryNorm;
+    
+    // Alias match
+    if (ALIAS[queryNorm] && excelData.ogretmenler[ALIAS[queryNorm]]) {
+      return ALIAS[queryNorm];
+    }
+    
+    // Contains match
+    if (queryNorm.length > 2) { 
+      const m = names.filter(n => n.includes(queryNorm) || queryNorm.includes(n)); 
+      if (m.length >= 1) return m[0]; 
+    }
+    
+    // Levenshtein fuzzy match
     let best = null, bd = 3;
-    names.forEach(n => { const d = lev(n, q); if (d < bd) { bd = d; best = n; } });
+    names.forEach(n => { 
+      const d = lev(n, queryNorm); 
+      if (d < bd) { bd = d; best = n; } 
+    });
     return best;
   }
 
@@ -777,7 +846,12 @@
   const fullLine = s => String(s || '').replace(/\s*\n\s*/g, ' ').trim();
 
   window.onload = function() {
-    notesList = store.get('nobet1_notes', [""]);
+    const savedNotes = store.get('nobet1_notes_v2', null);
+    if (savedNotes) {
+      notesList = savedNotes;
+    } else {
+      notesList = [{ text: "", status: "normal" }];
+    }
     initBosDerslerTable();
     renderNotes();
     ROSTER_IDS.forEach(id => $(id).addEventListener('input', renderNobetci));
@@ -792,8 +866,19 @@
   function buildData(o, s, n) {
     const grid = r => [0,1,2,3,4].map(d => [1,2,3,4,5,6,7,8].map(p => { const v = r[2 + d*8 + p]; return v == null ? '' : String(v).trim(); }));
     excelData.ogretmenler = {}; excelData.siniflar = {}; excelData.nobet = {};
-    o.slice(3).forEach(r => { if (r[1]) excelData.ogretmenler[norm(r[1])] = grid(r); });
-    s.slice(3).forEach(r => { if (r[1]) excelData.siniflar[String(r[1]).trim()] = grid(r); });
+    
+    o.slice(1).forEach(r => { 
+      if (r[1] && norm(r[1]) !== '') {
+        excelData.ogretmenler[norm(r[1])] = grid(r); 
+      }
+    });
+    
+    s.slice(1).forEach(r => { 
+      if (r[1] && String(r[1]).trim() !== '') {
+        excelData.siniflar[String(r[1]).trim()] = grid(r); 
+      }
+    });
+
     let prev = null;
     n.slice(1).forEach(r => {
       let d;
@@ -869,14 +954,20 @@
     fillBos(rowIndex);
   }
 
+  /* NOTLARI LİSTELEME VE DURUM RENKLENDİRMESİ */
   function renderNotes() {
     const tbody = document.getElementById('notlar-body');
     tbody.innerHTML = '';
-    notesList.forEach((note, index) => {
+    notesList.forEach((noteObj, index) => {
       let tr = document.createElement('tr');
       let td = document.createElement('td');
-      td.className = 'note-cell';
-      td.innerText = note ? note.split('\n')[0] : "";
+      
+      let statusClass = '';
+      if (noteObj.status === 'done') statusClass = 'status-done';
+      else if (noteObj.status === 'incomplete') statusClass = 'status-incomplete';
+
+      td.className = `note-cell ${statusClass}`;
+      td.innerText = noteObj.text ? noteObj.text.split('\n')[0] : "";
       td.onclick = () => openNoteModal(index);
       tr.appendChild(td);
       tbody.appendChild(tr);
@@ -887,12 +978,14 @@
     currentNoteIndex = index;
     const modal = document.getElementById('note-modal');
     const textarea = document.getElementById('note-text');
+    
     if (index === null) {
       textarea.value = "";
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Yeni Not Ekle";
     } else {
-      textarea.value = notesList[index] || "";
+      const item = notesList[index];
+      textarea.value = item ? item.text : "";
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Not Düzenle / İncele";
     }
@@ -903,19 +996,38 @@
     document.getElementById('note-modal').style.display = 'none';
   }
 
+  /* TİK / X İŞARETLERİ İLE RENK DEĞİŞİMİ */
+  function markNoteStatus(status) {
+    const text = document.getElementById('note-text').value;
+    if (currentNoteIndex === null) {
+      notesList.push({ text: text, status: status });
+    } else {
+      notesList[currentNoteIndex].text = text;
+      notesList[currentNoteIndex].status = status;
+    }
+    store.set('nobet1_notes_v2', notesList);
+    renderNotes();
+    closeNoteModal();
+  }
+
+  function cancelCloseModal() {
+    // X veya Kapat'a basıldığında kırmızı/pembe ton yap ve kapat
+    const text = document.getElementById('note-text').value;
+    if (text.trim() !== '') {
+      markNoteStatus('incomplete');
+    } else {
+      closeNoteModal();
+    }
+  }
+
   function saveNote() {
     const text = document.getElementById('note-text').value;
     if (currentNoteIndex === null) {
-      if (notesList.length > 0 && notesList[notesList.length - 1] === "") {
-        notesList[notesList.length - 1] = text;
-      } else {
-        notesList.push(text);
-      }
-      notesList.push("");
+      notesList.push({ text: text, status: "normal" });
     } else {
-      notesList[currentNoteIndex] = text;
+      notesList[currentNoteIndex].text = text;
     }
-    store.set('nobet1_notes', notesList);
+    store.set('nobet1_notes_v2', notesList);
     renderNotes();
     closeNoteModal();
   }
@@ -928,32 +1040,42 @@
   function deleteNote() {
     if (currentNoteIndex !== null) {
       notesList.splice(currentNoteIndex, 1);
-      if (notesList.length === 0) notesList.push("");
-      store.set('nobet1_notes', notesList);
+      store.set('nobet1_notes_v2', notesList);
       renderNotes();
       closeNoteModal();
     }
   }
 
-  /* YEDEKLEME İŞLEMLERİ (JSON İNDİRME VE YÜKLEME) */
+  /* DRIVE YEDEKLEME: YIL_AY_GÜN_SAAT FORMATINDA YEDEKLEME */
   function downloadBackup() {
+    const now = new Date();
+    const YYYY = now.getFullYear();
+    const MM = String(now.getMonth() + 1).padStart(2, '0');
+    const DD = String(now.getDate()).padStart(2, '0');
+    const HH = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    
+    const fileName = `yedek_${YYYY}_${MM}_${DD}_${HH}${mm}.json`;
+
     const backupData = {
       excel_data: store.get('nobet1_d', null),
       manual_inputs: store.get('nobet1_m', {}),
       bos_dersler: store.get('nobet1_b', Array(6).fill("")),
-      notes: store.get('nobet1_notes', [""]),
-      export_date: new Date().toISOString()
+      notes: store.get('nobet1_notes_v2', []),
+      export_date: now.toISOString()
     };
 
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
     const downloadAnchor = document.createElement('a');
-    const today = new Date().toISOString().slice(0, 10);
     
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `Okul_Panosu_Yedek_${today}.json`);
+    downloadAnchor.setAttribute("download", fileName);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
+
+    alert(`"${fileName}" dosyası indirildi.\n\nSimdi Google Drive'a yönlendiriliyorsunuz. Lütfen indirilen yedek dosyasını Drive'ınıza yükleyin.`);
+    window.open("https://drive.google.com/drive/my-drive", "_blank");
   }
 
   function restoreBackup(e) {
@@ -968,11 +1090,11 @@
         if (data.excel_data) store.set('nobet1_d', data.excel_data);
         if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
         if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
-        if (data.notes) { notesList = data.notes; store.set('nobet1_notes', notesList); }
+        if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
 
         loadData();
         renderNotes();
-        alert('Yedek başarıyla yüklendi ve tüm veriler güncellendi.');
+        alert('Yedek dosyası başarıyla yüklendi ve tüm veriler güncellendi.');
       } catch (err) {
         alert('Geçersiz yedek dosyası! Lütfen doğru JSON yedek dosyasını seçtiğinizden emin olun.');
       }
@@ -997,9 +1119,9 @@
         store.set('nobet1_d', d);
         populateSelects();
         updateData(true);
-        alert('Excel bilgileri güncellendi.');
+        alert('Excel bilgileri başarıyla okundu ve güncellendi.');
       } catch (err) {
-        alert('Excel okunamadı. "Öğretmenler", "Sınıflar" ve "nöbet" sayfaları gerekli.');
+        alert('Excel okunamadı. "Öğretmenler", "Sınıflar" ve "nöbet" sayfaları gereklidir.');
       }
     };
     reader.readAsArrayBuffer(file);
@@ -1008,7 +1130,7 @@
 
   function populateSelects() {
     const ogrSelect = $('ogretmen-select'), sinifSelect =$('sinif-select');
-    const teachersList = Object.keys(excelData.ogretmenler);
+    const teachersList = Object.keys(excelData.ogretmenler).sort();
     
     const oVal = ogrSelect.value;
     ogrSelect.innerHTML = '<option value="">Öğretmen Seçiniz...</option>' + teachersList.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
@@ -1045,11 +1167,12 @@
     }
   }
 
+  /* ANLIK DERS PROGRAMI LİSTESİ (SOLA YASLI) */
   function renderDynamicLessonTable() {
     const di = dayIdx();
     const lessonNum = activeLessonIndex + 1;
     
-    $('current-lesson-header').innerText = `${lessonNum}. Ders saati`;
+    $('current-lesson-header').innerText = `${lessonNum}. Ders Saati`;
     
     $('ders-dynamic-body').innerHTML = Object.keys(excelData.siniflar).map(c => {
       const lessonInfo = excelData.siniflar[c][di][activeLessonIndex] || "";
