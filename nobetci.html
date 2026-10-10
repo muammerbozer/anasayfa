@@ -527,6 +527,24 @@
     @media (max-width: 768px) {
       #cal-modal .cal-item textarea { font-size: 1.02rem !important; }
     }
+    /* Madde başına kırmızı X / yeşil tik */
+    .cal-item-btn {
+      flex: 0 0 auto;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 4px 9px;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: opacity 0.15s;
+    }
+    .cal-item-no { background: #dc2626; }
+    .cal-item-ok { background: #22c55e; }
+    .cal-item.st-incomplete .cal-item-no, .cal-item.st-done .cal-item-ok { opacity: 1; }
+    .cal-item.st-done textarea { background: #dcfce7; border-color: #16a34a; }
+    .cal-item.st-incomplete textarea { background: #fee2e2; border-color: #dc2626; }
 
     /* MOBİL DÜZENİ (768px VE ALTI) */
     @media (max-width: 768px) {
@@ -1462,10 +1480,15 @@
     }
   }
 
-  function calAddItem(val, focus) {
+  function calAddItem(val, focus, status) {
     const wrap = document.getElementById('cal-items');
     const row = document.createElement('div');
     row.className = 'cal-item';
+    const setStatus = st => {
+      row.dataset.status = st || '';
+      row.classList.toggle('st-done', st === 'done');
+      row.classList.toggle('st-incomplete', st === 'incomplete');
+    };
     const bullet = document.createElement('span');
     bullet.className = 'cal-bullet';
     bullet.textContent = '•';
@@ -1478,8 +1501,17 @@
     ta.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); calAddItem('', true); }
     });
+    const no = document.createElement('button');
+    no.type = 'button'; no.className = 'cal-item-btn cal-item-no'; no.textContent = '✖'; no.title = 'Yapılmadı (Kırmızı)';
+    no.onclick = () => setStatus(row.dataset.status === 'incomplete' ? '' : 'incomplete');
+    const ok = document.createElement('button');
+    ok.type = 'button'; ok.className = 'cal-item-btn cal-item-ok'; ok.textContent = '✔'; ok.title = 'Yapıldı (Yeşil)';
+    ok.onclick = () => setStatus(row.dataset.status === 'done' ? '' : 'done');
     row.appendChild(bullet);
     row.appendChild(ta);
+    row.appendChild(no);
+    row.appendChild(ok);
+    setStatus(status);
     wrap.appendChild(row);
     fit();
     if (focus) { ta.focus(); row.scrollIntoView({ block: 'nearest' }); }
@@ -1494,11 +1526,14 @@
     wrap.innerHTML = '';
     const n = calNotes[key];
     let items = [];
-    if (n) items = Array.isArray(n.items) ? n.items : (n.text ? n.text.split('\n') : []);
-    items = items.filter(t => String(t).trim() !== '');
-    if (items.length === 0) items = [''];
+    if (n) {
+      if (Array.isArray(n.items)) items = n.items.map(x => typeof x === 'string' ? { t: x, s: '' } : { t: x.t || '', s: x.s || '' });
+      else if (n.text) items = n.text.split('\n').map(t => ({ t: t, s: '' }));
+    }
+    items = items.filter(x => String(x.t).trim() !== '');
+    if (items.length === 0) items = [{ t: '', s: '' }];
     document.getElementById('cal-modal').style.display = 'flex';
-    items.forEach((t, i) => calAddItem(t, i === items.length - 1 && t === ''));
+    items.forEach((x, i) => calAddItem(x.t, i === items.length - 1 && x.t === '', x.s));
     // textarea yüksekliklerini modal görünür olduktan sonra yeniden hesapla
     wrap.querySelectorAll('textarea').forEach(ta => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; });
   }
@@ -1510,14 +1545,15 @@
 
   function calCommit(status) {
     if (!calSelectedKey) return;
-    const items = Array.from(document.querySelectorAll('#cal-items textarea'))
-      .map(t => t.value.trim()).filter(t => t !== '');
+    const items = Array.from(document.querySelectorAll('#cal-items .cal-item'))
+      .map(r => ({ t: r.querySelector('textarea').value.trim(), s: r.dataset.status || '' }))
+      .filter(x => x.t !== '');
     const old = calNotes[calSelectedKey];
     const st = status || (old && old.status) || 'normal';
     if (items.length === 0 && st === 'normal') {
       delete calNotes[calSelectedKey];
     } else {
-      calNotes[calSelectedKey] = { text: items.join('\n'), items: items, status: st };
+      calNotes[calSelectedKey] = { text: items.map(x => x.t).join('\n'), items: items, status: st };
     }
     store.set('nobet1_cal_v1', calNotes);
     renderCalendar();
@@ -1528,6 +1564,7 @@
   function calMark(status) { calCommit(status); }    // ✔ yeşil / ✖ kırmızı
 
   function calDelete() {
+    if (!confirm('Bu günün notları silinecek. Emin misiniz?')) return;
     if (calSelectedKey) {
       delete calNotes[calSelectedKey];
       store.set('nobet1_cal_v1', calNotes);
