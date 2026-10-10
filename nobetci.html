@@ -409,6 +409,122 @@
       justify-content: flex-start;
     }
 
+    /* TAKVİM & NOTLAR */
+    .cal-section-title {
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+      padding: 8px 4px;
+      border-bottom: 3px solid var(--gold-accent);
+    }
+    .cal-wrap {
+      border: 2px solid var(--primary-navy);
+      border-top: none;
+      padding: 8px;
+      background: #fff;
+      margin-bottom: 8px;
+    }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--primary-navy);
+      color: #fff;
+      padding: 8px 12px;
+    }
+    .cal-month-title { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.5px; }
+    .cal-arrow {
+      background: none;
+      border: none;
+      color: var(--gold-accent);
+      font-size: 1.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 12px;
+      line-height: 1;
+    }
+    .cal-arrow:hover:not(:disabled) { color: #fff; }
+    .cal-arrow:disabled { opacity: 0.3; cursor: default; }
+    .cal-weekdays, .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 3px;
+      padding: 3px;
+      background: #cbd5e1;
+      border: 1px solid var(--primary-navy);
+    }
+    .cal-weekdays { margin-top: 0; }
+    .cal-weekdays div {
+      background: var(--secondary-navy);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-align: center;
+      padding: 7px 0;
+    }
+    .cal-grid { margin-top: 6px; }
+    .cal-day {
+      position: relative;
+      aspect-ratio: 1 / 0.95;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: var(--text-dark);
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+    .cal-day:hover { outline: 2px solid var(--gold-accent); outline-offset: -2px; }
+    .cal-day.weekend { background: #e9e5fb; color: #4c1d95; }          /* Hafta sonu */
+    .cal-day.other-month { background: #eceff3; color: #94a3b8; }       /* Ay harici günler */
+    .cal-day.today { box-shadow: inset 0 0 0 3px var(--gold-accent); }
+    .cal-day.st-normal { background: #fef08a !important; color: #000 !important; }
+    .cal-day.st-done { background: #bbf7d0 !important; color: #166534 !important; }
+    .cal-day.st-incomplete { background: #fecaca !important; color: #991b1b !important; }
+    .cal-dot {
+      position: absolute;
+      bottom: 5px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .btn-cal-ok { background: #22c55e; color: #fff; font-size: 1rem; padding: 3px 10px; }
+    .btn-cal-ok:hover { background: #16a34a; }
+    @media (max-width: 768px) {
+      .cal-month-title { font-size: 1.2rem; }
+      .cal-day { font-size: 1.15rem; }
+      .cal-weekdays div { font-size: 0.9rem; padding: 6px 0; }
+    }
+
+    /* TAKVİM NOT KUTUSU: TAM EKRAN + MADDE SATIRLARI */
+    #cal-modal .modal-content {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      border-radius: 0;
+      border-width: 4px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+    #cal-modal .modal-content h3 { font-size: 0.85rem; margin-bottom: 14px; }
+    #cal-modal .btn { font-size: 0.8rem; padding: 6px 8px; flex: 1 1 auto; min-width: 0; text-align: center; }
+    #cal-modal .modal-buttons { flex-wrap: nowrap; gap: 4px; justify-content: stretch; }
+    .cal-items { flex: 1; overflow-y: auto; margin-bottom: 14px; }
+    .cal-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .cal-bullet { font-size: 1rem; line-height: 1.25; color: var(--primary-navy); }
+    #cal-modal .cal-item textarea {
+      flex: 1;
+      width: auto;
+      height: auto;
+      min-height: 0;
+      margin-bottom: 0;
+      resize: none;
+      overflow: hidden;
+      font-size: 0.68rem !important;
+    }
+
     /* MOBİL DÜZENİ (768px VE ALTI) */
     @media (max-width: 768px) {
       body { padding: 4px; }
@@ -600,19 +716,19 @@
     <!-- SAĞ KOLON (ANLIK DERS PROGRAMI & NOTLAR) -->
     <div class="right-column">
       
-      <!-- SAAT HANGİ DERSİ GÖSTERİYORSA O ANKİ DERS SAATİ (SOLA YASLI) -->
-      <div class="section-title" id="current-lesson-header">DERS SAATİ</div>
-      <table id="ders-dynamic-table">
-        <thead>
-          <tr>
-            <th style="width: 35%; text-align: left; padding-left: 8px;" class="current-lesson-text">SINIF</th>
-            <th style="text-align: left; padding-left: 8px;" class="current-lesson-text">DERS / ÖĞRETMEN</th>
-          </tr>
-        </thead>
-        <tbody id="ders-dynamic-body">
-          <!-- Anlık derse göre otomatik dolacak -->
-        </tbody>
-      </table>
+      <!-- TAKVİM & NOTLAR -->
+      <div class="section-title cal-section-title">TAKVİM &amp; NOTLAR</div>
+      <div class="cal-wrap">
+        <div class="cal-nav">
+          <button type="button" class="cal-arrow" id="cal-prev" onclick="calChangeMonth(-1)" aria-label="Önceki ay">&lt;</button>
+          <div class="cal-month-title" id="cal-month-title">---</div>
+          <button type="button" class="cal-arrow" id="cal-next" onclick="calChangeMonth(1)" aria-label="Sonraki ay">&gt;</button>
+        </div>
+        <div class="cal-weekdays">
+          <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
 
       <!-- NOTLAR BÖLÜMÜ -->
       <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; padding: 4px 8px;">
@@ -676,6 +792,22 @@
       <button class="btn btn-warning" id="btn-edit" onclick="enableEditNote()">Düzenle</button>
       <button class="btn btn-danger" id="btn-delete" onclick="deleteNote()">Sil</button>
       <button class="btn btn-primary" onclick="cancelCloseModal()" style="background:#6b7280;">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAKVİM GÜN NOTU MODAL KUTUSU -->
+<div class="modal-overlay" id="cal-modal">
+  <div class="modal-content">
+    <h3 id="cal-modal-title">---</h3>
+    <div class="cal-items" id="cal-items"></div>
+    <div class="modal-buttons">
+      <button class="btn btn-icon-cancel" onclick="calMark('incomplete')" title="Yapılmadı (Kırmızı)">✖</button>
+      <button class="btn btn-cal-ok" onclick="calMark('done')" title="Yapıldı (Yeşil)">✔</button>
+      <button class="btn btn-warning" onclick="calAddItem('', true)" title="Yeni madde satırı ekle">+ Ekle</button>
+      <button class="btn btn-primary" onclick="calSave()">Kaydet</button>
+      <button class="btn btn-danger" onclick="calDelete()">Sil</button>
+      <button class="btn btn-primary" onclick="calCloseModal()" style="background:#6b7280;">Kapat</button>
     </div>
   </div>
 </div>
@@ -1136,6 +1268,7 @@
       manual_inputs: store.get('nobet1_m', {}),
       bos_dersler: store.get('nobet1_b', Array(6).fill("")),
       notes: store.get('nobet1_notes_v2', []),
+      calendar_notes: store.get('nobet1_cal_v1', {}),
       export_date: now.toISOString()
     };
 
@@ -1165,6 +1298,7 @@
         if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
         if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
         if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
+        if (data.calendar_notes) { calNotes = data.calendar_notes; store.set('nobet1_cal_v1', calNotes); renderCalendar(); }
 
         loadData();
         renderNotes();
@@ -1243,6 +1377,7 @@
 
   /* ANLIK DERS PROGRAMI LİSTESİ (SOLA YASLI) */
   function renderDynamicLessonTable() {
+    if (!$('ders-dynamic-body')) return; // 1. Ders Saati bölümü kaldırıldı
     const di = dayIdx();
     const lessonNum = activeLessonIndex + 1;
     
@@ -1266,6 +1401,139 @@
     renderDynamicLessonTable();
     if (silent !== true) alert('Veriler ve ekran güncellendi.');
   }
+</script>
+
+<script>
+  /* TAKVİM (Eylül 2026'dan başlar) */
+  const CAL_MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const CAL_DAYS = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const CAL_MIN_YEAR = 2026, CAL_MIN_MONTH = 8; // 8 = Eylül
+  let calNotes = store.get('nobet1_cal_v1', {}); // { "2026-09-15": { text, status: "normal"|"done"|"incomplete" } }
+  let calSelectedKey = null;
+  let calYear, calMonth;
+
+  (function () {
+    const n = new Date();
+    calYear = n.getFullYear(); calMonth = n.getMonth();
+    if (calYear * 12 + calMonth < CAL_MIN_YEAR * 12 + CAL_MIN_MONTH) { calYear = CAL_MIN_YEAR; calMonth = CAL_MIN_MONTH; }
+  })();
+
+  function calChangeMonth(delta) {
+    let idx = calYear * 12 + calMonth + delta;
+    if (idx < CAL_MIN_YEAR * 12 + CAL_MIN_MONTH) return;
+    calYear = Math.floor(idx / 12); calMonth = idx % 12;
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    document.getElementById('cal-month-title').innerText = (CAL_MONTHS[calMonth] + ' ' + calYear).toLocaleUpperCase('tr');
+    document.getElementById('cal-prev').disabled = (calYear * 12 + calMonth <= CAL_MIN_YEAR * 12 + CAL_MIN_MONTH);
+
+    const offset = (new Date(calYear, calMonth, 1).getDay() + 6) % 7; // Pazartesi ilk gün
+    const todayKey = isoOf(new Date());
+    grid.innerHTML = '';
+
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(calYear, calMonth, 1 - offset + i);
+      const key = isoOf(d);
+      const cell = document.createElement('div');
+      cell.className = 'cal-day';
+      if (d.getDay() === 0 || d.getDay() === 6) cell.classList.add('weekend');
+      if (d.getMonth() !== calMonth) cell.classList.add('other-month');
+      if (key === todayKey) cell.classList.add('today');
+      cell.innerText = d.getDate();
+
+      const n = calNotes[key];
+      if (n) {
+        cell.classList.add('st-' + (n.status || 'normal'));
+        if (n.text && n.text.trim() !== '') {
+          const dot = document.createElement('span');
+          dot.className = 'cal-dot';
+          cell.appendChild(dot);
+          cell.title = n.text;
+        }
+      }
+      cell.onclick = () => calOpen(key);
+      grid.appendChild(cell);
+    }
+  }
+
+  function calAddItem(val, focus) {
+    const wrap = document.getElementById('cal-items');
+    const row = document.createElement('div');
+    row.className = 'cal-item';
+    const bullet = document.createElement('span');
+    bullet.className = 'cal-bullet';
+    bullet.textContent = '•';
+    const ta = document.createElement('textarea');
+    ta.rows = 1;
+    ta.value = val || '';
+    ta.placeholder = 'Madde yazınız...';
+    const fit = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; };
+    ta.addEventListener('input', fit);
+    ta.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); calAddItem('', true); }
+    });
+    row.appendChild(bullet);
+    row.appendChild(ta);
+    wrap.appendChild(row);
+    fit();
+    if (focus) { ta.focus(); row.scrollIntoView({ block: 'nearest' }); }
+  }
+
+  function calOpen(key) {
+    calSelectedKey = key;
+    const [y, m, d] = key.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    document.getElementById('cal-modal-title').innerText = `${d} ${CAL_MONTHS[m - 1]} ${y} ${CAL_DAYS[dt.getDay()]}`;
+    const wrap = document.getElementById('cal-items');
+    wrap.innerHTML = '';
+    const n = calNotes[key];
+    let items = [];
+    if (n) items = Array.isArray(n.items) ? n.items : (n.text ? n.text.split('\n') : []);
+    items = items.filter(t => String(t).trim() !== '');
+    if (items.length === 0) items = [''];
+    document.getElementById('cal-modal').style.display = 'flex';
+    items.forEach((t, i) => calAddItem(t, i === items.length - 1 && t === ''));
+    // textarea yüksekliklerini modal görünür olduktan sonra yeniden hesapla
+    wrap.querySelectorAll('textarea').forEach(ta => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; });
+  }
+
+  function calCloseModal() {
+    document.getElementById('cal-modal').style.display = 'none';
+    calSelectedKey = null;
+  }
+
+  function calCommit(status) {
+    if (!calSelectedKey) return;
+    const items = Array.from(document.querySelectorAll('#cal-items textarea'))
+      .map(t => t.value.trim()).filter(t => t !== '');
+    const old = calNotes[calSelectedKey];
+    const st = status || (old && old.status) || 'normal';
+    if (items.length === 0 && st === 'normal') {
+      delete calNotes[calSelectedKey];
+    } else {
+      calNotes[calSelectedKey] = { text: items.join('\n'), items: items, status: st };
+    }
+    store.set('nobet1_cal_v1', calNotes);
+    renderCalendar();
+    calCloseModal();
+  }
+
+  function calSave() { calCommit(null); }            // Kaydet
+  function calMark(status) { calCommit(status); }    // ✔ yeşil / ✖ kırmızı
+
+  function calDelete() {
+    if (calSelectedKey) {
+      delete calNotes[calSelectedKey];
+      store.set('nobet1_cal_v1', calNotes);
+      renderCalendar();
+    }
+    calCloseModal();
+  }
+
+  renderCalendar();
 </script>
 
 </body>
