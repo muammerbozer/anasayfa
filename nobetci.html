@@ -499,8 +499,8 @@
 
     /* TAKVİM NOT KUTUSU: TAM EKRAN + MADDE SATIRLARI */
     #cal-modal .modal-content {
-      width: 100%;
-      max-width: none;
+      width: 90%;
+      max-width: 480px;
       height: 100%;
       border-radius: 0;
       border-width: 4px;
@@ -545,6 +545,27 @@
     .cal-item.st-incomplete .cal-item-no, .cal-item.st-done .cal-item-ok { opacity: 1; }
     .cal-item.st-done textarea { background: #dcfce7; border-color: #16a34a; }
     .cal-item.st-incomplete textarea { background: #fee2e2; border-color: #dc2626; }
+
+    /* OKUL DERS PROGRAMI */
+    #okul-program-table .okul-ders-baslik {
+      background: var(--primary-navy);
+      color: #fff;
+      font-size: 1.3em;
+      letter-spacing: 1px;
+      height: 30px;
+    }
+    #okul-program-table th.okul-harf { font-size: 1.2em; }
+    #okul-program-table th.okul-sinif-baslik { width: 16%; }
+    #okul-program-table td.okul-sinif-label { font-weight: 800; text-align: left; }
+    #okul-program-table td.okul-cell {
+      white-space: normal;
+      word-break: break-word;
+      font-size: 0.95em;
+      font-weight: 700;
+      line-height: 1.15;
+      height: 44px;
+      padding: 3px 2px;
+    }
 
     /* MOBİL DÜZENİ (768px VE ALTI) */
     @media (max-width: 768px) {
@@ -672,6 +693,12 @@
         <tbody id="bos-dersler-body">
           <!-- JS ile yüklenir -->
         </tbody>
+      </table>
+
+      <!-- OKUL DERS PROGRAMI -->
+      <div class="section-title">OKUL DERS PROGRAMI</div>
+      <table id="okul-program-table">
+        <!-- JS ile yüklenir -->
       </table>
 
       <!-- 4. ÖĞRETMEN DERS PROGRAMI -->
@@ -1396,8 +1423,37 @@
     }
   }
 
+  /* OKUL DERS PROGRAMI: güncel derse göre tüm sınıfların dersleri */
+  const OKUL_HARFLER = ['A', 'B', 'C', 'D', 'E', 'F'];
+  function renderOkulDersProgrami() {
+    const tbl = $('okul-program-table');
+    if (!tbl) return;
+    const di = dayIdx(), li = activeLessonIndex;
+    const map = {}, grades = new Set();
+    Object.keys(excelData.siniflar).forEach(k => {
+      const m = String(k).toLocaleUpperCase('tr').match(/(\d+)\s*[\/\-. ]*\s*([A-ZÇĞİÖŞÜ])/);
+      if (m) { map[m[1] + m[2]] = k; grades.add(+m[1]); }
+    });
+    let list = Array.from(grades).sort((a, b) => a - b);
+    if (list.length === 0) list = [5, 6, 7, 8];
+
+    let h = `<thead><tr><th class="okul-ders-baslik" colspan="${OKUL_HARFLER.length + 1}">${li + 1}. DERS</th></tr>`;
+    h += '<tr><th class="okul-sinif-baslik">SINIFLAR</th>' + OKUL_HARFLER.map(L => `<th class="okul-harf">${L}</th>`).join('') + '</tr></thead><tbody>';
+    list.forEach(g => {
+      h += `<tr><td class="bg-label okul-sinif-label">${g}. SINIFLAR</td>`;
+      OKUL_HARFLER.forEach(L => {
+        const key = map[g + L];
+        const txt = key ? ((excelData.siniflar[key][di] || [])[li] || '') : '';
+        h += `<td class="okul-cell" title="${esc(fullLine(txt))}">${fullHTML(txt)}</td>`;
+      });
+      h += '</tr>';
+    });
+    tbl.innerHTML = h + '</tbody>';
+  }
+
   /* ANLIK DERS PROGRAMI LİSTESİ (SOLA YASLI) */
   function renderDynamicLessonTable() {
+    renderOkulDersProgrami();
     if (!$('ders-dynamic-body')) return; // 1. Ders Saati bölümü kaldırıldı
     const di = dayIdx();
     const lessonNum = activeLessonIndex + 1;
