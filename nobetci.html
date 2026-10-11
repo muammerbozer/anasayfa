@@ -550,21 +550,59 @@
     #okul-program-table .okul-ders-baslik {
       background: var(--primary-navy);
       color: #fff;
-      font-size: 1.3em;
+      font-size: 1.1em;
       letter-spacing: 1px;
-      height: 30px;
+      height: 26px;
     }
     #okul-program-table th.okul-harf { font-size: 1.2em; }
+    #okul-program-table select.okul-ders-select {
+      margin-left: 10px;
+      font-size: 0.8em;
+      font-weight: 700;
+      padding: 0 4px;
+      height: 20px;
+      border: 1px solid var(--gold-accent);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--primary-navy);
+      cursor: pointer;
+      vertical-align: middle;
+      letter-spacing: 0;
+    }
     #okul-program-table th.okul-sinif-baslik { width: 16%; }
     #okul-program-table td.okul-sinif-label { font-weight: 800; text-align: left; }
     #okul-program-table td.okul-cell {
-      white-space: normal;
-      word-break: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
       font-size: 0.95em;
       font-weight: 700;
-      line-height: 1.15;
-      height: 44px;
-      padding: 3px 2px;
+      line-height: 1.1;
+      height: 22px;
+      padding: 1px 2px;
+    }
+
+    /* ÖĞRENCİ ARAMA */
+    #ogrenci-arama-table { table-layout: fixed; }
+    #ogrenci-arama-table .ogr-col-ad { width: 54%; }
+    #ogrenci-arama-table .ogr-col-sinif { width: 14%; }
+    #ogrenci-arama-table .ogr-col-no { width: 14%; }
+    #ogrenci-arama-table .ogr-col-btn { width: 18%; }
+    #ogrenci-arama-table td { height: 30px; }
+    #ogrenci-arama-table td.ogr-val::before {
+      content: attr(data-lbl) " ";
+      font-size: 0.6em;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+    #ogrenci-arama-table .ogr-btn { display: block; width: 100%; text-align: center; padding: 5px 4px; }
+    @media (max-width: 768px) {
+      #ogrenci-arama-table .ogr-col-ad { width: 40%; }
+      #ogrenci-arama-table .ogr-col-sinif { width: 17%; }
+      #ogrenci-arama-table .ogr-col-no { width: 15%; }
+      #ogrenci-arama-table .ogr-col-btn { width: 28%; }
+      #ogrenci-arama-table .ogr-btn { white-space: normal; line-height: 1.1; font-size: 0.62rem; padding: 3px 2px; }
     }
 
     /* MOBİL DÜZENİ (768px VE ALTI) */
@@ -696,7 +734,6 @@
       </table>
 
       <!-- OKUL DERS PROGRAMI -->
-      <div class="section-title">OKUL DERS PROGRAMI</div>
       <table id="okul-program-table">
         <!-- JS ile yüklenir -->
       </table>
@@ -726,6 +763,29 @@
             </td>
             <td id="ogrt-d1"></td><td id="ogrt-d2"></td><td id="ogrt-d3"></td><td id="ogrt-d4"></td>
             <td id="ogrt-d5"></td><td id="ogrt-d6"></td><td id="ogrt-d7"></td><td id="ogrt-d8"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ÖĞRENCİ ARAMA -->
+      <div class="section-title">ÖĞRENCİ ARAMA</div>
+      <table id="ogrenci-arama-table">
+        <colgroup>
+          <col class="ogr-col-ad"><col class="ogr-col-sinif"><col class="ogr-col-no"><col class="ogr-col-btn">
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>
+              <select id="ogrenci-select" class="cell-select teacher-name-cell" onchange="showOgrenci(this.value)">
+                <option value="">Öğrenci Seçiniz...</option>
+              </select>
+            </td>
+            <td id="ogr-sinif" class="sinif-text ogr-val" data-lbl="SINIF"></td>
+            <td id="ogr-no" class="sinif-text ogr-val" data-lbl="NO"></td>
+            <td>
+              <label for="ogr-file" class="btn btn-warning ogr-btn" style="margin:0; cursor:pointer;" title="Öğrenci listesi Excel dosyasını seçin">E-OKUL GÜNCELLE</label>
+              <input type="file" id="ogr-file" accept=".xlsx, .xls" style="display:none;" onchange="handleOgrenciUpload(event)">
+            </td>
           </tr>
         </tbody>
       </table>
@@ -1113,6 +1173,8 @@
     });
 
     loadData();
+    ogrenciList = store.get('nobet1_ogr', []);
+    populateOgrenciSelect();
     updateClockAndStatus();
   };
 
@@ -1317,6 +1379,7 @@
       bos_dersler: store.get('nobet1_b', Array(6).fill("")),
       notes: store.get('nobet1_notes_v2', []),
       calendar_notes: store.get('nobet1_cal_v1', {}),
+      students: store.get('nobet1_ogr', []),
       export_date: now.toISOString()
     };
 
@@ -1346,6 +1409,7 @@
         if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
         if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
         if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
+        if (data.students) { ogrenciList = data.students; store.set('nobet1_ogr', ogrenciList); populateOgrenciSelect(); }
         if (data.calendar_notes) { calNotes = data.calendar_notes; store.set('nobet1_cal_v1', calNotes); renderCalendar(); }
 
         loadData();
@@ -1425,10 +1489,12 @@
 
   /* OKUL DERS PROGRAMI: güncel derse göre tüm sınıfların dersleri */
   const OKUL_HARFLER = ['A', 'B', 'C', 'D', 'E', 'F'];
+  let okulDersSecim = ''; // '' = şimdiki ders, '0'..'7' = 1.–8. ders
+  function setOkulDers(v) { okulDersSecim = v; renderOkulDersProgrami(); }
   function renderOkulDersProgrami() {
     const tbl = $('okul-program-table');
     if (!tbl) return;
-    const di = dayIdx(), li = activeLessonIndex;
+    const di = dayIdx(), li = okulDersSecim === '' ? activeLessonIndex : +okulDersSecim;
     const map = {}, grades = new Set();
     Object.keys(excelData.siniflar).forEach(k => {
       const m = String(k).toLocaleUpperCase('tr').match(/(\d+)\s*[\/\-. ]*\s*([A-ZÇĞİÖŞÜ])/);
@@ -1437,18 +1503,89 @@
     let list = Array.from(grades).sort((a, b) => a - b);
     if (list.length === 0) list = [5, 6, 7, 8];
 
-    let h = `<thead><tr><th class="okul-ders-baslik" colspan="${OKUL_HARFLER.length + 1}">${li + 1}. DERS</th></tr>`;
+    let h = `<thead><tr><th class="okul-ders-baslik" colspan="${OKUL_HARFLER.length + 1}">OKUL DERS PROGRAMI<select class="okul-ders-select" onchange="setOkulDers(this.value)" title="Gösterilecek dersi seçin"><option value=""${okulDersSecim === '' ? ' selected' : ''}>Şimdiki Dersler</option>${[0,1,2,3,4,5,6,7].map(i => `<option value="${i}"${okulDersSecim === String(i) ? ' selected' : ''}>${i + 1}. Dersler</option>`).join('')}</select></th></tr>`;
     h += '<tr><th class="okul-sinif-baslik">SINIFLAR</th>' + OKUL_HARFLER.map(L => `<th class="okul-harf">${L}</th>`).join('') + '</tr></thead><tbody>';
     list.forEach(g => {
       h += `<tr><td class="bg-label okul-sinif-label">${g}. SINIFLAR</td>`;
       OKUL_HARFLER.forEach(L => {
         const key = map[g + L];
         const txt = key ? ((excelData.siniflar[key][di] || [])[li] || '') : '';
-        h += `<td class="okul-cell" title="${esc(fullLine(txt))}">${fullHTML(txt)}</td>`;
+        h += `<td class="okul-cell" title="${esc(fullLine(txt))}">${esc(fullLine(txt))}</td>`;
       });
       h += '</tr>';
     });
     tbl.innerHTML = h + '</tbody>';
+    requestAnimationFrame(fitOkulCells);
+  }
+
+  /* Okul ders programı hücrelerinde yazı tek satıra sığana kadar küçülür */
+  function fitOkulCells() {
+    document.querySelectorAll('#okul-program-table td.okul-cell').forEach(td => {
+      td.style.fontSize = '';
+      let size = parseFloat(getComputedStyle(td).fontSize);
+      while (td.scrollWidth > td.clientWidth + 0.5 && size > 6) {
+        size -= 0.5;
+        td.style.fontSize = size + 'px';
+      }
+    });
+  }
+  window.addEventListener('resize', fitOkulCells);
+
+  /* ÖĞRENCİ ARAMA (e-Okul sınıf listesi Excel dosyasından) */
+  let ogrenciList = [];
+
+  function parseOgrenciWorkbook(wb) {
+    const list = [];
+    wb.SheetNames.forEach(sn => {
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], {header: 1, raw: true, defval: ''});
+      const hi = rows.findIndex(r => norm(r[1]).startsWith('ÖĞRENCİ NO'));
+      if (hi < 0) return;
+      const sinif = String(sn).trim();
+      rows.slice(hi + 1).forEach(r => {
+        const no = String(r[1]).trim(), ad = norm(r[2]), soyad = norm(r[3]);
+        if (!/^\d+$/.test(no) || !ad) return;
+        list.push({a: ad, s: soyad, c: sinif, n: no});
+      });
+    });
+    list.sort((x, y) => (x.a + ' ' + x.s).localeCompare(y.a + ' ' + y.s, 'tr'));
+    return list;
+  }
+
+  function populateOgrenciSelect() {
+    const sel = $('ogrenci-select');
+    const full = o => o.a + ' ' + o.s;
+    const count = {};
+    ogrenciList.forEach(o => { count[full(o)] = (count[full(o)] || 0) + 1; });
+    sel.innerHTML = '<option value="">Öğrenci Seçiniz...</option>' + ogrenciList.map((o, i) =>
+      `<option value="${i}">${esc(full(o))}${count[full(o)] > 1 ? ' (' + esc(o.c) + ')' : ''}</option>`).join('');
+    showOgrenci('');
+  }
+
+  function showOgrenci(i) {
+    const o = i === '' ? null : ogrenciList[+i];
+    $('ogr-sinif').innerText = o ? o.c : '';
+    $('ogr-no').innerText = o ? o.n : '';
+  }
+
+  function handleOgrenciUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (typeof XLSX === 'undefined') { alert('Excel kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edin.'); e.target.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const list = parseOgrenciWorkbook(XLSX.read(new Uint8Array(evt.target.result), {type: 'array'}));
+        if (list.length === 0) throw new Error('öğrenci yok');
+        ogrenciList = list;
+        store.set('nobet1_ogr', ogrenciList);
+        populateOgrenciSelect();
+        alert('E-Okul listesi güncellendi. Toplam ' + list.length + ' öğrenci yüklendi.');
+      } catch (err) {
+        alert('Excel okunamadı. Sayfalarda "Öğrenci No", "Adı" ve "Soyadı" sütunlarının bulunduğu e-Okul sınıf listesi gereklidir.');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    e.target.value = '';
   }
 
   /* ANLIK DERS PROGRAMI LİSTESİ (SOLA YASLI) */
