@@ -864,12 +864,9 @@
 
       <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SOLA YASLI BUTONLAR -->
       <div class="controls-right-group">
-        <button class="btn btn-warning" onclick="downloadBackup()" title="Yedek dosyasını indir">YEDEKLE</button>
+        <button class="btn btn-warning" onclick="githubBackup()" title="Yedeği GitHub'a (muammerbozer/anasayfa) yedek.json olarak yükle">YEDEKLE</button>
 
-        <label for="backup-restore-file" class="btn btn-primary" style="cursor:pointer; margin:0;" title="Drive'dan yüklemek için yedek seç">
-          YEDEK YÜKLE
-        </label>
-        <input type="file" id="backup-restore-file" accept=".json" style="display:none;" onchange="restoreBackup(event)">
+        <button class="btn btn-primary" onclick="githubRestore()" title="GitHub'daki (muammerbozer/anasayfa) yedek.json dosyasını yükle">YEDEK YÜKLE</button>
 
         <select id="gun-select" onchange="updateData(true)" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
           <option value="">Bugün</option>
@@ -1362,65 +1359,112 @@
     }
   }
 
-  /* DRIVE YEDEKLEME: YIL_AY_GÜN_SAAT FORMATINDA YEDEKLEME */
-  function downloadBackup() {
-    const now = new Date();
-    const YYYY = now.getFullYear();
-    const MM = String(now.getMonth() + 1).padStart(2, '0');
-    const DD = String(now.getDate()).padStart(2, '0');
-    const HH = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    
-    const fileName = `yedek_${YYYY}_${MM}_${DD}_${HH}${mm}.json`;
+  /* GITHUB YEDEKLEME: muammerbozer/anasayfa deposunda sabit "yedek.json" dosyası */
+  const GH_OWNER = 'muammerbozer', GH_REPO = 'anasayfa', GH_FILE = 'yedek.json';
+  const GH_URL = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  let ghBusy = false;
 
-    const backupData = {
-      excel_data: store.get('nobet1_d', null),
-      manual_inputs: store.get('nobet1_m', {}),
-      bos_dersler: store.get('nobet1_b', Array(6).fill("")),
-      notes: store.get('nobet1_notes_v2', []),
-      calendar_notes: store.get('nobet1_cal_v1', {}),
-      students: store.get('nobet1_ogr', []),
-      export_date: now.toISOString()
-    };
-
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-    const downloadAnchor = document.createElement('a');
-    
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", fileName);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-
-    alert(`"${fileName}" dosyası indirildi.\n\nSimdi Google Drive'a yönlendiriliyorsunuz. Lütfen indirilen yedek dosyasını Drive'ınıza yükleyin.`);
-    window.open("https://drive.google.com/drive/my-drive", "_blank");
+  function ghToken(ask) {
+    let t = store.get('nobet1_gh_token', '');
+    if (!t && ask) {
+      t = (prompt('GitHub erişim anahtarını (token) yapıştırın.\n\nBu cihazda yalnızca bir kez sorulur; yalnızca ' + GH_OWNER + '/' + GH_REPO + ' deposu için "Contents: Read and write" yetkisi vermeniz yeterlidir.') || '').trim();
+      if (t) store.set('nobet1_gh_token', t);
+    }
+    return t || '';
   }
 
-  function restoreBackup(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+  function ghHeaders(token, accept) {
+    const h = {'Accept': accept || 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'};
+    if (token) h['Authorization'] = 'Bearer ' + token;
+    return h;
+  }
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      try {
-        const data = JSON.parse(evt.target.result);
-        
-        if (data.excel_data) store.set('nobet1_d', data.excel_data);
-        if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
-        if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
-        if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
-        if (data.students) { ogrenciList = data.students; store.set('nobet1_ogr', ogrenciList); populateOgrenciSelect(); }
-        if (data.calendar_notes) { calNotes = data.calendar_notes; store.set('nobet1_cal_v1', calNotes); renderCalendar(); }
+  function ghErrorText(status) {
+    if (status === 401 || status === 403) { store.set('nobet1_gh_token', ''); return 'Erişim anahtarı geçersiz veya yetkisiz (' + status + '). Anahtar silindi; tekrar denediğinizde yenisi istenecek.'; }
+    if (status === 404) return GH_FILE + ' veya depo bulunamadı (404).';
+    return 'GitHub hatası (' + status + ').';
+  }
 
-        loadData();
-        renderNotes();
-        alert('Yedek dosyası başarıyla yüklendi ve tüm veriler güncellendi.');
-      } catch (err) {
-        alert('Geçersiz yedek dosyası! Lütfen doğru JSON yedek dosyasını seçtiğinizden emin olun.');
+  const utf8ToB64 = str => {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  };
+
+  async function githubBackup() {
+    if (ghBusy) return;
+    const token = ghToken(true);
+    if (!token) return;
+    ghBusy = true;
+    try {
+      const now = new Date();
+      const backupData = {
+        excel_data: store.get('nobet1_d', null),
+        manual_inputs: store.get('nobet1_m', {}),
+        bos_dersler: store.get('nobet1_b', Array(6).fill("")),
+        notes: store.get('nobet1_notes_v2', []),
+        calendar_notes: store.get('nobet1_cal_v1', {}),
+        students: store.get('nobet1_ogr', []),
+        export_date: now.toISOString()
+      };
+      // Dosya zaten varsa üzerine yazmak için mevcut sürümün sha değeri gerekir
+      let sha;
+      const g = await fetch(GH_URL + '?t=' + Date.now(), {headers: ghHeaders(token), cache: 'no-store'});
+      if (g.ok) sha = (await g.json()).sha;
+      else if (g.status !== 404) throw new Error(ghErrorText(g.status));
+
+      const body = {message: 'Yedek ' + now.toLocaleString('tr-TR'), content: utf8ToB64(JSON.stringify(backupData, null, 2))};
+      if (sha) body.sha = sha;
+      const r = await fetch(GH_URL, {
+        method: 'PUT',
+        headers: Object.assign(ghHeaders(token), {'Content-Type': 'application/json'}),
+        body: JSON.stringify(body)
+      });
+      if (!r.ok) throw new Error(ghErrorText(r.status));
+      alert('Yedek GitHub\'a yüklendi: ' + GH_OWNER + '/' + GH_REPO + '/' + GH_FILE + (sha ? '\n(Önceki yedeğin üzerine yazıldı.)' : ''));
+    } catch (err) {
+      alert('Yedekleme başarısız: ' + (err.message || err));
+    } finally {
+      ghBusy = false;
+    }
+  }
+
+  function applyBackup(data) {
+    if (data.excel_data) store.set('nobet1_d', data.excel_data);
+    if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
+    if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
+    if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
+    if (data.students) { ogrenciList = data.students; store.set('nobet1_ogr', ogrenciList); populateOgrenciSelect(); }
+    if (data.calendar_notes) { calNotes = data.calendar_notes; store.set('nobet1_cal_v1', calNotes); renderCalendar(); }
+    loadData();
+    renderNotes();
+  }
+
+  async function githubRestore() {
+    if (ghBusy) return;
+    if (!confirm('GitHub\'daki ' + GH_FILE + ' dosyası yüklenecek ve bu cihazdaki mevcut veriler değişecek. Devam edilsin mi?')) return;
+    ghBusy = true;
+    try {
+      const raw = 'application/vnd.github.raw+json';
+      const url = GH_URL + '?t=' + Date.now();
+      let token = ghToken(false);
+      let r = await fetch(url, {headers: ghHeaders(token, raw), cache: 'no-store'});
+      // Depo özelse (veya anahtar yoksa) anahtar iste ve bir kez daha dene
+      if (!r.ok && !token && (r.status === 404 || r.status === 401 || r.status === 403)) {
+        token = ghToken(true);
+        if (token) r = await fetch(url, {headers: ghHeaders(token, raw), cache: 'no-store'});
       }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
+      if (!r.ok) throw new Error(ghErrorText(r.status));
+      let data;
+      try { data = JSON.parse(await r.text()); } catch (e) { throw new Error(GH_FILE + ' geçerli bir yedek dosyası değil.'); }
+      applyBackup(data);
+      alert('GitHub\'daki yedek yüklendi ve tüm veriler güncellendi.' + (data.export_date ? '\nYedek tarihi: ' + new Date(data.export_date).toLocaleString('tr-TR') : ''));
+    } catch (err) {
+      alert('Yedek yüklenemedi: ' + (err.message || err));
+    } finally {
+      ghBusy = false;
+    }
   }
 
   function handleFileUpload(e) {
