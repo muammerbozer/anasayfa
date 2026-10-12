@@ -3130,6 +3130,10 @@
     {
       "text": "deneme sınavı listesi oluşturulacak.",
       "status": "incomplete"
+    },
+    {
+      "text": "12 ekim pazartesi",
+      "status": "normal"
     }
   ],
   "calendar_notes": {
@@ -3149,5 +3153,5 @@
     }
   },
   "students": [],
-  "export_date": "2026-10-11T13:56:15.461Z"
+  "export_date": "2026-10-12T05:59:17.139Z"
 }
