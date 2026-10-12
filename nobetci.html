@@ -864,7 +864,7 @@
 
       <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SOLA YASLI BUTONLAR -->
       <div class="controls-right-group">
-        <button class="btn btn-warning" onclick="githubBackup()" title="Yedeği GitHub'a (muammerbozer/anasayfa) yedek.json olarak yükle">YEDEKLE</button>
+        <button class="btn btn-warning" onclick="downloadBackup()" title="Yedeği yedek.json olarak indirilenlere kaydet">YEDEKLE</button>
 
         <button class="btn btn-primary" onclick="githubRestore()" title="GitHub'daki (muammerbozer/anasayfa) yedek.json dosyasını yükle">YEDEK YÜKLE</button>
 
@@ -1359,7 +1359,7 @@
     }
   }
 
-  /* GITHUB YEDEKLEME: muammerbozer/anasayfa deposunda sabit "yedek.json" dosyası */
+  /* YEDEKLEME: yedek.json olarak indirilir; YEDEK YÜKLE muammerbozer/anasayfa deposundaki yedek.json dosyasını okur */
   const GH_OWNER = 'muammerbozer', GH_REPO = 'anasayfa', GH_FILE = 'yedek.json';
   const GH_URL = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
   let ghBusy = false;
@@ -1392,13 +1392,8 @@
     return btoa(bin);
   };
 
-  async function githubBackup() {
-    if (ghBusy) return;
-    const token = ghToken(true);
-    if (!token) return;
-    ghBusy = true;
+  function downloadBackup() {
     try {
-      const now = new Date();
       const backupData = {
         excel_data: store.get('nobet1_d', null),
         manual_inputs: store.get('nobet1_m', {}),
@@ -1406,27 +1401,19 @@
         notes: store.get('nobet1_notes_v2', []),
         calendar_notes: store.get('nobet1_cal_v1', {}),
         students: store.get('nobet1_ogr', []),
-        export_date: now.toISOString()
+        export_date: new Date().toISOString()
       };
-      // Dosya zaten varsa üzerine yazmak için mevcut sürümün sha değeri gerekir
-      let sha;
-      const g = await fetch(GH_URL + '?t=' + Date.now(), {headers: ghHeaders(token), cache: 'no-store'});
-      if (g.ok) sha = (await g.json()).sha;
-      else if (g.status !== 404) throw new Error(ghErrorText(g.status));
-
-      const body = {message: 'Yedek ' + now.toLocaleString('tr-TR'), content: utf8ToB64(JSON.stringify(backupData, null, 2))};
-      if (sha) body.sha = sha;
-      const r = await fetch(GH_URL, {
-        method: 'PUT',
-        headers: Object.assign(ghHeaders(token), {'Content-Type': 'application/json'}),
-        body: JSON.stringify(body)
-      });
-      if (!r.ok) throw new Error(ghErrorText(r.status));
-      alert('Yedek GitHub\'a yüklendi: ' + GH_OWNER + '/' + GH_REPO + '/' + GH_FILE + (sha ? '\n(Önceki yedeğin üzerine yazıldı.)' : ''));
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = GH_FILE;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (err) {
       alert('Yedekleme başarısız: ' + (err.message || err));
-    } finally {
-      ghBusy = false;
     }
   }
 
