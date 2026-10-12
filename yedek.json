@@ -3128,11 +3128,15 @@
   ],
   "notes": [
     {
-      "text": "deneme sınavı listesi oluşturulacak.",
-      "status": "incomplete"
+      "text": "DENEME SINAVI listeleri son halini verilecek.",
+      "status": "done"
     },
     {
-      "text": "12 ekim pazartesi",
+      "text": "VELİ TOPLANTISI 17 Ekim 2026 cumartesi. Katılım ve hazırlık.",
+      "status": "done"
+    },
+    {
+      "text": "Arif KOÇ izinli. Nöbetçi öğretmen görevlendirmesi yapılacak.",
       "status": "normal"
     }
   ],
@@ -3152,6 +3156,3055 @@
       "status": "done"
     }
   },
-  "students": [],
-  "export_date": "2026-10-12T05:59:17.139Z"
+  "students": [
+    {
+      "a": "ABDULCEBBAR",
+      "s": "EL HAC SÜLEYMAN",
+      "c": "6-B",
+      "n": "1028"
+    },
+    {
+      "a": "ABDULKADİR",
+      "s": "BALCİ",
+      "c": "7-D",
+      "n": "304"
+    },
+    {
+      "a": "ABDULKADİR",
+      "s": "GÖKKAYA",
+      "c": "6-F",
+      "n": "527"
+    },
+    {
+      "a": "ABDULKADİR",
+      "s": "TABBAŞ",
+      "c": "5-D",
+      "n": "219"
+    },
+    {
+      "a": "ABDULLOKH",
+      "s": "ABDIRASHITOV",
+      "c": "6-F",
+      "n": "589"
+    },
+    {
+      "a": "ABDULSALAM A K ALMUQAYYID",
+      "s": "ABDULSALAM A K ALMUQAYYID",
+      "c": "6-D",
+      "n": "357"
+    },
+    {
+      "a": "ABDULSELAM",
+      "s": "EL MUHAMMED",
+      "c": "6-D",
+      "n": "2007"
+    },
+    {
+      "a": "ABDURRAHİM",
+      "s": "AVCI",
+      "c": "5-F",
+      "n": "341"
+    },
+    {
+      "a": "ABDURRAHMAN",
+      "s": "ALAHMAD",
+      "c": "6-D",
+      "n": "1037"
+    },
+    {
+      "a": "ABDURRAHMAN",
+      "s": "KADDUR",
+      "c": "5-D",
+      "n": "141"
+    },
+    {
+      "a": "ABDÜLKADİR",
+      "s": "AYDEMİR",
+      "c": "7-D",
+      "n": "1040"
+    },
+    {
+      "a": "ABDÜLMECİD",
+      "s": "BOZKURT",
+      "c": "6-D",
+      "n": "77"
+    },
+    {
+      "a": "ADNAN",
+      "s": "EL CASİM",
+      "c": "8-B",
+      "n": "660"
+    },
+    {
+      "a": "ADNSU",
+      "s": "GÜNDOĞMUŞ",
+      "c": "5-C",
+      "n": "353"
+    },
+    {
+      "a": "AEIN",
+      "s": "ASKARI",
+      "c": "6-D",
+      "n": "2001"
+    },
+    {
+      "a": "AHMED",
+      "s": "ABDULKADİR",
+      "c": "5-F",
+      "n": "568"
+    },
+    {
+      "a": "AHMED",
+      "s": "HAŞMAN",
+      "c": "7-D",
+      "n": "1042"
+    },
+    {
+      "a": "AHMET AZAT",
+      "s": "AYIRAN",
+      "c": "6-B",
+      "n": "687"
+    },
+    {
+      "a": "AHMET EFE",
+      "s": "YALÇINKAYA",
+      "c": "5-F",
+      "n": "368"
+    },
+    {
+      "a": "AHMET ERTUĞRUL",
+      "s": "KILINÇ",
+      "c": "5-F",
+      "n": "349"
+    },
+    {
+      "a": "AHMET FURKAN",
+      "s": "BEDİR",
+      "c": "7-D",
+      "n": "207"
+    },
+    {
+      "a": "AHMET",
+      "s": "KÖSELER",
+      "c": "5-D",
+      "n": "326"
+    },
+    {
+      "a": "AHMET MUHAMMED",
+      "s": "ACAR",
+      "c": "6-F",
+      "n": "570"
+    },
+    {
+      "a": "AHMET MUHAMMET",
+      "s": "DAĞ",
+      "c": "6-F",
+      "n": "16"
+    },
+    {
+      "a": "AHMET",
+      "s": "PINAR",
+      "c": "7-D",
+      "n": "282"
+    },
+    {
+      "a": "AHMET SERDAR",
+      "s": "DEVELİ",
+      "c": "8-B",
+      "n": "55"
+    },
+    {
+      "a": "AHMET YASİN",
+      "s": "ŞEN",
+      "c": "7-D",
+      "n": "221"
+    },
+    {
+      "a": "AHMET YASİR",
+      "s": "HANÇERLİ",
+      "c": "8-B",
+      "n": "424"
+    },
+    {
+      "a": "AİŞE",
+      "s": "ELUBEYD",
+      "c": "8-C",
+      "n": "31"
+    },
+    {
+      "a": "AİŞE NAZLI",
+      "s": "ÇAVDARCI",
+      "c": "7-A",
+      "n": "307"
+    },
+    {
+      "a": "AKGÜL",
+      "s": "GÖZÜBÜYÜK",
+      "c": "5-C",
+      "n": "1004"
+    },
+    {
+      "a": "ALE",
+      "s": "TABBAŞ",
+      "c": "7-C",
+      "n": "194"
+    },
+    {
+      "a": "ALİ",
+      "s": "AYTEKİN",
+      "c": "6-D",
+      "n": "437"
+    },
+    {
+      "a": "ALİ",
+      "s": "CEYLAN",
+      "c": "6-D",
+      "n": "454"
+    },
+    {
+      "a": "ALİ EYMEN",
+      "s": "İPEK",
+      "c": "8-B",
+      "n": "119"
+    },
+    {
+      "a": "ALİ",
+      "s": "İRİŞ",
+      "c": "8-B",
+      "n": "274"
+    },
+    {
+      "a": "ALİ METE",
+      "s": "COŞGUN",
+      "c": "6-F",
+      "n": "452"
+    },
+    {
+      "a": "ALİŞAH",
+      "s": "ÜNLÜKİRAZ",
+      "c": "5-F",
+      "n": "414"
+    },
+    {
+      "a": "ALMİNA ELÇİL",
+      "s": "KARTAL",
+      "c": "7-C",
+      "n": "170"
+    },
+    {
+      "a": "ALPEREN",
+      "s": "APAK",
+      "c": "6-B",
+      "n": "651"
+    },
+    {
+      "a": "ALPEREN",
+      "s": "KAYA",
+      "c": "5-B",
+      "n": "220"
+    },
+    {
+      "a": "ASYA",
+      "s": "ŞEKER",
+      "c": "5-A",
+      "n": "100"
+    },
+    {
+      "a": "AVŞİN NUR",
+      "s": "BARIŞTIRAN",
+      "c": "6-A",
+      "n": "619"
+    },
+    {
+      "a": "AYAZ",
+      "s": "UÇAR",
+      "c": "6-B",
+      "n": "622"
+    },
+    {
+      "a": "AYBÜKE",
+      "s": "KAYA",
+      "c": "7-C",
+      "n": "253"
+    },
+    {
+      "a": "AYE",
+      "s": "EL MANSUR",
+      "c": "5-E",
+      "n": "259"
+    },
+    {
+      "a": "AYNUR NİSA",
+      "s": "ERDOĞAN",
+      "c": "5-A",
+      "n": "105"
+    },
+    {
+      "a": "AYSEL",
+      "s": "ÇINAR",
+      "c": "6-C",
+      "n": "500"
+    },
+    {
+      "a": "AYSEL NİSA",
+      "s": "ÇIRACI",
+      "c": "5-C",
+      "n": "381"
+    },
+    {
+      "a": "AYŞE",
+      "s": "ARABACI",
+      "c": "7-A",
+      "n": "130"
+    },
+    {
+      "a": "AYŞE ECRİN",
+      "s": "ZORLU",
+      "c": "5-A",
+      "n": "108"
+    },
+    {
+      "a": "AYŞE",
+      "s": "EL HALLAK",
+      "c": "5-C",
+      "n": "235"
+    },
+    {
+      "a": "AYŞE NİSA",
+      "s": "UYAR",
+      "c": "8-A",
+      "n": "202"
+    },
+    {
+      "a": "AYŞE SENA",
+      "s": "BÜYÜKBELLİ",
+      "c": "6-E",
+      "n": "588"
+    },
+    {
+      "a": "AYŞE SENA",
+      "s": "ÇATLI",
+      "c": "6-E",
+      "n": "499"
+    },
+    {
+      "a": "AYŞE SEVDE",
+      "s": "AÇIKGÖZ",
+      "c": "6-A",
+      "n": "419"
+    },
+    {
+      "a": "AYŞENAZ",
+      "s": "KARAOSMANOĞLU",
+      "c": "5-E",
+      "n": "260"
+    },
+    {
+      "a": "AYŞENAZ",
+      "s": "ŞEN",
+      "c": "7-C",
+      "n": "182"
+    },
+    {
+      "a": "AZAD İBRAHİM",
+      "s": "ÇEKİÇ",
+      "c": "7-D",
+      "n": "209"
+    },
+    {
+      "a": "AZIRA",
+      "s": "LADI",
+      "c": "5-C",
+      "n": "352"
+    },
+    {
+      "a": "AZRA",
+      "s": "BALLI",
+      "c": "5-E",
+      "n": "287"
+    },
+    {
+      "a": "AZRA BEREN",
+      "s": "ÖZBEK",
+      "c": "8-A",
+      "n": "71"
+    },
+    {
+      "a": "AZRA",
+      "s": "DAL",
+      "c": "6-A",
+      "n": "661"
+    },
+    {
+      "a": "BAHAR SARE",
+      "s": "DOĞAN",
+      "c": "7-A",
+      "n": "133"
+    },
+    {
+      "a": "BATUHAN",
+      "s": "GÜZEL",
+      "c": "7-D",
+      "n": "275"
+    },
+    {
+      "a": "BATUHAN",
+      "s": "OĞUZ",
+      "c": "8-B",
+      "n": "178"
+    },
+    {
+      "a": "BAYAN",
+      "s": "MAHMUT",
+      "c": "5-E",
+      "n": "1031"
+    },
+    {
+      "a": "BAYRAM",
+      "s": "ACAR",
+      "c": "5-D",
+      "n": "324"
+    },
+    {
+      "a": "BAYRAM",
+      "s": "ALTAN",
+      "c": "6-D",
+      "n": "451"
+    },
+    {
+      "a": "BAYRAM",
+      "s": "CENGİZ",
+      "c": "5-F",
+      "n": "13"
+    },
+    {
+      "a": "BEDİRHAN DEDE",
+      "s": "ERGİN",
+      "c": "7-D",
+      "n": "460"
+    },
+    {
+      "a": "BELİNAY",
+      "s": "BALCI",
+      "c": "5-E",
+      "n": "378"
+    },
+    {
+      "a": "BELİNAY SU",
+      "s": "AYIRAN",
+      "c": "6-C",
+      "n": "667"
+    },
+    {
+      "a": "BERAT",
+      "s": "ÇEKİÇ",
+      "c": "6-F",
+      "n": "536"
+    },
+    {
+      "a": "BERAT",
+      "s": "ÇETİN",
+      "c": "5-D",
+      "n": "360"
+    },
+    {
+      "a": "BERAT",
+      "s": "ERTÜRK",
+      "c": "8-B",
+      "n": "215"
+    },
+    {
+      "a": "BERAT",
+      "s": "ÖZKAN",
+      "c": "7-D",
+      "n": "393"
+    },
+    {
+      "a": "BERAT",
+      "s": "TEMUR",
+      "c": "5-F",
+      "n": "14"
+    },
+    {
+      "a": "BERAT YASİN",
+      "s": "DOĞAN",
+      "c": "7-D",
+      "n": "199"
+    },
+    {
+      "a": "BERİL",
+      "s": "DURGUT",
+      "c": "8-A",
+      "n": "73"
+    },
+    {
+      "a": "BERRU",
+      "s": "PINAR",
+      "c": "8-C",
+      "n": "10"
+    },
+    {
+      "a": "BEYTULLAH EMİR",
+      "s": "KILIÇ",
+      "c": "7-D",
+      "n": "21"
+    },
+    {
+      "a": "BİNNAZ",
+      "s": "UÇUCU",
+      "c": "5-A",
+      "n": "109"
+    },
+    {
+      "a": "BİRGÜL",
+      "s": "BALCI",
+      "c": "5-C",
+      "n": "366"
+    },
+    {
+      "a": "BUĞLEM",
+      "s": "IŞIK",
+      "c": "6-A",
+      "n": "657"
+    },
+    {
+      "a": "BUĞRA",
+      "s": "CEYLAN",
+      "c": "6-B",
+      "n": "633"
+    },
+    {
+      "a": "BURHAN SAMİ",
+      "s": "ALKIŞ",
+      "c": "7-D",
+      "n": "86"
+    },
+    {
+      "a": "BÜŞRA ZEYNEP",
+      "s": "TOSUN",
+      "c": "6-A",
+      "n": "663"
+    },
+    {
+      "a": "CAFER",
+      "s": "PEKAŞIK",
+      "c": "5-F",
+      "n": "359"
+    },
+    {
+      "a": "CANSEL",
+      "s": "ÇINAR",
+      "c": "6-E",
+      "n": "560"
+    },
+    {
+      "a": "CANSU",
+      "s": "KAYA",
+      "c": "6-C",
+      "n": "600"
+    },
+    {
+      "a": "CELAL",
+      "s": "ŞEN",
+      "c": "6-D",
+      "n": "1024"
+    },
+    {
+      "a": "CEMİL",
+      "s": "TEDİLİ",
+      "c": "8-B",
+      "n": "200"
+    },
+    {
+      "a": "CENNET SİMA",
+      "s": "ÇİBİK",
+      "c": "5-E",
+      "n": "261"
+    },
+    {
+      "a": "CİHAD HÜSEYİN",
+      "s": "ASLAN",
+      "c": "7-D",
+      "n": "298"
+    },
+    {
+      "a": "CUMA",
+      "s": "GÜNDÜZ",
+      "c": "7-D",
+      "n": "396"
+    },
+    {
+      "a": "DENİZ",
+      "s": "KAMACI",
+      "c": "7-C",
+      "n": "265"
+    },
+    {
+      "a": "DERYA",
+      "s": "GİTTİ",
+      "c": "5-E",
+      "n": "471"
+    },
+    {
+      "a": "DİDAR",
+      "s": "GÜL",
+      "c": "6-C",
+      "n": "469"
+    },
+    {
+      "a": "DİLAN",
+      "s": "BÜYÜKKEKLİKCİ",
+      "c": "5-E",
+      "n": "1030"
+    },
+    {
+      "a": "DURMUŞ EFE",
+      "s": "YOLCU",
+      "c": "5-D",
+      "n": "394"
+    },
+    {
+      "a": "EBRAR",
+      "s": "BUYRUCU",
+      "c": "7-A",
+      "n": "295"
+    },
+    {
+      "a": "EBRAR",
+      "s": "COŞGUN",
+      "c": "7-C",
+      "n": "428"
+    },
+    {
+      "a": "EBRAR",
+      "s": "DOĞAN",
+      "c": "7-C",
+      "n": "146"
+    },
+    {
+      "a": "EBRAR HİFA",
+      "s": "HÜYÜK",
+      "c": "5-C",
+      "n": "263"
+    },
+    {
+      "a": "EBRAR NAZ",
+      "s": "ÖZ",
+      "c": "7-C",
+      "n": "238"
+    },
+    {
+      "a": "ECEM İKRA",
+      "s": "CANSIN",
+      "c": "7-A",
+      "n": "56"
+    },
+    {
+      "a": "ECRİN BUĞLEM",
+      "s": "CAMIZCI",
+      "c": "6-C",
+      "n": "563"
+    },
+    {
+      "a": "ECRİN",
+      "s": "KAYA",
+      "c": "7-C",
+      "n": "229"
+    },
+    {
+      "a": "ECRİN",
+      "s": "TUNÇ",
+      "c": "8-A",
+      "n": "139"
+    },
+    {
+      "a": "ECRİN",
+      "s": "UYAR",
+      "c": "6-A",
+      "n": "610"
+    },
+    {
+      "a": "EDANUR",
+      "s": "TÜRE",
+      "c": "6-E",
+      "n": "566"
+    },
+    {
+      "a": "EGEMEN",
+      "s": "ALKIŞ",
+      "c": "6-D",
+      "n": "474"
+    },
+    {
+      "a": "ELİF ADA",
+      "s": "BÜYÜKTOKA",
+      "c": "5-A",
+      "n": "234"
+    },
+    {
+      "a": "ELİF BUĞLEM",
+      "s": "SAKIN",
+      "c": "5-E",
+      "n": "264"
+    },
+    {
+      "a": "ELİF CEMRE",
+      "s": "ÇAYIRÖZ",
+      "c": "5-C",
+      "n": "358"
+    },
+    {
+      "a": "ELİF",
+      "s": "ÇOBAN",
+      "c": "5-A",
+      "n": "114"
+    },
+    {
+      "a": "ELİF ECE",
+      "s": "ATA",
+      "c": "8-C",
+      "n": "75"
+    },
+    {
+      "a": "ELİF",
+      "s": "GÜNEY",
+      "c": "8-A",
+      "n": "149"
+    },
+    {
+      "a": "ELİF",
+      "s": "KASAR",
+      "c": "7-A",
+      "n": "187"
+    },
+    {
+      "a": "ELİF MİRA",
+      "s": "ATA",
+      "c": "5-E",
+      "n": "33"
+    },
+    {
+      "a": "ELİF NİSA",
+      "s": "BOZTAŞ",
+      "c": "6-C",
+      "n": "495"
+    },
+    {
+      "a": "ELİF",
+      "s": "ORHAN",
+      "c": "7-C",
+      "n": "165"
+    },
+    {
+      "a": "ELİF",
+      "s": "ÖZKURT",
+      "c": "8-C",
+      "n": "243"
+    },
+    {
+      "a": "ELİF RAVDA",
+      "s": "KÜRKLÜ",
+      "c": "7-A",
+      "n": "197"
+    },
+    {
+      "a": "ELİF SENA",
+      "s": "ERUYAR",
+      "c": "5-C",
+      "n": "383"
+    },
+    {
+      "a": "ELİF",
+      "s": "YAZICI",
+      "c": "6-C",
+      "n": "497"
+    },
+    {
+      "a": "ELİF ZEREN",
+      "s": "TOPAK",
+      "c": "7-C",
+      "n": "183"
+    },
+    {
+      "a": "ELİF ZÜMRA",
+      "s": "MUCURLU",
+      "c": "6-C",
+      "n": "494"
+    },
+    {
+      "a": "ELİF ZÜMRA",
+      "s": "YAYICI",
+      "c": "6-A",
+      "n": "576"
+    },
+    {
+      "a": "ELİFSU",
+      "s": "HANÇERLİ",
+      "c": "8-A",
+      "n": "268"
+    },
+    {
+      "a": "ELVİN NİDA",
+      "s": "ELMAN",
+      "c": "6-A",
+      "n": "658"
+    },
+    {
+      "a": "EMİNENUR",
+      "s": "SÜRÜCÜ",
+      "c": "5-E",
+      "n": "333"
+    },
+    {
+      "a": "EMİR",
+      "s": "KÜÇÜKKİPRİTCİ",
+      "c": "6-F",
+      "n": "573"
+    },
+    {
+      "a": "EMİRHAN",
+      "s": "ALTAN",
+      "c": "8-B",
+      "n": "122"
+    },
+    {
+      "a": "EMRE TUFAN",
+      "s": "ANLAR",
+      "c": "5-D",
+      "n": "387"
+    },
+    {
+      "a": "ENES",
+      "s": "KORHAN",
+      "c": "5-F",
+      "n": "19"
+    },
+    {
+      "a": "ENES TALHA",
+      "s": "ÇATLI",
+      "c": "8-B",
+      "n": "480"
+    },
+    {
+      "a": "ENİS CAN",
+      "s": "ARAS",
+      "c": "7-D",
+      "n": "256"
+    },
+    {
+      "a": "ENSAR",
+      "s": "ÖZTÜRK",
+      "c": "7-B",
+      "n": "106"
+    },
+    {
+      "a": "EREN",
+      "s": "AĞAOĞLU",
+      "c": "8-B",
+      "n": "1043"
+    },
+    {
+      "a": "ERKAM",
+      "s": "ÖZEL",
+      "c": "8-B",
+      "n": "171"
+    },
+    {
+      "a": "ERVA",
+      "s": "COŞGUN",
+      "c": "7-A",
+      "n": "140"
+    },
+    {
+      "a": "ERVA NUR",
+      "s": "BAĞCI",
+      "c": "5-C",
+      "n": "266"
+    },
+    {
+      "a": "ERVA",
+      "s": "ÖZEL",
+      "c": "7-A",
+      "n": "161"
+    },
+    {
+      "a": "ESİLAY",
+      "s": "ASLAN",
+      "c": "7-A",
+      "n": "390"
+    },
+    {
+      "a": "ESLEM",
+      "s": "ARTIŞ",
+      "c": "7-A",
+      "n": "155"
+    },
+    {
+      "a": "ESLEM ASEL",
+      "s": "ALTUN",
+      "c": "6-A",
+      "n": "628"
+    },
+    {
+      "a": "ESLEM",
+      "s": "KORUCU",
+      "c": "5-E",
+      "n": "355"
+    },
+    {
+      "a": "ESLEM NİSA",
+      "s": "ÖRNEK",
+      "c": "8-A",
+      "n": "83"
+    },
+    {
+      "a": "ESLEM",
+      "s": "ÖZKAN",
+      "c": "5-A",
+      "n": "121"
+    },
+    {
+      "a": "ESLEM",
+      "s": "TABAK",
+      "c": "5-C",
+      "n": "365"
+    },
+    {
+      "a": "ESLEM",
+      "s": "TERZİ",
+      "c": "6-C",
+      "n": "385"
+    },
+    {
+      "a": "ESMA GÜL",
+      "s": "USLU",
+      "c": "6-C",
+      "n": "441"
+    },
+    {
+      "a": "ESMA NUR",
+      "s": "ÇINARKA",
+      "c": "5-E",
+      "n": "388"
+    },
+    {
+      "a": "EYLÜL HİRA",
+      "s": "AKYILDIZ",
+      "c": "6-A",
+      "n": "624"
+    },
+    {
+      "a": "EYLÜL",
+      "s": "KAVDU",
+      "c": "5-C",
+      "n": "375"
+    },
+    {
+      "a": "EYMEN",
+      "s": "ASLAN",
+      "c": "6-D",
+      "n": "488"
+    },
+    {
+      "a": "EYMEN",
+      "s": "GÜNDÜZ",
+      "c": "6-F",
+      "n": "395"
+    },
+    {
+      "a": "FAHRETTİN",
+      "s": "ÖMEK",
+      "c": "5-F",
+      "n": "222"
+    },
+    {
+      "a": "FARUK",
+      "s": "COŞKUN",
+      "c": "5-B",
+      "n": "30"
+    },
+    {
+      "a": "FATIMA",
+      "s": "EL HAC SÜLEYMAN",
+      "c": "7-A",
+      "n": "1008"
+    },
+    {
+      "a": "FATIMA",
+      "s": "EL MAHMUD",
+      "c": "8-C",
+      "n": "203"
+    },
+    {
+      "a": "FATIMA ESLEM",
+      "s": "KOÇ",
+      "c": "7-A",
+      "n": "258"
+    },
+    {
+      "a": "FATIMA",
+      "s": "İSA",
+      "c": "7-C",
+      "n": "1038"
+    },
+    {
+      "a": "FATIMA",
+      "s": "MUHAMMED",
+      "c": "5-C",
+      "n": "232"
+    },
+    {
+      "a": "FATİH EREN",
+      "s": "KOÇAK",
+      "c": "5-D",
+      "n": "367"
+    },
+    {
+      "a": "FATİN FEHMİ İSMAİL",
+      "s": "CEBBEŞ",
+      "c": "7-C",
+      "n": "290"
+    },
+    {
+      "a": "FATMA",
+      "s": "DADO",
+      "c": "6-E",
+      "n": "535"
+    },
+    {
+      "a": "FATMA ESLEM",
+      "s": "YALÇIN",
+      "c": "7-A",
+      "n": "148"
+    },
+    {
+      "a": "FATMA",
+      "s": "ORHAN",
+      "c": "6-E",
+      "n": "529"
+    },
+    {
+      "a": "FATMA TÜZZEHRA",
+      "s": "İRİŞ",
+      "c": "6-A",
+      "n": "456"
+    },
+    {
+      "a": "FATMA ZEHRA",
+      "s": "AKBULUT",
+      "c": "6-C",
+      "n": "201"
+    },
+    {
+      "a": "FATMANUR",
+      "s": "SARI",
+      "c": "6-A",
+      "n": "519"
+    },
+    {
+      "a": "FERİHA",
+      "s": "HANCI",
+      "c": "5-E",
+      "n": "267"
+    },
+    {
+      "a": "FEYZA NUR",
+      "s": "ÇANAKCI",
+      "c": "8-C",
+      "n": "279"
+    },
+    {
+      "a": "FİKRET",
+      "s": "SAN",
+      "c": "7-B",
+      "n": "90"
+    },
+    {
+      "a": "FİRDEVS NAZ",
+      "s": "ESERÖZBEK",
+      "c": "5-C",
+      "n": "294"
+    },
+    {
+      "a": "GÜL MERYEM",
+      "s": "ARI",
+      "c": "7-A",
+      "n": "132"
+    },
+    {
+      "a": "GÜLDANE",
+      "s": "YAVUZ",
+      "c": "5-C",
+      "n": "269"
+    },
+    {
+      "a": "GÜLSÜM",
+      "s": "YILDIZ",
+      "c": "5-E",
+      "n": "272"
+    },
+    {
+      "a": "GÜLŞAH",
+      "s": "GEMİCİ",
+      "c": "6-C",
+      "n": "1022"
+    },
+    {
+      "a": "GÜLÜZAR",
+      "s": "KARTAL",
+      "c": "6-E",
+      "n": "506"
+    },
+    {
+      "a": "GÜRAY",
+      "s": "UYSAL",
+      "c": "7-B",
+      "n": "224"
+    },
+    {
+      "a": "ĞUFRAN",
+      "s": "EL ALEYVİ",
+      "c": "7-C",
+      "n": "179"
+    },
+    {
+      "a": "HACER ECRİN",
+      "s": "ATAK",
+      "c": "7-A",
+      "n": "191"
+    },
+    {
+      "a": "HACER",
+      "s": "ERDOĞAN",
+      "c": "6-E",
+      "n": "426"
+    },
+    {
+      "a": "HACER",
+      "s": "İNAL",
+      "c": "5-A",
+      "n": "128"
+    },
+    {
+      "a": "HALİL",
+      "s": "PEKAŞIK",
+      "c": "5-F",
+      "n": "1033"
+    },
+    {
+      "a": "HALİME",
+      "s": "İNAN",
+      "c": "5-C",
+      "n": "276"
+    },
+    {
+      "a": "HALİME SENA",
+      "s": "TAŞDELEN",
+      "c": "7-C",
+      "n": "192"
+    },
+    {
+      "a": "HALİS EMİR",
+      "s": "MUTLU",
+      "c": "7-D",
+      "n": "134"
+    },
+    {
+      "a": "HAMZA",
+      "s": "ALMAMOU",
+      "c": "7-B",
+      "n": "212"
+    },
+    {
+      "a": "HAMZA",
+      "s": "ÇIRA",
+      "c": "6-F",
+      "n": "533"
+    },
+    {
+      "a": "HAMZA",
+      "s": "EL ALEYVİ",
+      "c": "5-F",
+      "n": "364"
+    },
+    {
+      "a": "HAMZA",
+      "s": "MUHTAROĞLU",
+      "c": "5-D",
+      "n": "306"
+    },
+    {
+      "a": "HAMZA",
+      "s": "TEMUR",
+      "c": "6-F",
+      "n": "591"
+    },
+    {
+      "a": "HANA",
+      "s": "ELŞEMMO ELHASEN",
+      "c": "6-E",
+      "n": "382"
+    },
+    {
+      "a": "HANIN",
+      "s": "ALKATTAŞ",
+      "c": "6-C",
+      "n": "2002"
+    },
+    {
+      "a": "HARUN YUSUF",
+      "s": "DOĞRAMACI",
+      "c": "7-B",
+      "n": "36"
+    },
+    {
+      "a": "HASAN ALİ",
+      "s": "PEKAŞIK",
+      "c": "6-F",
+      "n": "417"
+    },
+    {
+      "a": "HASAN BAKİ",
+      "s": "EDİZER",
+      "c": "5-D",
+      "n": "350"
+    },
+    {
+      "a": "HASAN BEYTULLAH",
+      "s": "YAMAN",
+      "c": "5-B",
+      "n": "346"
+    },
+    {
+      "a": "HASAN ERDEM",
+      "s": "BÜYÜKİLİK",
+      "c": "6-F",
+      "n": "406"
+    },
+    {
+      "a": "HASAN HÜSEYİN",
+      "s": "SÜNETÇİ",
+      "c": "6-D",
+      "n": "464"
+    },
+    {
+      "a": "HASAN",
+      "s": "PEKAŞIK",
+      "c": "5-D",
+      "n": "145"
+    },
+    {
+      "a": "HASRET",
+      "s": "HARMAN",
+      "c": "7-A",
+      "n": "157"
+    },
+    {
+      "a": "HATİCE",
+      "s": "ALTUNOK",
+      "c": "8-A",
+      "n": "89"
+    },
+    {
+      "a": "HATİCE",
+      "s": "KAHRAMAN",
+      "c": "5-A",
+      "n": "137"
+    },
+    {
+      "a": "HATİCE KÜBRA",
+      "s": "GÖZÜBÜYÜK",
+      "c": "5-E",
+      "n": "343"
+    },
+    {
+      "a": "HATİCE RAVZA",
+      "s": "MERT",
+      "c": "5-C",
+      "n": "277"
+    },
+    {
+      "a": "HATİCE REYYAN",
+      "s": "GEDİKLİ",
+      "c": "5-A",
+      "n": "218"
+    },
+    {
+      "a": "HATİCE ZEHRA",
+      "s": "KEKLİK",
+      "c": "5-A",
+      "n": "144"
+    },
+    {
+      "a": "HAVANUR",
+      "s": "ÖZDİL",
+      "c": "8-C",
+      "n": "92"
+    },
+    {
+      "a": "HAVVA NUR",
+      "s": "ÇOBAN",
+      "c": "8-A",
+      "n": "93"
+    },
+    {
+      "a": "HAVVA SENA",
+      "s": "ACAR",
+      "c": "7-C",
+      "n": "34"
+    },
+    {
+      "a": "HAYDAR",
+      "s": "GÜL",
+      "c": "5-D",
+      "n": "301"
+    },
+    {
+      "a": "HAYRİYE",
+      "s": "ÖZDEMİR",
+      "c": "5-E",
+      "n": "280"
+    },
+    {
+      "a": "HAYRUNNİSA",
+      "s": "ÇATLI",
+      "c": "8-C",
+      "n": "477"
+    },
+    {
+      "a": "HAYRUNNİSA",
+      "s": "DOĞAN",
+      "c": "7-A",
+      "n": "142"
+    },
+    {
+      "a": "HAYRÜNNİSA",
+      "s": "ERKUT",
+      "c": "7-A",
+      "n": "136"
+    },
+    {
+      "a": "HAZAL",
+      "s": "ÜNALDI",
+      "c": "5-A",
+      "n": "400"
+    },
+    {
+      "a": "HEDİYE REYHAN",
+      "s": "YILDIRIM",
+      "c": "8-A",
+      "n": "147"
+    },
+    {
+      "a": "HEDİYE",
+      "s": "YAYAR",
+      "c": "5-A",
+      "n": "159"
+    },
+    {
+      "a": "HİBE",
+      "s": "HAC AHMED",
+      "c": "5-C",
+      "n": "314"
+    },
+    {
+      "a": "HİLMİ",
+      "s": "KARACA",
+      "c": "6-D",
+      "n": "1007"
+    },
+    {
+      "a": "HİRA BUĞLEM",
+      "s": "ÖZŞAHİN",
+      "c": "6-A",
+      "n": "479"
+    },
+    {
+      "a": "HİRA NUR",
+      "s": "İMA",
+      "c": "8-A",
+      "n": "11"
+    },
+    {
+      "a": "HİRA NUR",
+      "s": "ÜNLÜ",
+      "c": "6-E",
+      "n": "551"
+    },
+    {
+      "a": "HİRANUR",
+      "s": "BAŞBÖĞER",
+      "c": "5-A",
+      "n": "164"
+    },
+    {
+      "a": "HİRANUR",
+      "s": "İRİŞ",
+      "c": "7-C",
+      "n": "195"
+    },
+    {
+      "a": "HÜDA",
+      "s": "EL MAHMUD",
+      "c": "6-C",
+      "n": "481"
+    },
+    {
+      "a": "HÜMEYRA",
+      "s": "ÇELİK",
+      "c": "5-A",
+      "n": "169"
+    },
+    {
+      "a": "HÜMEYRA",
+      "s": "KILIÇ",
+      "c": "8-C",
+      "n": "281"
+    },
+    {
+      "a": "HÜMEYRA",
+      "s": "SOYTÜRK",
+      "c": "8-A",
+      "n": "120"
+    },
+    {
+      "a": "HÜSAM",
+      "s": "EL HAMDAN",
+      "c": "7-D",
+      "n": "1071"
+    },
+    {
+      "a": "HÜSEYİN",
+      "s": "AKCI",
+      "c": "5-D",
+      "n": "328"
+    },
+    {
+      "a": "İBRAHİM",
+      "s": "DOĞRAMACI",
+      "c": "5-F",
+      "n": "25"
+    },
+    {
+      "a": "İBRAHİM EFE",
+      "s": "DİNLER",
+      "c": "5-D",
+      "n": "363"
+    },
+    {
+      "a": "İBRAHİM EMİR",
+      "s": "SARI",
+      "c": "5-B",
+      "n": "325"
+    },
+    {
+      "a": "İBRAHİM ETHEM",
+      "s": "ÇELİK",
+      "c": "6-F",
+      "n": "530"
+    },
+    {
+      "a": "İBRAHİM",
+      "s": "İSA",
+      "c": "6-F",
+      "n": "532"
+    },
+    {
+      "a": "İBRAHİM",
+      "s": "ÖZDEMİR",
+      "c": "5-F",
+      "n": "323"
+    },
+    {
+      "a": "İMAN",
+      "s": "MANGANE",
+      "c": "5-A",
+      "n": "172"
+    },
+    {
+      "a": "İMRAN",
+      "s": "YILMAZ",
+      "c": "7-A",
+      "n": "284"
+    },
+    {
+      "a": "İSA",
+      "s": "OKATTIK",
+      "c": "7-B",
+      "n": "111"
+    },
+    {
+      "a": "İSMAİL",
+      "s": "ÇELİK",
+      "c": "7-B",
+      "n": "226"
+    },
+    {
+      "a": "İSMAİL",
+      "s": "ÇELMELİ",
+      "c": "5-F",
+      "n": "327"
+    },
+    {
+      "a": "İSMAİL EMİN",
+      "s": "GÖLCÜK",
+      "c": "5-B",
+      "n": "228"
+    },
+    {
+      "a": "İSMAİL EYMEN",
+      "s": "GÜLEÇ",
+      "c": "5-D",
+      "n": "329"
+    },
+    {
+      "a": "İSRA",
+      "s": "EL MAHMUD",
+      "c": "5-C",
+      "n": "1013"
+    },
+    {
+      "a": "İZZET",
+      "s": "BEKTAŞ",
+      "c": "6-D",
+      "n": "493"
+    },
+    {
+      "a": "İZZET",
+      "s": "DİRİCAN",
+      "c": "5-D",
+      "n": "102"
+    },
+    {
+      "a": "JANNA",
+      "s": "ALHAJ ISSA ALRAEE",
+      "c": "8-C",
+      "n": "156"
+    },
+    {
+      "a": "JUDY",
+      "s": "DAY",
+      "c": "6-A",
+      "n": "547"
+    },
+    {
+      "a": "KAAN",
+      "s": "ATEŞ",
+      "c": "6-D",
+      "n": "262"
+    },
+    {
+      "a": "KAAN BATU",
+      "s": "ERDEN",
+      "c": "6-B",
+      "n": "678"
+    },
+    {
+      "a": "KAMİLE ZEHRA",
+      "s": "GÜNVAR",
+      "c": "7-A",
+      "n": "196"
+    },
+    {
+      "a": "KEMAL",
+      "s": "ÖZTÜRK",
+      "c": "5-D",
+      "n": "1017"
+    },
+    {
+      "a": "KERİM ABDULL CABBAR",
+      "s": "DEMİR",
+      "c": "7-D",
+      "n": "39"
+    },
+    {
+      "a": "KERİM",
+      "s": "YURTKAN",
+      "c": "5-F",
+      "n": "372"
+    },
+    {
+      "a": "KEVSER",
+      "s": "DEMİR",
+      "c": "6-C",
+      "n": "420"
+    },
+    {
+      "a": "KEVSER",
+      "s": "GÖZÜBÜYÜK",
+      "c": "5-E",
+      "n": "344"
+    },
+    {
+      "a": "KUZEY TAHSİN",
+      "s": "AYGÜL",
+      "c": "7-B",
+      "n": "23"
+    },
+    {
+      "a": "KÜBRA",
+      "s": "CEYRAN",
+      "c": "6-E",
+      "n": "465"
+    },
+    {
+      "a": "KÜBRA",
+      "s": "ÇELİK",
+      "c": "8-A",
+      "n": "94"
+    },
+    {
+      "a": "KÜBRA",
+      "s": "DOĞAN",
+      "c": "6-C",
+      "n": "609"
+    },
+    {
+      "a": "KÜBRA NİSA",
+      "s": "İRİŞ",
+      "c": "6-E",
+      "n": "572"
+    },
+    {
+      "a": "KÜBRA NUR",
+      "s": "ÖZDEMİR",
+      "c": "8-A",
+      "n": "95"
+    },
+    {
+      "a": "LAMA",
+      "s": "ELHAŞHAŞ",
+      "c": "7-C",
+      "n": "163"
+    },
+    {
+      "a": "LEYLA",
+      "s": "HANİFİ ELABDULLAH",
+      "c": "6-C",
+      "n": "1027"
+    },
+    {
+      "a": "LEYLA",
+      "s": "SABAHİ",
+      "c": "7-C",
+      "n": "2501"
+    },
+    {
+      "a": "LOKMAN",
+      "s": "DURGUT",
+      "c": "6-B",
+      "n": "597"
+    },
+    {
+      "a": "LULİYA",
+      "s": "BEYDAK",
+      "c": "6-A",
+      "n": "606"
+    },
+    {
+      "a": "LÜTFİ",
+      "s": "ARIEKEN",
+      "c": "7-B",
+      "n": "249"
+    },
+    {
+      "a": "MAHMUD",
+      "s": "EL HELLAVİ",
+      "c": "6-D",
+      "n": "2003"
+    },
+    {
+      "a": "MAHMUD",
+      "s": "HALLAK",
+      "c": "6-D",
+      "n": "311"
+    },
+    {
+      "a": "MAHMUD HAŞİM",
+      "s": "İSA",
+      "c": "6-F",
+      "n": "553"
+    },
+    {
+      "a": "MAHMUT ESAT",
+      "s": "DEMİR",
+      "c": "5-D",
+      "n": "330"
+    },
+    {
+      "a": "MAHMUT MELİH",
+      "s": "ERİŞ",
+      "c": "7-B",
+      "n": "152"
+    },
+    {
+      "a": "MAKBULE",
+      "s": "ERTÜRK",
+      "c": "5-E",
+      "n": "361"
+    },
+    {
+      "a": "MARYAM",
+      "s": "ASHURI",
+      "c": "5-E",
+      "n": "1023"
+    },
+    {
+      "a": "MECİT",
+      "s": "GÜNEY",
+      "c": "8-B",
+      "n": "431"
+    },
+    {
+      "a": "MEDİNE",
+      "s": "ŞAHAN",
+      "c": "8-A",
+      "n": "96"
+    },
+    {
+      "a": "MEHMET",
+      "s": "ÇİNİ",
+      "c": "5-F",
+      "n": "331"
+    },
+    {
+      "a": "MEHMET EMİN",
+      "s": "İNCE",
+      "c": "5-D",
+      "n": "391"
+    },
+    {
+      "a": "MEHMET EYMEN",
+      "s": "ÖZARAS",
+      "c": "6-B",
+      "n": "659"
+    },
+    {
+      "a": "MEHMET EYMEN",
+      "s": "TEKELİOĞLU",
+      "c": "6-B",
+      "n": "631"
+    },
+    {
+      "a": "MEHMET FATİH",
+      "s": "SAYDAM",
+      "c": "8-B",
+      "n": "43"
+    },
+    {
+      "a": "MEHMET MİRAÇ",
+      "s": "KAYNAR",
+      "c": "6-F",
+      "n": "593"
+    },
+    {
+      "a": "MEHMETHAN",
+      "s": "ALAN",
+      "c": "6-F",
+      "n": "401"
+    },
+    {
+      "a": "MELEK NAZ",
+      "s": "EROL",
+      "c": "8-C",
+      "n": "175"
+    },
+    {
+      "a": "MELİKE",
+      "s": "SERİM",
+      "c": "5-C",
+      "n": "362"
+    },
+    {
+      "a": "MELİSA",
+      "s": "KARACA",
+      "c": "5-E",
+      "n": "1019"
+    },
+    {
+      "a": "MENEKŞE MİNA",
+      "s": "ÜNAL",
+      "c": "7-C",
+      "n": "180"
+    },
+    {
+      "a": "MERT",
+      "s": "KURT",
+      "c": "6-D",
+      "n": "308"
+    },
+    {
+      "a": "MERYEM",
+      "s": "BEKTAŞ",
+      "c": "5-E",
+      "n": "32"
+    },
+    {
+      "a": "MERYEM HİRA",
+      "s": "AKGÜL",
+      "c": "5-C",
+      "n": "379"
+    },
+    {
+      "a": "MERYEM NİSA",
+      "s": "KARA",
+      "c": "5-C",
+      "n": "369"
+    },
+    {
+      "a": "MERYEM",
+      "s": "ÖZARAS",
+      "c": "7-C",
+      "n": "216"
+    },
+    {
+      "a": "METİN TAHA",
+      "s": "SEVİLMİŞ",
+      "c": "5-D",
+      "n": "332"
+    },
+    {
+      "a": "MEVLÜT BAKİ",
+      "s": "DÜNDAR",
+      "c": "5-B",
+      "n": "233"
+    },
+    {
+      "a": "MEVLÜT ENES",
+      "s": "YILDIZ",
+      "c": "7-B",
+      "n": "198"
+    },
+    {
+      "a": "MEYSA",
+      "s": "HANİFİ ELABDULLAH",
+      "c": "6-C",
+      "n": "190"
+    },
+    {
+      "a": "MİKAİL",
+      "s": "KEKLİKCİ",
+      "c": "8-B",
+      "n": "223"
+    },
+    {
+      "a": "MİRAC",
+      "s": "EL MÜŞRİF",
+      "c": "6-D",
+      "n": "453"
+    },
+    {
+      "a": "MİRAÇ ALİ",
+      "s": "GÖLELİ",
+      "c": "8-B",
+      "n": "138"
+    },
+    {
+      "a": "MİZGİN",
+      "s": "DİNLER",
+      "c": "5-A",
+      "n": "174"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "ABDULKADİR",
+      "c": "5-F",
+      "n": "508"
+    },
+    {
+      "a": "MUHAMMED ALİ",
+      "s": "DENİZ",
+      "c": "5-F",
+      "n": "356"
+    },
+    {
+      "a": "MUHAMMED ALİ",
+      "s": "GÖÇER",
+      "c": "7-B",
+      "n": "421"
+    },
+    {
+      "a": "MUHAMMED ALİ",
+      "s": "KEKLİK",
+      "c": "5-B",
+      "n": "392"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "ALTINTAŞ",
+      "c": "6-B",
+      "n": "595"
+    },
+    {
+      "a": "MUHAMMED BERAT",
+      "s": "DAĞ",
+      "c": "7-B",
+      "n": "110"
+    },
+    {
+      "a": "MUHAMMED CAN",
+      "s": "MINGIR",
+      "c": "6-D",
+      "n": "457"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "EL ALEYVİ",
+      "c": "5-F",
+      "n": "1034"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "EL BİNŞİ",
+      "c": "8-B",
+      "n": "461"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "EL HAC KELBUN",
+      "c": "7-D",
+      "n": "1078"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "EL MUHAMMED",
+      "c": "7-D",
+      "n": "186"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "EL SABAHİ",
+      "c": "7-D",
+      "n": "2502"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "ELALI",
+      "c": "7-D",
+      "n": "271"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "ELHAŞAŞ",
+      "c": "8-B",
+      "n": "18"
+    },
+    {
+      "a": "MUHAMMED EMİN",
+      "s": "AYIRAN",
+      "c": "5-F",
+      "n": "334"
+    },
+    {
+      "a": "MUHAMMED EMİN",
+      "s": "DUYMAZ",
+      "c": "7-B",
+      "n": "101"
+    },
+    {
+      "a": "MUHAMMED EMİN",
+      "s": "KARA",
+      "c": "6-B",
+      "n": "656"
+    },
+    {
+      "a": "MUHAMMED EMİN",
+      "s": "KULOĞLU",
+      "c": "7-D",
+      "n": "289"
+    },
+    {
+      "a": "MUHAMMED EMİN",
+      "s": "YAVUZ",
+      "c": "8-B",
+      "n": "123"
+    },
+    {
+      "a": "MUHAMMED EMİR",
+      "s": "BÜYÜKBARDAKCI",
+      "c": "5-B",
+      "n": "236"
+    },
+    {
+      "a": "MUHAMMED EMİR",
+      "s": "ERDEM",
+      "c": "7-B",
+      "n": "103"
+    },
+    {
+      "a": "MUHAMMED ENES",
+      "s": "DEMİR",
+      "c": "5-D",
+      "n": "335"
+    },
+    {
+      "a": "MUHAMMED ENES",
+      "s": "YAŞAR",
+      "c": "6-F",
+      "n": "12"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "HAC AHMED",
+      "c": "5-D",
+      "n": "313"
+    },
+    {
+      "a": "MUHAMMED MEVLÜT",
+      "s": "GÜMÜŞTAŞ",
+      "c": "7-B",
+      "n": "22"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "SARIKAYA",
+      "c": "6-D",
+      "n": "291"
+    },
+    {
+      "a": "MUHAMMED TALHA",
+      "s": "BÖZTAŞ",
+      "c": "7-D",
+      "n": "213"
+    },
+    {
+      "a": "MUHAMMED TALHA",
+      "s": "CERAN",
+      "c": "7-D",
+      "n": "413"
+    },
+    {
+      "a": "MUHAMMED",
+      "s": "ÜNLER",
+      "c": "6-B",
+      "n": "1"
+    },
+    {
+      "a": "MUHAMMED YİĞİT",
+      "s": "DADAK",
+      "c": "8-B",
+      "n": "154"
+    },
+    {
+      "a": "MUHAMMED YUNUS",
+      "s": "VAROL",
+      "c": "6-B",
+      "n": "697"
+    },
+    {
+      "a": "MUHAMMED YUSUF",
+      "s": "DUYMAZ",
+      "c": "7-B",
+      "n": "124"
+    },
+    {
+      "a": "MUHAMMED YUSUF",
+      "s": "VAROL",
+      "c": "7-B",
+      "n": "208"
+    },
+    {
+      "a": "MUHAMMET ALİ",
+      "s": "DOĞAN",
+      "c": "6-B",
+      "n": "644"
+    },
+    {
+      "a": "MUHAMMET EMİR",
+      "s": "ÇAMLICA",
+      "c": "6-D",
+      "n": "486"
+    },
+    {
+      "a": "MUHAMMET RAMAZAN",
+      "s": "BAĞCI",
+      "c": "6-B",
+      "n": "579"
+    },
+    {
+      "a": "MUHAMMET ZEKİ",
+      "s": "CAN",
+      "c": "7-B",
+      "n": "227"
+    },
+    {
+      "a": "MUKADDES",
+      "s": "GÜNDÜZ",
+      "c": "5-E",
+      "n": "283"
+    },
+    {
+      "a": "MURAT EMİR",
+      "s": "ÜRÜN",
+      "c": "5-F",
+      "n": "336"
+    },
+    {
+      "a": "MUSAB",
+      "s": "AYSU",
+      "c": "6-F",
+      "n": "376"
+    },
+    {
+      "a": "MUSTAFA",
+      "s": "ALTAN",
+      "c": "8-B",
+      "n": "302"
+    },
+    {
+      "a": "MUSTAFA EGE",
+      "s": "ESMER",
+      "c": "6-B",
+      "n": "604"
+    },
+    {
+      "a": "MUSTAFA EMİR",
+      "s": "SARIBAŞ",
+      "c": "7-B",
+      "n": "416"
+    },
+    {
+      "a": "MUSTAFA",
+      "s": "GÖKMEN",
+      "c": "5-B",
+      "n": "239"
+    },
+    {
+      "a": "MUSTAFA HAMZA",
+      "s": "KIRKAN",
+      "c": "6-D",
+      "n": "467"
+    },
+    {
+      "a": "MUSTAFA",
+      "s": "SUCU",
+      "c": "6-D",
+      "n": "484"
+    },
+    {
+      "a": "MUSTAFA TALHA",
+      "s": "YILDIRIM",
+      "c": "5-D",
+      "n": "339"
+    },
+    {
+      "a": "MUSTAFA TAYYİP",
+      "s": "İLHAN",
+      "c": "8-B",
+      "n": "231"
+    },
+    {
+      "a": "MÜNE",
+      "s": "ELHULEYF ELHAMMUD",
+      "c": "6-C",
+      "n": "491"
+    },
+    {
+      "a": "MÜNEVVER SERRA",
+      "s": "AKKAYA",
+      "c": "6-A",
+      "n": "645"
+    },
+    {
+      "a": "NACİ",
+      "s": "İRİŞ",
+      "c": "7-B",
+      "n": "118"
+    },
+    {
+      "a": "NADİR",
+      "s": "KEMAM BABELLI",
+      "c": "5-B",
+      "n": "241"
+    },
+    {
+      "a": "NAJAH",
+      "s": "ALKATTAŞ",
+      "c": "6-C",
+      "n": "2004"
+    },
+    {
+      "a": "NEHİR",
+      "s": "ÜNLÜKİRAZ",
+      "c": "5-C",
+      "n": "468"
+    },
+    {
+      "a": "NESİL",
+      "s": "EREL",
+      "c": "7-A",
+      "n": "160"
+    },
+    {
+      "a": "NESLİHAN",
+      "s": "ÇİNİ",
+      "c": "5-C",
+      "n": "293"
+    },
+    {
+      "a": "NİSA",
+      "s": "GÖZÜBÜYÜK",
+      "c": "5-E",
+      "n": "345"
+    },
+    {
+      "a": "NİSANUR",
+      "s": "KARAAĞAÇ",
+      "c": "7-A",
+      "n": "173"
+    },
+    {
+      "a": "NİSANUR",
+      "s": "KORHAN",
+      "c": "5-C",
+      "n": "24"
+    },
+    {
+      "a": "NİSANUR",
+      "s": "TUNÇ",
+      "c": "8-C",
+      "n": "482"
+    },
+    {
+      "a": "NİSANUR",
+      "s": "YILANCI",
+      "c": "8-C",
+      "n": "91"
+    },
+    {
+      "a": "NUH EYMEN",
+      "s": "YALDIR",
+      "c": "7-B",
+      "n": "225"
+    },
+    {
+      "a": "NUPELDA",
+      "s": "ÇETİN",
+      "c": "6-E",
+      "n": "531"
+    },
+    {
+      "a": "NUR ÇİÇEK",
+      "s": "DİNEK",
+      "c": "6-C",
+      "n": "487"
+    },
+    {
+      "a": "NUR SENA",
+      "s": "CANIVAR",
+      "c": "6-C",
+      "n": "404"
+    },
+    {
+      "a": "NURAN",
+      "s": "TIRIS",
+      "c": "5-E",
+      "n": "15"
+    },
+    {
+      "a": "NUREDDİN",
+      "s": "DADO",
+      "c": "7-D",
+      "n": "217"
+    },
+    {
+      "a": "NURSİMA",
+      "s": "BALCİ",
+      "c": "5-C",
+      "n": "248"
+    },
+    {
+      "a": "OMAR",
+      "s": "EL KENCO",
+      "c": "8-B",
+      "n": "397"
+    },
+    {
+      "a": "OSMAN",
+      "s": "BAŞ",
+      "c": "5-B",
+      "n": "245"
+    },
+    {
+      "a": "OSMAN",
+      "s": "GÜRLEK",
+      "c": "5-F",
+      "n": "342"
+    },
+    {
+      "a": "ÖMER",
+      "s": "ELİSA",
+      "c": "7-D",
+      "n": "1076"
+    },
+    {
+      "a": "ÖMER FARUK",
+      "s": "ERGÜLDÜ",
+      "c": "5-D",
+      "n": "315"
+    },
+    {
+      "a": "ÖMER HALİD",
+      "s": "ERDAL",
+      "c": "5-D",
+      "n": "347"
+    },
+    {
+      "a": "ÖMER TALHA",
+      "s": "TEKE",
+      "c": "8-B",
+      "n": "126"
+    },
+    {
+      "a": "ÖYKÜ MELEK",
+      "s": "BİÇİCİ",
+      "c": "5-A",
+      "n": "176"
+    },
+    {
+      "a": "ÖZGE",
+      "s": "ÇELİK",
+      "c": "5-C",
+      "n": "296"
+    },
+    {
+      "a": "PERİBA",
+      "s": "ÖZBEK",
+      "c": "6-E",
+      "n": "577"
+    },
+    {
+      "a": "PERİHAN AZRA",
+      "s": "BATUR",
+      "c": "6-E",
+      "n": "450"
+    },
+    {
+      "a": "RABİA",
+      "s": "BÜYÜKŞEN",
+      "c": "5-E",
+      "n": "297"
+    },
+    {
+      "a": "RABİA MİNA",
+      "s": "KÜT",
+      "c": "5-C",
+      "n": "300"
+    },
+    {
+      "a": "RAGHAD A K ALMUQAYAD",
+      "s": "RAGHAD A K ALMUQAYAD",
+      "c": "5-E",
+      "n": "377"
+    },
+    {
+      "a": "RAHİME RANA",
+      "s": "GÖNCÜ",
+      "c": "6-A",
+      "n": "28"
+    },
+    {
+      "a": "RAMAZAN EREN",
+      "s": "ATEŞ",
+      "c": "5-F",
+      "n": "348"
+    },
+    {
+      "a": "RANA SU",
+      "s": "GÜRÇAY",
+      "c": "6-A",
+      "n": "555"
+    },
+    {
+      "a": "RAVZA REYHAN",
+      "s": "KOÇAK",
+      "c": "5-A",
+      "n": "125"
+    },
+    {
+      "a": "RAVZA",
+      "s": "ZENGİNOVA",
+      "c": "7-C",
+      "n": "242"
+    },
+    {
+      "a": "RAZİYE NAZ",
+      "s": "BÜYÜKŞEN",
+      "c": "7-C",
+      "n": "193"
+    },
+    {
+      "a": "REHNÜMA SULTAN",
+      "s": "KAYHAN",
+      "c": "6-A",
+      "n": "669"
+    },
+    {
+      "a": "REYHAN GÜL",
+      "s": "GÜROCAK",
+      "c": "8-A",
+      "n": "150"
+    },
+    {
+      "a": "REYYAN SENA",
+      "s": "SEVGİ",
+      "c": "8-A",
+      "n": "97"
+    },
+    {
+      "a": "RİM",
+      "s": "MANAFİHİ",
+      "c": "5-E",
+      "n": "384"
+    },
+    {
+      "a": "RİNET",
+      "s": "EL MULEYF EL HAMMUD",
+      "c": "5-C",
+      "n": "303"
+    },
+    {
+      "a": "RİTAL",
+      "s": "EL HAJ İSA ER RAİ",
+      "c": "5-E",
+      "n": "305"
+    },
+    {
+      "a": "RUMEYSA",
+      "s": "HOLAT",
+      "c": "7-C",
+      "n": "1039"
+    },
+    {
+      "a": "RÜMEYSA",
+      "s": "DAĞLI",
+      "c": "7-A",
+      "n": "151"
+    },
+    {
+      "a": "RÜMEYSA ERVA",
+      "s": "DOĞAN",
+      "c": "5-C",
+      "n": "309"
+    },
+    {
+      "a": "SABRİ CAN",
+      "s": "BAYRAM",
+      "c": "5-B",
+      "n": "246"
+    },
+    {
+      "a": "SALAH",
+      "s": "DHAY",
+      "c": "7-B",
+      "n": "113"
+    },
+    {
+      "a": "SALİH",
+      "s": "ÇAKIR",
+      "c": "8-B",
+      "n": "40"
+    },
+    {
+      "a": "SALİHA",
+      "s": "KARACAN",
+      "c": "8-C",
+      "n": "250"
+    },
+    {
+      "a": "SALİHA ZÜMRA",
+      "s": "KUŞDEMİR",
+      "c": "5-A",
+      "n": "181"
+    },
+    {
+      "a": "SAMET",
+      "s": "KORKMAZ",
+      "c": "8-B",
+      "n": "127"
+    },
+    {
+      "a": "SANİYE",
+      "s": "ÇİNİ",
+      "c": "7-C",
+      "n": "177"
+    },
+    {
+      "a": "SEBAHAT GÜL",
+      "s": "ALTAN",
+      "c": "7-C",
+      "n": "285"
+    },
+    {
+      "a": "SECE",
+      "s": "EL BİNŞİ",
+      "c": "5-C",
+      "n": "427"
+    },
+    {
+      "a": "SEHER",
+      "s": "AKDOĞAN",
+      "c": "6-E",
+      "n": "511"
+    },
+    {
+      "a": "SELMA",
+      "s": "PEKAŞIK",
+      "c": "6-C",
+      "n": "1021"
+    },
+    {
+      "a": "SEMMAH",
+      "s": "ELHAJ İSA",
+      "c": "7-C",
+      "n": "299"
+    },
+    {
+      "a": "SERHAD ULAŞ",
+      "s": "SARIKAYA",
+      "c": "7-D",
+      "n": "292"
+    },
+    {
+      "a": "SEVDE MİRAY",
+      "s": "ALTINSOY",
+      "c": "5-A",
+      "n": "185"
+    },
+    {
+      "a": "SEVDE NUR",
+      "s": "CANDAN",
+      "c": "5-E",
+      "n": "310"
+    },
+    {
+      "a": "SEYİT MİRAN",
+      "s": "YILDIRIM",
+      "c": "6-D",
+      "n": "447"
+    },
+    {
+      "a": "SILA",
+      "s": "PEKAŞIK",
+      "c": "5-C",
+      "n": "1000"
+    },
+    {
+      "a": "SİRAÇ",
+      "s": "YILMAZ",
+      "c": "5-B",
+      "n": "247"
+    },
+    {
+      "a": "SULTAN",
+      "s": "GÖZÜBÜYÜK",
+      "c": "7-C",
+      "n": "168"
+    },
+    {
+      "a": "SULTAN",
+      "s": "GÖZÜBÜYÜK",
+      "c": "7-C",
+      "n": "1026"
+    },
+    {
+      "a": "SULTAN",
+      "s": "GÜL",
+      "c": "5-E",
+      "n": "1014"
+    },
+    {
+      "a": "SULTAN",
+      "s": "KOCAPINAR",
+      "c": "7-C",
+      "n": "1006"
+    },
+    {
+      "a": "SÜLEYMAN",
+      "s": "UYLAŞ",
+      "c": "5-F",
+      "n": "398"
+    },
+    {
+      "a": "ŞAM",
+      "s": "EL HALEF",
+      "c": "5-C",
+      "n": "389"
+    },
+    {
+      "a": "ŞEMSE",
+      "s": "EL HELLAVİ",
+      "c": "6-C",
+      "n": "2005"
+    },
+    {
+      "a": "ŞERİFE NİDA",
+      "s": "KÜÇÜKKUYUCU",
+      "c": "6-A",
+      "n": "587"
+    },
+    {
+      "a": "ŞERİFE NUR",
+      "s": "ÇİFTÇİ",
+      "c": "7-C",
+      "n": "1009"
+    },
+    {
+      "a": "ŞEVVAL",
+      "s": "TUNÇ",
+      "c": "5-A",
+      "n": "204"
+    },
+    {
+      "a": "ŞİHEB",
+      "s": "EL SALİH",
+      "c": "6-D",
+      "n": "2006"
+    },
+    {
+      "a": "ŞÜKRAN NİSA",
+      "s": "ALAN",
+      "c": "5-C",
+      "n": "399"
+    },
+    {
+      "a": "TALHA",
+      "s": "BALIKÇI",
+      "c": "6-D",
+      "n": "402"
+    },
+    {
+      "a": "TALHA",
+      "s": "KIRAMANLIOĞLU",
+      "c": "5-B",
+      "n": "340"
+    },
+    {
+      "a": "TUĞBA",
+      "s": "ERDOĞAN",
+      "c": "6-E",
+      "n": "403"
+    },
+    {
+      "a": "TUĞBA ESLEM",
+      "s": "CAN",
+      "c": "7-A",
+      "n": "153"
+    },
+    {
+      "a": "TUĞBA",
+      "s": "GÖZÜBÜYÜK",
+      "c": "6-C",
+      "n": "1020"
+    },
+    {
+      "a": "TUĞÇE",
+      "s": "BOLAT",
+      "c": "5-E",
+      "n": "312"
+    },
+    {
+      "a": "TUNAHAN",
+      "s": "ACIBADEM",
+      "c": "6-D",
+      "n": "478"
+    },
+    {
+      "a": "TÜRKAN",
+      "s": "YILDIZ",
+      "c": "5-E",
+      "n": "374"
+    },
+    {
+      "a": "UMEYYE",
+      "s": "ALHAJ ISSA ALRAEE",
+      "c": "5-C",
+      "n": "322"
+    },
+    {
+      "a": "UMUT",
+      "s": "CEYRAN",
+      "c": "7-D",
+      "n": "370"
+    },
+    {
+      "a": "UMUT",
+      "s": "YILDIZ",
+      "c": "7-D",
+      "n": "257"
+    },
+    {
+      "a": "ÜMİT CAN",
+      "s": "ASLAN",
+      "c": "5-D",
+      "n": "337"
+    },
+    {
+      "a": "ÜMİT",
+      "s": "ENLİ",
+      "c": "6-B",
+      "n": "608"
+    },
+    {
+      "a": "ÜMMÜGÜLSÜM",
+      "s": "BAYAR",
+      "c": "7-A",
+      "n": "135"
+    },
+    {
+      "a": "ÜMMÜGÜLSÜM",
+      "s": "ERÖLMEZ",
+      "c": "5-E",
+      "n": "316"
+    },
+    {
+      "a": "ÜMMÜGÜLSÜM",
+      "s": "TUNA",
+      "c": "5-C",
+      "n": "354"
+    },
+    {
+      "a": "ÜVEYS",
+      "s": "ACAR",
+      "c": "6-B",
+      "n": "541"
+    },
+    {
+      "a": "YAĞMUR",
+      "s": "ALTUNOK",
+      "c": "7-C",
+      "n": "184"
+    },
+    {
+      "a": "YAKUB",
+      "s": "EL MUHAMMED EL BEREKET",
+      "c": "5-D",
+      "n": "1015"
+    },
+    {
+      "a": "YAMEN",
+      "s": "KEMAM BABLLI",
+      "c": "7-B",
+      "n": "237"
+    },
+    {
+      "a": "YASIN",
+      "s": "RAHIMI",
+      "c": "8-B",
+      "n": "244"
+    },
+    {
+      "a": "YILMAZ",
+      "s": "ALAN",
+      "c": "8-B",
+      "n": "50"
+    },
+    {
+      "a": "YİĞİT",
+      "s": "DAĞLI",
+      "c": "5-B",
+      "n": "251"
+    },
+    {
+      "a": "YİĞİT EMİR",
+      "s": "ÖZDEMİR",
+      "c": "5-F",
+      "n": "338"
+    },
+    {
+      "a": "YİĞİT EMİR",
+      "s": "SATI",
+      "c": "7-D",
+      "n": "210"
+    },
+    {
+      "a": "YİĞİT HAYATİ",
+      "s": "CAN",
+      "c": "5-B",
+      "n": "252"
+    },
+    {
+      "a": "YİĞİT",
+      "s": "KILIÇARSLAN",
+      "c": "6-F",
+      "n": "29"
+    },
+    {
+      "a": "YİĞİT",
+      "s": "KILIÇASLAN",
+      "c": "6-B",
+      "n": "625"
+    },
+    {
+      "a": "YİĞİT",
+      "s": "ŞEN",
+      "c": "6-D",
+      "n": "623"
+    },
+    {
+      "a": "YİĞİT",
+      "s": "VURAL",
+      "c": "6-D",
+      "n": "485"
+    },
+    {
+      "a": "YOUSEF",
+      "s": "KEMAM BABLLI",
+      "c": "8-B",
+      "n": "273"
+    },
+    {
+      "a": "YUNUS ALİ",
+      "s": "EREN",
+      "c": "8-B",
+      "n": "189"
+    },
+    {
+      "a": "YUNUS EMRE",
+      "s": "AIDIN",
+      "c": "6-D",
+      "n": "700"
+    },
+    {
+      "a": "YUNUS EMRE",
+      "s": "DEVECİ",
+      "c": "6-D",
+      "n": "188"
+    },
+    {
+      "a": "YUNUS EMRE",
+      "s": "GÜNDÜZ",
+      "c": "5-B",
+      "n": "254"
+    },
+    {
+      "a": "YUSUF",
+      "s": "ACAR",
+      "c": "5-F",
+      "n": "320"
+    },
+    {
+      "a": "YUSUF",
+      "s": "ÇELİK",
+      "c": "6-F",
+      "n": "599"
+    },
+    {
+      "a": "YUSUF DURAN",
+      "s": "KAPLAN",
+      "c": "6-D",
+      "n": "422"
+    },
+    {
+      "a": "YUSUF EFE",
+      "s": "ARARAT",
+      "c": "6-D",
+      "n": "521"
+    },
+    {
+      "a": "YUSUF EFE",
+      "s": "DOĞAN",
+      "c": "8-B",
+      "n": "129"
+    },
+    {
+      "a": "YUSUF EGE",
+      "s": "PIRNAL",
+      "c": "5-D",
+      "n": "351"
+    },
+    {
+      "a": "YUSUF",
+      "s": "ELMUSA",
+      "c": "7-D",
+      "n": "1045"
+    },
+    {
+      "a": "YUSUF EYMEN",
+      "s": "KILIÇEL",
+      "c": "7-B",
+      "n": "116"
+    },
+    {
+      "a": "YUSUF",
+      "s": "HANİFİ ELABDULLAH",
+      "c": "6-D",
+      "n": "1025"
+    },
+    {
+      "a": "YUSUF KAAN",
+      "s": "SEVGİ",
+      "c": "5-F",
+      "n": "371"
+    },
+    {
+      "a": "YUSUF",
+      "s": "RENKLİIŞIK",
+      "c": "6-D",
+      "n": "85"
+    },
+    {
+      "a": "YUSUF",
+      "s": "YAVUZKILIÇ",
+      "c": "5-B",
+      "n": "255"
+    },
+    {
+      "a": "YUSUF",
+      "s": "YILDIRIM",
+      "c": "5-D",
+      "n": "373"
+    },
+    {
+      "a": "YÜSRA BETÜL",
+      "s": "GÖKLER",
+      "c": "5-E",
+      "n": "317"
+    },
+    {
+      "a": "ZAFER",
+      "s": "TEKGÖZ",
+      "c": "6-D",
+      "n": "473"
+    },
+    {
+      "a": "ZELİHA KÜBRA",
+      "s": "KARAKAYA",
+      "c": "5-C",
+      "n": "318"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "ACAR",
+      "c": "6-A",
+      "n": "569"
+    },
+    {
+      "a": "ZEYNEP ALİM",
+      "s": "ÇAĞLAK",
+      "c": "5-A",
+      "n": "386"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "BALCİ",
+      "c": "6-E",
+      "n": "514"
+    },
+    {
+      "a": "ZEYNEP BETÜL",
+      "s": "SOYYİĞİT",
+      "c": "5-A",
+      "n": "205"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "BUYRUCU",
+      "c": "5-A",
+      "n": "206"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "FİDANBOY",
+      "c": "8-A",
+      "n": "270"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "GÖZÜBÜYÜK",
+      "c": "7-C",
+      "n": "167"
+    },
+    {
+      "a": "ZEYNEP HATİCE",
+      "s": "AKOVA",
+      "c": "8-C",
+      "n": "429"
+    },
+    {
+      "a": "ZEYNEP MİRAY",
+      "s": "ÖZ",
+      "c": "5-E",
+      "n": "319"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "PEKAŞIK",
+      "c": "5-C",
+      "n": "1001"
+    },
+    {
+      "a": "ZEYNEP RANA",
+      "s": "GÜLER",
+      "c": "7-A",
+      "n": "131"
+    },
+    {
+      "a": "ZEYNEP ŞURA",
+      "s": "AYGÜN",
+      "c": "6-C",
+      "n": "475"
+    },
+    {
+      "a": "ZEYNEP",
+      "s": "ÜNLÜ",
+      "c": "5-E",
+      "n": "321"
+    },
+    {
+      "a": "ZEYNEP ZÜMRA",
+      "s": "DOĞAN",
+      "c": "6-A",
+      "n": "607"
+    },
+    {
+      "a": "ZEYNEP ZÜMRA",
+      "s": "GEDİKLİ",
+      "c": "7-A",
+      "n": "380"
+    },
+    {
+      "a": "ZIED ALKHIER",
+      "s": "SAID",
+      "c": "5-F",
+      "n": "1050"
+    },
+    {
+      "a": "ZÜLEYHA",
+      "s": "KARAKAYA",
+      "c": "7-C",
+      "n": "143"
+    },
+    {
+      "a": "ZÜLKARNEYN",
+      "s": "BAKTEMUR",
+      "c": "6-F",
+      "n": "498"
+    },
+    {
+      "a": "ZÜMRA BETÜL",
+      "s": "ATİK",
+      "c": "6-C",
+      "n": "462"
+    },
+    {
+      "a": "ZÜMRA",
+      "s": "DOĞAN",
+      "c": "6-A",
+      "n": "671"
+    },
+    {
+      "a": "ZÜMRA ELA",
+      "s": "KOCA",
+      "c": "5-A",
+      "n": "211"
+    },
+    {
+      "a": "ZÜMRA NİSA",
+      "s": "TEKELİ",
+      "c": "6-C",
+      "n": "490"
+    }
+  ],
+  "export_date": "2026-10-12T06:45:34.516Z"
 }
