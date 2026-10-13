@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gazetelik</title>
+<style>
+  :root {
+    --kagit: #ffffff;
+    --murekkep: #121212;
+    --soluk: #5a5a5a;
+    --cizgi: #dfdfdf;
+    --vurgu: #f2f2f2;
+    --serif: Georgia, "Times New Roman", "Noto Serif", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --kagit: #161616;
+      --murekkep: #f0f0f0;
+      --soluk: #a0a0a0;
+      --cizgi: #333333;
+      --vurgu: #222222;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--kagit);
+    color: var(--murekkep);
+    font-family: var(--serif);
+    line-height: 1.5;
+  }
+
+  .sayfa {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 18px 48px;
+  }
+
+  /* Başlık: gazete künyesi gibi */
+  .kunye {
+    text-align: center;
+    padding-bottom: 14px;
+    border-bottom: 3px double var(--murekkep);
+    margin-bottom: 6px;
+  }
+  .kunye h1 {
+    margin: 0;
+    font-size: clamp(34px, 9vw, 52px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .kunye p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: var(--soluk);
+    font-style: italic;
+  }
+
+  /* Satırlar */
+  details {
+    border-bottom: 1px solid var(--cizgi);
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 4px;
+    font-size: 17px;
+    font-weight: 700;
+    background: var(--kagit);
+    -webkit-tap-highlight-color: transparent;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--vurgu); }
+  summary:focus-visible {
+    outline: 2px solid var(--murekkep);
+    outline-offset: -2px;
+  }
+
+  /* Sağdaki küçük işaret: açılınca "kapat" olur */
+  summary::after {
+    content: "";
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--murekkep);
+    border-bottom: 2px solid var(--murekkep);
+    transform: rotate(45deg);
+    margin-right: 4px;
+    transition: transform 0.2s ease;
+  }
+  details[open] > summary::after {
+    transform: rotate(-135deg);
+  }
+
+  /* Açıkken başlık satırı yukarıda sabit kalır; kapatmak için tekrar tıklanır */
+  details[open] > summary {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid var(--cizgi);
+    background: var(--vurgu);
+  }
+
+  /* Açılır pencere: ekrana sığar, içi elle kaydırılır */
+  .pencere {
+    padding: 10px 0 14px;
+  }
+  .pencere iframe {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 150px);
+    height: calc(100dvh - 150px);
+    min-height: 320px;
+    border: 1px solid var(--cizgi);
+    background: #fff;
+  }
+  .pencere .not {
+    margin: 8px 2px 0;
+    font-size: 13px;
+    color: var(--soluk);
+  }
+  .pencere .not a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    summary::after { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main class="sayfa">
+
+  <header class="kunye">
+    <h1>Gazetelik</h1>
+    <p>Bir satıra dokunun, yazı açılsın.</p>
+  </header>
+
+  <!--
+    Her satır bir <details> kutusudur. Başlığa tıklayınca sayfa aynı yerde açılır,
+    tekrar tıklayınca kapanır. name="gazetelik" sayesinde aynı anda yalnızca
+    bir satır açık kalır.
+    Başlıkları ve adresleri aşağıdan değiştirebilirsiniz.
+  -->
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 1</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 1"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 2</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 2"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 3</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 3"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 4</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 4"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 5</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 5"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 6</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 6"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 7</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 7"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 8</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 8"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 9</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 9"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 10</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 10"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 11</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 11"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 12</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 12"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 13</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 13"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 14</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 14"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 15</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 15"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 16</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 16"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 17</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 17"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 18</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 18"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 19</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 19"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+  <details name="gazetelik">
+    <summary>Fatma Barbarosoğlu Yazıları 20</summary>
+    <div class="pencere">
+      <iframe loading="lazy" src="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" title="Fatma Barbarosoğlu Yazıları 20"></iframe>
+      <p class="not">Sayfa burada açılmazsa <a href="https://www.yenisafak.com/yazarlar/fatma-barbarosoglu" target="_blank" rel="noopener">yeni sekmede açın</a>.</p>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>
