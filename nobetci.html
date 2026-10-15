@@ -866,7 +866,8 @@
       <div class="controls-right-group">
         <button class="btn btn-warning" onclick="downloadBackup()" title="Yedeği yedek.json olarak indirilenlere kaydet">YEDEKLE</button>
 
-        <button class="btn btn-primary" onclick="githubRestore()" title="GitHub'daki (muammerbozer/anasayfa) yedek.json dosyasını yükle">YEDEK YÜKLE</button>
+        <button class="btn btn-primary" onclick="document.getElementById('backup-file').click()" title="İndirilenlerdeki yedek.json dosyasını seçip yükle">YEDEK YÜKLE</button>
+        <input type="file" id="backup-file" accept=".json,application/json" style="display:none" onchange="handleBackupUpload(event)">
 
         <select id="gun-select" onchange="updateData(true)" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
           <option value="">Bugün</option>
@@ -1426,6 +1427,41 @@
     if (data.calendar_notes) { calNotes = data.calendar_notes; store.set('nobet1_cal_v1', calNotes); renderCalendar(); }
     loadData();
     renderNotes();
+  }
+
+  function handleBackupUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.name.toLocaleLowerCase('tr-TR').endsWith('.json')) {
+      alert('Lütfen yedek.json dosyasını seçin.');
+      e.target.value = '';
+      return;
+    }
+    if (!confirm('Seçilen ' + file.name + ' yedeği yüklenecek ve bu cihazdaki mevcut verilerin üzerine yazılabilecek. Devam edilsin mi?')) {
+      e.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const data = JSON.parse(evt.target.result);
+        if (!data || typeof data !== 'object' || Array.isArray(data)) {
+          throw new Error('Geçerli yedek formatı değil.');
+        }
+        applyBackup(data);
+        alert('Yedek başarıyla yüklendi ve veriler güncellendi.' +
+          (data.export_date ? '\\nYedek tarihi: ' + new Date(data.export_date).toLocaleString('tr-TR') : ''));
+      } catch (err) {
+        alert('Yedek yüklenemedi: ' + (err.message || err));
+      } finally {
+        e.target.value = '';
+      }
+    };
+    reader.onerror = function() {
+      alert('Dosya okunamadı. Lütfen yedek.json dosyasını tekrar seçin.');
+      e.target.value = '';
+    };
+    reader.readAsText(file, 'UTF-8');
   }
 
   async function githubRestore() {
