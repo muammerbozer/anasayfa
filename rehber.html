@@ -5,60 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1769aa">
 <title>Hızlı Arama Rehberi</title>
+<!-- Excel (.xls/.xlsx) okumak için SheetJS Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-:root{--blue:#1769aa;--dark:#124a7b;--bg:#f2f5f9;--ink:#172435;--muted:#607286;--line:#dfe7ef;--green:#16834a}
+:root{--blue:#1769aa;--dark:#124a7b;--bg:#f2f5f9;--ink:#172435;--muted:#607286;--line:#dfe7ef;--green:#16834a;--danger:#d32f2f;--orange:#d97706}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
+body{font-size:21px;margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
 header{background:linear-gradient(135deg,var(--dark),#2186c7);color:#fff;padding:20px 14px;text-align:center}
-h1{margin:0 0 5px;font-size:clamp(22px,5vw,29px)}header p{margin:0;font-size:14px;opacity:.92}
+h1{margin:0 0 5px;font-size:clamp(29px,6.5vw,38px)}header p{margin:0;font-size:18.2px;opacity:.92}
 main{max-width:900px;margin:auto;padding:14px}
-.toolbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.btn{border:0;border-radius:10px;padding:12px 8px;font-weight:700;font-size:14px;cursor:pointer;background:#fff;color:#174c78;box-shadow:0 2px 7px #10243b12}
-.btn.primary{background:var(--blue);color:#fff}.btn.green{background:var(--green);color:#fff}
+.toolbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.btn{border:0;border-radius:10px;padding:12px 6px;font-weight:700;font-size:16.9px;cursor:pointer;background:#fff;color:#174c78;box-shadow:0 2px 7px #10243b12;text-align:center;display:inline-flex;align-items:center;justify-content:center}
+.btn.primary{background:var(--blue);color:#fff}.btn.green{background:var(--green);color:#fff}.btn.orange{background:var(--orange);color:#fff}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
-.section-head h2{font-size:17px;margin:0;overflow-wrap:anywhere}
+.section-head h2{font-size:22.1px;margin:0;overflow-wrap:anywhere}
 .people,.group-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start}
-.person{display:flex;align-items:stretch;min-width:0;min-height:76px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 7px #10243b0c}
+.person{display:flex;align-items:stretch;min-width:0;min-height:99px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 7px #10243b0c}
 .call{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:13px 11px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:6px}
-.call:active,.group-button:active{background:#e8f4ff}
-.name{font-size:15px;font-weight:700;overflow-wrap:anywhere}.number{font-size:13px;color:#526579;overflow-wrap:anywhere}.phone{align-self:center;color:var(--green);font-size:19px;padding:0 10px}
+.call:active,.group-item-btn:active{background:#e8f4ff}
+.name{font-size:19.5px;font-weight:700;overflow-wrap:anywhere}.number{font-size:16.9px;color:#526579;overflow-wrap:anywhere}.phone{align-self:center;color:var(--green);font-size:24.7px;padding:0 10px}
 .person.editor{display:block;padding:9px}.person.editor .call,.person.editor .phone{display:none}
 .fields{display:grid;gap:7px;width:100%}.fields input,.modal input{width:100%;min-width:0;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:inherit;background:#fff}
-.smallbtn{border:0;border-radius:8px;padding:10px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}
-.group-button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:15px 12px;text-align:left;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;box-shadow:0 2px 7px #10243b0c;overflow-wrap:anywhere;min-height:58px}
-.empty{color:var(--muted);font-size:13px;text-align:center;padding:18px 8px;line-height:1.5}
-.back{border:0;background:transparent;color:var(--blue);font-weight:700;cursor:pointer;padding:0;font-size:14px}
+.field-buttons{display:flex;gap:6px}
+.smallbtn{border:0;border-radius:8px;padding:10px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;flex:1}
+.delbtn{border:0;border-radius:8px;padding:10px 12px;background:#ffebee;color:var(--danger);font-weight:700;cursor:pointer;border:1px solid #ffcdd2}
+.delbtn:hover{background:#ffcdd2}
+.group-card{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 2px 7px #10243b0c;overflow:hidden}
+.group-item-btn{flex:1;border:0;background:transparent;padding:15px 12px;text-align:left;font-weight:700;font-size:19.5px;color:var(--ink);cursor:pointer;overflow-wrap:anywhere;min-height:75px}
+.group-del-btn{border:0;background:transparent;color:var(--danger);padding:0 14px;font-size:20.8px;cursor:pointer;height:100%;display:flex;align-items:center;justify-content:center}
+.group-del-btn:hover{background:#ffebee}
+.empty{color:var(--muted);font-size:16.9px;text-align:center;padding:18px 8px;line-height:1.5}
+.back{border:0;background:transparent;color:var(--blue);font-weight:700;cursor:pointer;padding:0;font-size:18.2px}
+.danger-link{border:0;background:transparent;color:var(--danger);font-weight:700;cursor:pointer;padding:0;font-size:16.9px}
 .modal-backdrop{position:fixed;inset:0;background:#0c1c2c80;display:none;align-items:center;justify-content:center;padding:16px;z-index:5}
 .modal-backdrop.open{display:flex}.modal{background:#fff;border-radius:16px;padding:20px;width:min(100%,420px);box-shadow:0 15px 50px #0003}
-.modal h2{font-size:21px;margin:0 0 8px}.modal p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.45}
+.modal h2{font-size:27.3px;margin:0 0 8px}.modal p{margin:0 0 14px;color:var(--muted);font-size:18.2px;line-height:1.45}
 .modal form{display:grid;gap:10px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
-.note{font-size:12px;color:var(--muted);text-align:center;line-height:1.5;margin:16px 0 4px}
+.note{font-size:15.6px;color:var(--muted);text-align:center;line-height:1.5;margin:16px 0 4px}
 .hidden{display:none!important}
-@media(max-width:420px){main{padding:10px}.toolbar{gap:6px}.btn{font-size:12px;padding:11px 4px}.people,.group-list{gap:8px}.call{padding:11px 8px}.name{font-size:13px}.number{font-size:11px}.phone{font-size:17px;padding:0 7px}.person{min-height:70px}}
+@media(max-width:500px){main{padding:10px}.toolbar{grid-template-columns:1fr 1fr;gap:6px}.btn{font-size:15.6px;padding:10px 4px}.people,.group-list{gap:8px}.call{padding:11px 8px}.name{font-size:16.9px}.number{font-size:14.3px}.phone{font-size:22.1px;padding:0 7px}.person{min-height:91px}}
 </style>
 </head>
 <body>
 <header><h1>📞 Hızlı Arama Rehberi</h1><p>Kişilerini düzenle, gruplarını oluştur, kolayca ara.</p></header>
 <main>
   <nav class="toolbar">
-    <button class="btn" id="editToggle" type="button">✏️ Kişileri Düzenle</button>
+    <button class="btn" id="editToggle" type="button">✏️ Düzenle</button>
     <button class="btn primary" id="groupsButton" type="button">📂 Gruplar</button>
     <button class="btn green" id="addGroup" type="button">＋ Grup Ekle</button>
+    <button class="btn orange" id="uploadBtn" type="button">📥 Rehber Yükle</button>
+    <input type="file" id="excelFileInput" accept=".xls,.xlsx,.csv" class="hidden">
   </nav>
 
   <section id="homeView">
-    <div class="section-head"><h2>Ana Sayfa</h2><span id="homeCount" style="font-size:12px;color:#607286"></span></div>
+    <div class="section-head"><h2>Öğretmenler</h2><span id="homeCount" style="font-size:16px;color:#607286"></span></div>
     <div class="people" id="homePeople"></div>
   </section>
 
   <section id="groupsView" class="hidden">
     <div class="section-head"><h2>Gruplarım</h2><button class="back" id="backHome" type="button">← Ana sayfa</button></div>
     <div class="group-list" id="groupList"></div>
-    <div class="empty hidden" id="groupsEmpty">Henüz grup yok. Sağdaki “Grup Ekle” düğmesiyle oluşturabilirsin.</div>
+    <div class="empty hidden" id="groupsEmpty">Henüz grup yok. Sağdaki “Grup Ekle” veya “Rehber Yükle” düğmesiyle oluşturabilirsin.</div>
   </section>
 
   <section id="groupView" class="hidden">
-    <div class="section-head"><h2 id="groupTitle">Grup</h2><button class="back" id="backGroups" type="button">← Gruplar</button></div>
+    <div class="section-head">
+      <h2 id="groupTitle">Grup</h2>
+      <div>
+        <button class="danger-link" id="deleteCurrentGroup" type="button" style="margin-right:10px">🗑️ Grubu Sil</button>
+        <button class="back" id="backGroups" type="button">← Gruplar</button>
+      </div>
+    </div>
     <div class="people" id="groupPeople"></div>
   </section>
   <p class="note">Kişiler ve gruplar bu tarayıcıda saklanır. Kaydedilen kişi butonuna dokununca telefonun arama ekranı açılır.</p>
@@ -73,90 +90,313 @@ main{max-width:900px;margin:auto;padding:14px}
 </div>
 
 <script>
-const STORAGE_KEY="hizliAramaRehberi_sifirdan_v1";
-let data={groups:[],people:[]};
-try{
-  const stored=JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if(stored && Array.isArray(stored.groups) && Array.isArray(stored.people)) data=stored;
-}catch(e){}
-let view="home",activeGroupId=null,editing=false;
-const $=id=>document.getElementById(id);
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function activeGroup(){return data.groups.find(g=>g.id===activeGroupId)}
-function peopleFor(groupId){return data.people.filter(p=>(p.groupId||null)===(groupId||null))}
-function updateView(){
-  $("homeView").classList.toggle("hidden",view!=="home");
-  $("groupsView").classList.toggle("hidden",view!=="groups");
-  $("groupView").classList.toggle("hidden",view!=="group");
-  $("editToggle").textContent=editing?"✓ Düzenlemeyi Bitir":"✏️ Kişileri Düzenle";
-  $("editToggle").classList.toggle("primary",editing);
-  renderPeople("homePeople",null);
-  const list=$("groupList");list.innerHTML="";
-  data.groups.forEach(g=>{
-    const b=document.createElement("button");b.type="button";b.className="group-button";b.textContent=g.name;
-    b.onclick=()=>{activeGroupId=g.id;view="group";editing=false;updateView()};list.appendChild(b);
-  });
-  $("groupsEmpty").classList.toggle("hidden",data.groups.length>0);
-  const g=activeGroup();
-  if(g){$("groupTitle").textContent=g.name;renderPeople("groupPeople",g.id)}
-}
-function renderPeople(containerId,groupId){
-  const container=$(containerId),people=peopleFor(groupId);container.innerHTML="";
-  if(containerId==="homePeople")$("homeCount").textContent=people.length?people.length+" kişi":"";
-  people.forEach(p=>{
-    const card=document.createElement("div");card.className="person"+(editing?" editor":"");
-    if(editing){
-      card.innerHTML=`<div class="fields"><input class="edit-name" maxlength="60" aria-label="Ad Soyad" placeholder="Ad Soyad" value="${esc(p.name)}"><input class="edit-phone" maxlength="24" aria-label="Telefon numarası" placeholder="Telefon numarası" inputmode="tel" value="${esc(p.phone)}"><button type="button" class="smallbtn save-edit">Kaydet</button></div>`;
-      card.querySelector(".save-edit").onclick=()=>{
-        const name=card.querySelector(".edit-name").value.trim(),phone=card.querySelector(".edit-phone").value.trim();
-        if(!name||!phone){alert("Lütfen isim ve telefon numarasını gir.");return}
-        p.name=name;p.phone=phone;save();updateView();
-      };
-    }else{
-      card.innerHTML=`<button class="call" type="button" aria-label="${esc(p.name||"Kişi")} ara"><span class="name">${esc(p.name)}</span><span class="number">${esc(p.phone)}</span></button><span class="phone" aria-hidden="true">☎</span>`;
-      card.querySelector(".call").onclick=()=>{
-        let n=String(p.phone||"").replace(/\D/g,"");
-        if(!n){alert("Önce Kişileri Düzenle ile isim ve telefon kaydet.");return}
-        if(n.startsWith("0"))n="+90"+n.slice(1);else if(n.startsWith("90"))n="+"+n;else n="+90"+n;
-        location.href="tel:"+n;
-      };
+document.addEventListener("DOMContentLoaded", function() {
+  // Versiyon anahtarı güncellenerek önceki tüm varsayılan/kayıtlı veriler sıfırlandı
+  const STORAGE_KEY = "hizliAramaRehberi_v3";
+  const DEFAULT_DATA = {"groups":[{"id":"g5A","name":"5A SINIFI"},{"id":"g5B","name":"5B SINIFI"},{"id":"g5C","name":"5C SINIFI"},{"id":"g5D","name":"5D SINIFI"},{"id":"g5E","name":"5E SINIFI"},{"id":"g5F","name":"5F SINIFI"},{"id":"g6A","name":"6A SINIFI"},{"id":"g6B","name":"6B SINIFI"},{"id":"g6C","name":"6C SINIFI"},{"id":"g6D","name":"6D SINIFI"},{"id":"g6E","name":"6E SINIFI"},{"id":"g6F","name":"6F SINIFI"},{"id":"g7A","name":"7A SINIFI"},{"id":"g7B","name":"7B SINIFI"},{"id":"g7C","name":"7C SINIFI"},{"id":"g7D","name":"7D SINIFI"},{"id":"g8A","name":"8A SINIFI"},{"id":"g8B","name":"8B SINIFI"},{"id":"g8C","name":"8C SINIFI"}],"people":[{"id":"t1","name":"Mevlüt TEKİN / Okul Müdürü","phone":"0506 504 19 20","groupId":null},{"id":"t2","name":"Fatih SOYYİĞİT / Müdür Yardımcısı","phone":"0506 585 64 80","groupId":null},{"id":"t3","name":"Muammer BOZER / Müdür Yardımcısı","phone":"0505 452 32 10","groupId":null},{"id":"t4","name":"Adile Potaş / Sosyal Bilgiler","phone":"0553 652 37 70","groupId":null},{"id":"t5","name":"Ayşe Çiçek Şenkalyoncu / Müzik","phone":"0541 955 59 82","groupId":null},{"id":"g5A_1","name":"Asya Şeker","phone":"0507 120 95 20","groupId":"g5A"},{"id":"g5A_2","name":"Aynur Nisa Erdoğan","phone":"0553 869 90 63","groupId":"g5A"},{"id":"g5A_3","name":"Ayşe Ecrin Zorlu","phone":"0507 121 19 14","groupId":"g5A"},{"id":"g5A_4","name":"Binnaz Uçucu","phone":"0506 788 73 04","groupId":"g5A"},{"id":"g5A_5","name":"Elif Ada Büyüktoka","phone":"0553 588 70 57","groupId":"g5A"},{"id":"g5A_6","name":"Elif Çoban","phone":"0551 851 87 46","groupId":"g5A"},{"id":"g5A_7","name":"Eslem Özkan","phone":"0545 956 76 42","groupId":"g5A"},{"id":"g5A_8","name":"Hacer İnal","phone":"0538 067 13 25","groupId":"g5A"},{"id":"g5A_9","name":"Hatice Kahraman","phone":"0536 409 41 95","groupId":"g5A"},{"id":"g5A_10","name":"Hatice Reyyan Gedikli","phone":"0553 033 55 91","groupId":"g5A"},{"id":"g5A_11","name":"Hatice Zehra Keklik","phone":"0533 735 61 24","groupId":"g5A"},{"id":"g5A_12","name":"Hazal Ünaldı","phone":"0545 623 47 88","groupId":"g5A"},{"id":"g5A_13","name":"Hediye Yayar","phone":"0546 875 73 68","groupId":"g5A"},{"id":"g5A_14","name":"Hiranur Başböğer","phone":"0542 482 05 88","groupId":"g5A"},{"id":"g5A_15","name":"Hümeyra Çelik","phone":"0541 366 16 49","groupId":"g5A"},{"id":"g5A_16","name":"İman Mangane","phone":"0536 677 67 11","groupId":"g5A"},{"id":"g5A_17","name":"Mizgin Dinler","phone":"0543 181 76 65","groupId":"g5A"},{"id":"g5A_18","name":"Öykü Melek Biçici","phone":"0553 691 17 83","groupId":"g5A"},{"id":"g5A_19","name":"Ravza Reyhan Koçak","phone":"0553 237 63 59","groupId":"g5A"},{"id":"g5A_20","name":"Saliha Zümra Kuşdemir","phone":"0546 687 10 52","groupId":"g5A"},{"id":"g5A_21","name":"Sevde Miray Altınsoy","phone":"0507 159 92 31","groupId":"g5A"},{"id":"g5A_22","name":"Şevval Tunç","phone":"0507 230 89 65","groupId":"g5A"},{"id":"g5A_23","name":"Zeynep Alim Çağlak","phone":"0539 628 14 66","groupId":"g5A"},{"id":"g5A_24","name":"Zeynep Betül Soyyiğit","phone":"0545 616 24 22","groupId":"g5A"},{"id":"g5A_25","name":"Zeynep Buyrucu","phone":"0507 723 65 27","groupId":"g5A"},{"id":"g5A_26","name":"Zümra Ela Koca","phone":"0555 060 92 73","groupId":"g5A"},{"id":"g5B_1","name":"Alperen Kaya","phone":"0507 065 73 84","groupId":"g5B"},{"id":"g5B_2","name":"Faruk Coşkun","phone":"0537 454 05 55","groupId":"g5B"},{"id":"g5B_3","name":"Hasan Beytullah Yaman","phone":"0531 515 35 09","groupId":"g5B"},{"id":"g5B_4","name":"İbrahim Emir Sarı","phone":"0534 742 08 30","groupId":"g5B"},{"id":"g5B_5","name":"İsmail Emin Gölcük","phone":"0506 462 06 21","groupId":"g5B"},{"id":"g5B_6","name":"Mevlüt Baki Dündar","phone":"0543 865 21 12","groupId":"g5B"},{"id":"g5B_7","name":"Muhammed Ali Keklik","phone":"0533 735 61 24","groupId":"g5B"},{"id":"g5B_8","name":"Muhammed Emir Büyükbardakçı","phone":"0546 646 22 16","groupId":"g5B"},{"id":"g5B_9","name":"Mustafa Gökmen","phone":"0538 716 93 44","groupId":"g5B"},{"id":"g5B_10","name":"Nadir Kemam Babellı","phone":"0538 953 53 65","groupId":"g5B"},{"id":"g5B_11","name":"Osman Baş","phone":"0532 393 27 76","groupId":"g5B"},{"id":"g5B_12","name":"Sabri Can Bayram","phone":"0530 735 14 26","groupId":"g5B"},{"id":"g5B_13","name":"Siraç Yılmaz","phone":"0532 673 24 22","groupId":"g5B"},{"id":"g5B_14","name":"Talha Kıramanoğlu","phone":"0546 693 11 78","groupId":"g5B"},{"id":"g5B_15","name":"Yiğit Dağlı","phone":"0506 673 52 23","groupId":"g5B"},{"id":"g5B_16","name":"Yiğit Hayati Can","phone":"0555 401 53 40","groupId":"g5B"},{"id":"g5B_17","name":"Yunus Emre Gündüz","phone":"0507 586 59 18","groupId":"g5B"},{"id":"g5B_18","name":"Yusuf Yavuzkılıç","phone":"0542 298 17 56","groupId":"g5B"},{"id":"g5C_1","name":"ADNSU GÜNDOĞMUŞ","phone":"0554 673 19 81","groupId":"g5C"},{"id":"g5C_3","name":"AYSEL NİSA ÇIRA","phone":"0507 312 89 45","groupId":"g5C"},{"id":"g5C_4","name":"AYŞE EL HALLAK","phone":"0538 612 82 48","groupId":"g5C"},{"id":"g5C_5","name":"AZIRA LADİ","phone":"0546 458 67 24","groupId":"g5C"},{"id":"g5C_7","name":"EBRAR HİFA HÜYÜK","phone":"0533 683 22 68","groupId":"g5C"},{"id":"g5C_8","name":"EBRAR NUR BAĞCI","phone":"0553 913 63 51","groupId":"g5C"},{"id":"g5C_9","name":"ELİF CEMRE ÇAYIRÖZ","phone":"0530 781 62 24","groupId":"g5C"},{"id":"g5C_10","name":"ELİF SENA ERUYUR","phone":"0534 529 92 80","groupId":"g5C"},{"id":"g5C_11","name":"ESLEM TABAK","phone":"0541 484 20 32","groupId":"g5C"},{"id":"g5C_12","name":"EYLÜL KAVDU","phone":"0543 932 69 07","groupId":"g5C"},{"id":"g5C_14","name":"FİRDEVS NAZ ESERÖZBEK","phone":"0507 882 40 26","groupId":"g5C"},{"id":"g5C_15","name":"GÜLDANE YAVUZ","phone":"0507 032 03 74","groupId":"g5C"},{"id":"g5C_16","name":"HALİME İNAN","phone":"0551 746 25 90","groupId":"g5C"},{"id":"g5C_17","name":"HATİCE RAVZA MERT","phone":"0533 559 54 47","groupId":"g5C"},{"id":"g5C_20","name":"MELİKE SERİM","phone":"0505 839 29 32","groupId":"g5C"},{"id":"g5C_21","name":"MERYEM HİRA AKGÜL","phone":"0536 517 94 24","groupId":"g5C"},{"id":"g5C_22","name":"MERYEM NİSA KARA","phone":"0546 252 06 50","groupId":"g5C"},{"id":"g5C_24","name":"NESLİHAN ÇİNİ","phone":"0541 255 42 68","groupId":"g5C"},{"id":"g5C_25","name":"NİSANUR KORHAN","phone":"0553 026 18 34","groupId":"g5C"},{"id":"g5C_26","name":"NURSİMA BALCI","phone":"0554 115 91 25","groupId":"g5C"},{"id":"g5C_27","name":"ÖZGE ÇELİK","phone":"0542 589 50 13","groupId":"g5C"},{"id":"g5C_28","name":"RABİA MİNA KÜT","phone":"0534 650 65 28","groupId":"g5C"},{"id":"g5C_29","name":"RİNET EL MULEYF EL MAHMUD","phone":"0531 768 70 31","groupId":"g5C"},{"id":"g5C_30","name":"RÜMEYSA ERVA DOĞAN","phone":"0541 466 39 46","groupId":"g5C"},{"id":"g5C_34","name":"ŞÜKRAN NİSA ALAN","phone":"0542 740 96 83","groupId":"g5C"},{"id":"g5C_35","name":"UMEYYE ALHAJ İSSA A.","phone":"0535 941 11 79","groupId":"g5C"},{"id":"g5C_36","name":"ÜMMÜ GÜLSÜM TUNA","phone":"0546 290 34 40","groupId":"g5C"},{"id":"g5C_37","name":"ZELİHA KÜBRA KARAKAYA","phone":"0536 483 25 22","groupId":"g5C"},{"id":"g5D_1","name":"ABDULKADİR TABBAŞ","phone":"0535 972 78 11","groupId":"g5D"},{"id":"g5D_3","name":"AHMET KÖSELER","phone":"0554 405 84 81","groupId":"g5D"},{"id":"g5D_4","name":"BERAT ÇETİN","phone":"0532 625 19 89","groupId":"g5D"},{"id":"g5D_5","name":"DURMUŞ EFE YOLCU","phone":"0534 344 49 64","groupId":"g5D"},{"id":"g5D_6","name":"EMRE TUFAN ANLAR","phone":"0534 958 40 13","groupId":"g5D"},{"id":"g5D_7","name":"FATİH EREN KOÇAK","phone":"0537 207 32 56","groupId":"g5D"},{"id":"g5D_9","name":"HASAN BAKİ EDİZER","phone":"0505 917 32 34","groupId":"g5D"},{"id":"g5D_12","name":"HÜSEYİN AKCI","phone":"0534 311 88 66","groupId":"g5D"},{"id":"g5D_13","name":"İBRAHİM EFE DİNLER","phone":"0543 363 18 45","groupId":"g5D"},{"id":"g5D_14","name":"İSMAİL EYMEN GÜLEÇ","phone":"0541 711 17 25","groupId":"g5D"},{"id":"g5D_18","name":"MEHMET EMİN İNCE","phone":"0531 403 85 11","groupId":"g5D"},{"id":"g5D_19","name":"METİN TAHA SEVİLMİŞ","phone":"0539 292 27 09","groupId":"g5D"},{"id":"g5D_22","name":"MUSTAFA TALHA YILDIRIM","phone":"0507 567 42 03","groupId":"g5D"},{"id":"g5D_24","name":"ÖMER HALİD ERDAL","phone":"0537 219 78 79","groupId":"g5D"},{"id":"g5D_25","name":"ÜMİT CAN ASLAN","phone":"0506 344 82 42","groupId":"g5D"},{"id":"g5D_27","name":"YUSUF EGE PIRNAL","phone":"0541 925 64 71","groupId":"g5D"},{"id":"g5D_28","name":"YUSUF YILDIRIM","phone":"0549 523 23 25","groupId":"g5D"},{"id":"g5E_1","name":"AYE EL MANSUR","phone":"0531 408 71 48","groupId":"g5E"},{"id":"g5E_2","name":"AYŞE NAZ KARAOSMANOĞLU","phone":"0531 356 37 03","groupId":"g5E"},{"id":"g5E_3","name":"AZRA BALLI","phone":"0552 174 14 98","groupId":"g5E"},{"id":"g5E_4","name":"BELİNAY BALCI","phone":"0553 125 97 36","groupId":"g5E"},{"id":"g5E_5","name":"CENNET SİMA ÇİBİK","phone":"0553 217 70 17","groupId":"g5E"},{"id":"g5E_6","name":"ELİF BUĞLEM SAKIN","phone":"0541 303 28 56","groupId":"g5E"},{"id":"g5E_7","name":"ELİF MİRA ATA","phone":"0541 464 97 43","groupId":"g5E"},{"id":"g5E_8","name":"EMİNE NUR SÜRÜCÜ","phone":"0546 563 28 13","groupId":"g5E"},{"id":"g5E_9","name":"ESLEM KORUCU","phone":"0539 952 37 22","groupId":"g5E"},{"id":"g5E_10","name":"ESMANUR ÇINARKA","phone":"0551 467 88 93","groupId":"g5E"},{"id":"g5E_11","name":"FERİHA HANCI","phone":"0543 255 89 04","groupId":"g5E"},{"id":"g5E_12","name":"GÜLSÜM YILDIZ","phone":"0551 135 37 87","groupId":"g5E"},{"id":"g5E_13","name":"HATİCE K. GÖZÜBÜYÜK","phone":"0543 592 25 95","groupId":"g5E"},{"id":"g5E_14","name":"HAYRİYE ÖZDEMİR","phone":"0507 408 79 61","groupId":"g5E"},{"id":"g5E_15","name":"KEVSER GÖZÜBÜYÜK","phone":"0507 438 22 75","groupId":"g5E"},{"id":"g5E_16","name":"MAKBULE ERTÜRK","phone":"0507 415 89 17","groupId":"g5E"},{"id":"g5E_17","name":"MERYEM BEKTAŞ","phone":"0538 376 28 66","groupId":"g5E"},{"id":"g5E_18","name":"MUKADDES GÜNDÜZ","phone":"0555 177 46 37","groupId":"g5E"},{"id":"g5E_19","name":"NİSA GÖZÜBÜYÜK","phone":"0507 438 22 75","groupId":"g5E"},{"id":"g5E_20","name":"NURAN TIRIS","phone":"0538 487 90 42","groupId":"g5E"},{"id":"g5E_21","name":"RABİA BÜYÜKŞEN","phone":"0552 793 07 08","groupId":"g5E"},{"id":"g5E_22","name":"RAGHAD A K ALMUQAY","phone":"0534 986 00 83","groupId":"g5E"},{"id":"g5E_23","name":"RİM MANAFİHİ","phone":"0537 045 80 69","groupId":"g5E"},{"id":"g5E_24","name":"RİTAL EL HAJ İSA ER RAİ","phone":"0534 281 94 48","groupId":"g5E"},{"id":"g5E_25","name":"SEVDE NUR CANDAN","phone":"0552 302 75 78","groupId":"g5E"},{"id":"g5E_26","name":"TUĞÇE BOLAT","phone":"0507 573 14 35","groupId":"g5E"},{"id":"g5E_27","name":"TÜRKAN YILDIZ","phone":"0554 751 76 80","groupId":"g5E"},{"id":"g5E_28","name":"ÜMMÜGÜLSÜM ERÖLM","phone":"0538 228 48 22","groupId":"g5E"},{"id":"g5E_29","name":"YÜSRA BETÜL GÖKLER","phone":"0553 188 69 12","groupId":"g5E"},{"id":"g5E_30","name":"ZEYNEP MİRAY ÖZ","phone":"0507 685 09 44","groupId":"g5E"},{"id":"g5E_31","name":"ZEYNEP ÜNLÜ","phone":"0507 128 59 48","groupId":"g5E"},{"id":"g5F_1","name":"Abdurrahim Avcı","phone":"0551 476 86 56","groupId":"g5F"},{"id":"g5F_2","name":"Ahmet Efe Yalçınkaya","phone":"0534 923 48 27","groupId":"g5F"},{"id":"g5F_3","name":"Ahmet ErtuğrulKılınç","phone":"0533 928 42 51","groupId":"g5F"},{"id":"g5F_4","name":"Bayram Cengiz","phone":"0501 373 95 71","groupId":"g5F"},{"id":"g5F_5","name":"Berat Temur","phone":"0553 676 70 83","groupId":"g5F"},{"id":"g5F_6","name":"Cafer Pekaşık","phone":"0551 081 79 67","groupId":"g5F"},{"id":"g5F_7","name":"Enes Korhan","phone":"0534 796 38 34","groupId":"g5F"},{"id":"g5F_8","name":"Fahrettin Ömek","phone":"0541 951 54 72","groupId":"g5F"},{"id":"g5F_9","name":"Hamza El Aleyvi","phone":"0538 839 06 64","groupId":"g5F"},{"id":"g5F_10","name":"İbrahim Özdemir","phone":"0539 893 44 55","groupId":"g5F"},{"id":"g5F_11","name":"İbrahim Doğramacı","phone":"0543 424 26 17","groupId":"g5F"},{"id":"g5F_12","name":"İsmail Çelmeli","phone":"0546 514 09 59","groupId":"g5F"},{"id":"g5F_13","name":"Kerim Yurtkan","phone":"0506 438 78 12","groupId":"g5F"},{"id":"g5F_14","name":"Mehmet Çini","phone":"0541 686 86 49","groupId":"g5F"},{"id":"g5F_15","name":"Muhammed Ali Deniz","phone":"0543 338 15 54","groupId":"g5F"},{"id":"g5F_16","name":"Muhammet Emin Ayiran","phone":"0505 171 09 42","groupId":"g5F"},{"id":"g5F_17","name":"Murat Emir Ürün","phone":"0507 572 03 16","groupId":"g5F"},{"id":"g5F_18","name":"Osman Gürlek","phone":"0534 855 83 33","groupId":"g5F"},{"id":"g5F_19","name":"Raramazan Eren Ateş","phone":"0505 844 76 65","groupId":"g5F"},{"id":"g5F_20","name":"Süleyman Uylaş","phone":"0552 927 17 85","groupId":"g5F"},{"id":"g5F_21","name":"Yiğit Emir Özdemir","phone":"0538 891 75 62","groupId":"g5F"},{"id":"g5F_22","name":"Yusuf Acar","phone":"0551 467 62 60","groupId":"g5F"},{"id":"g5F_23","name":"Yusuf Kaan Sevgi","phone":"0539 584 98 50","groupId":"g5F"},{"id":"g6A_1","name":"AVŞİN NUR BARIŞTIRAN","phone":"0545 480 21 65","groupId":"g6A"},{"id":"g6A_2","name":"AYŞE SEVDE AÇIKGÖZ","phone":"0505 584 08 04","groupId":"g6A"},{"id":"g6A_3","name":"AZRA DAL","phone":"0544 566 54 96","groupId":"g6A"},{"id":"g6A_4","name":"BUĞLEM IŞIK","phone":"0544 517 17 41","groupId":"g6A"},{"id":"g6A_5","name":"BÜŞRA ZEYNEP TOSUN","phone":"0534 896 64 17","groupId":"g6A"},{"id":"g6A_6","name":"ECRİN UYAR","phone":"0554 890 20 96","groupId":"g6A"},{"id":"g6A_7","name":"ELİF ZÜMRA YAYICI","phone":"0545 731 38 92","groupId":"g6A"},{"id":"g6A_8","name":"ELVİN NİDA ELMAN","phone":"0539 528 82 99","groupId":"g6A"},{"id":"g6A_9","name":"ESLEM ASEL ALTUN","phone":"0534 592 52 51","groupId":"g6A"},{"id":"g6A_10","name":"EYLÜL HİRA AKYILDIZ","phone":"0551 431 70 43","groupId":"g6A"},{"id":"g6A_11","name":"FATMA TÜZZEHRA İRİŞ","phone":"0545 601 59 46","groupId":"g6A"},{"id":"g6A_12","name":"FATMANUR SARI","phone":"0544 742 08 30","groupId":"g6A"},{"id":"g6A_13","name":"HİRA BUĞLEM ÖZŞAHİN","phone":"0545 407 82 60","groupId":"g6A"},{"id":"g6A_14","name":"MÜNEVVER SERRA AKKAYA","phone":"0545 973 20 87","groupId":"g6A"},{"id":"g6A_15","name":"RAHİME RANA GÖNCÜ","phone":"0507 249 59 90","groupId":"g6A"},{"id":"g6A_16","name":"RANA SU GÜRÇAY","phone":"0546 282 04 47","groupId":"g6A"},{"id":"g6A_17","name":"REHNÜMA SULTAN KAYHAN","phone":"0505 270 10 85","groupId":"g6A"},{"id":"g6A_18","name":"ŞERİFE NİDA KÜÇÜKKUYUCU","phone":"0554 381 52 36","groupId":"g6A"},{"id":"g6A_19","name":"ZEYNEP ACAR","phone":"0553 617 99 86","groupId":"g6A"},{"id":"g6A_20","name":"ZEYNEP ZÜMRA DOĞAN","phone":"0537 395 07 98","groupId":"g6A"},{"id":"g6A_21","name":"ZÜMRA DOĞAN","phone":"0506 535 23 90","groupId":"g6A"},{"id":"g6B_1","name":"Muhammet ÜNLER","phone":"0552 547 62 42","groupId":"g6B"},{"id":"g6B_2","name":"Ahmet Azat AYIRAN","phone":"0505 171 09 42","groupId":"g6B"},{"id":"g6B_3","name":"Alperen APAK","phone":"0536 207 84 14","groupId":"g6B"},{"id":"g6B_4","name":"Ayaz UÇAR","phone":"0551 148 81 32","groupId":"g6B"},{"id":"g6B_5","name":"Buğra CEYLAN","phone":"0553 665 81 37","groupId":"g6B"},{"id":"g6B_6","name":"Kaan Batu ERDEN","phone":"0532 628 22 49","groupId":"g6B"},{"id":"g6B_7","name":"Lokman DURGUT","phone":"0543 615 20 84","groupId":"g6B"},{"id":"g6B_8","name":"Mehmet Eymen ÖZARAS","phone":"0545 565 91 03","groupId":"g6B"},{"id":"g6B_9","name":"Mehmet Eymen TEKELİOĞLU","phone":"0505 037 17 70","groupId":"g6B"},{"id":"g6B_10","name":"Muhammet Ali DOĞAN","phone":"0506 535 23 90","groupId":"g6B"},{"id":"g6B_11","name":"Muhammet ALTINTAŞ","phone":"0535 044 61 47","groupId":"g6B"},{"id":"g6B_12","name":"Muhammet Emin KARA","phone":"0505 013 42 82","groupId":"g6B"},{"id":"g6B_13","name":"Muhammet Ramazan BAĞCI","phone":"0543 230 20 59","groupId":"g6B"},{"id":"g6B_14","name":"Muhammet Yunus VAROL","phone":"0542 806 40 52","groupId":"g6B"},{"id":"g6B_16","name":"Mustafa ESMER","phone":"0533 334 45 98","groupId":"g6B"},{"id":"g6B_17","name":"Ümit ENLİ","phone":"0532 515 98 42","groupId":"g6B"},{"id":"g6B_18","name":"Üveys ACAR","phone":"0552 513 73 74","groupId":"g6B"},{"id":"g6B_19","name":"Yiğit KILIÇARSLAN","phone":"0555 597 50 74","groupId":"g6B"},{"id":"g6D_1","name":"Abdusselam ALALK","phone":"0534 986 00 83","groupId":"g6D"},{"id":"g6D_2","name":"ALİ CEYLAN","phone":"0553 207 96 20","groupId":"g6D"},{"id":"g6D_3","name":"BAYRAN ALTAN","phone":"0544 577 68 09","groupId":"g6D"},{"id":"g6D_4","name":"EGEMEN ALKIŞ","phone":"0537 394 50 42","groupId":"g6D"},{"id":"g6D_5","name":"EYMEN ARSLAN","phone":"0539 851 22 70","groupId":"g6D"},{"id":"g6D_6","name":"H.HÜSEYİN SÜNETÇİ","phone":"0534 974 40 96","groupId":"g6D"},{"id":"g6D_7","name":"İZZET BEKTAŞ","phone":"0538 598 55 92","groupId":"g6D"},{"id":"g6D_9","name":"M.EMİR ÇAMLICA","phone":"0552 378 94 76","groupId":"g6D"},{"id":"g6D_10","name":"M.HAMZA KIRKAN","phone":"0553 225 89 84","groupId":"g6D"},{"id":"g6D_11","name":"Mert KURT","phone":"0539 439 07 50","groupId":"g6D"},{"id":"g6D_12","name":"Muhammet SARIKAYA","phone":"0551 854 51 10","groupId":"g6D"},{"id":"g6D_13","name":"MUSTAFA SUCU","phone":"0544 494 21 85","groupId":"g6D"},{"id":"g6D_14","name":"SEYİT MİRAN YILDIRIM","phone":"0506 192 14 52","groupId":"g6D"},{"id":"g6D_15","name":"Talha BALIKÇI","phone":"0545 853 51 14","groupId":"g6D"},{"id":"g6D_16","name":"TUNAHAN ACIBADEM","phone":"0531 745 51 81","groupId":"g6D"},{"id":"g6D_17","name":"YİGİT VURAL","phone":"0507 570 97 69","groupId":"g6D"},{"id":"g6D_18","name":"YUSUF DURAN KAPLAN","phone":"0530 952 51 43","groupId":"g6D"},{"id":"g6D_19","name":"YUSUF EFE ARARAT","phone":"0506 102 88 93","groupId":"g6D"},{"id":"g6D_20","name":"ZAFER TEKGÖZ","phone":"0545 954 78 22","groupId":"g6D"},{"id":"g6E_1","name":"HANA ELŞEMMO EL HASEN","phone":"0539 813 20 62","groupId":"g6E"},{"id":"g6E_2","name":"AYŞE SENA BÜYÜK BELLİ","phone":"0551 715 34 48","groupId":"g6E"},{"id":"g6E_3","name":"AYŞE SENA ÇATLI","phone":"0535 685 35 76","groupId":"g6E"},{"id":"g6E_4","name":"CANSEL ÇINAR","phone":"0553 572 25 26","groupId":"g6E"},{"id":"g6E_5","name":"ECEMSU TANACI","phone":"0544 362 62 73","groupId":"g6E"},{"id":"g6E_6","name":"EDANUR TÜRE","phone":"0542 234 30 79","groupId":"g6E"},{"id":"g6E_7","name":"FATMA DADO","phone":"0535 491 58 04","groupId":"g6E"},{"id":"g6E_8","name":"FATMA ORHAN","phone":"0507 028 68 62","groupId":"g6E"},{"id":"g6E_9","name":"GÜLÜZAR KARTAL","phone":"0533 284 95 90","groupId":"g6E"},{"id":"g6E_10","name":"HACER ERDOĞAN","phone":"0541 316 97 63","groupId":"g6E"},{"id":"g6E_11","name":"HİRANUR ÜNLÜ","phone":"0551 109 68 15","groupId":"g6E"},{"id":"g6E_12","name":"KÜBRA NİSA İRİŞ","phone":"0543 162 91 59","groupId":"g6E"},{"id":"g6E_13","name":"KÜBRA CEYRAN","phone":"0531 739 25 42","groupId":"g6E"},{"id":"g6E_14","name":"NUPELDA ÇETİN","phone":"0532 625 19 89","groupId":"g6E"},{"id":"g6E_15","name":"PERİBA ÖZBEK","phone":"0552 332 53 52","groupId":"g6E"},{"id":"g6E_16","name":"PERİHAN AZRA BATUR","phone":"0505 125 31 42","groupId":"g6E"},{"id":"g6E_17","name":"SEHER AKDOĞAN","phone":"0539 266 29 57","groupId":"g6E"},{"id":"g6E_18","name":"TUĞBA ERDOĞAN","phone":"0541 316 97 63","groupId":"g6E"},{"id":"g6E_19","name":"ZEYNEP BALCİ","phone":"0546 485 39 71","groupId":"g6E"},{"id":"g6F_1","name":"ABDULKADİR GÖKKAYA","phone":"0530 314 12 68","groupId":"g6F"},{"id":"g6F_2","name":"ABDULLOKH ABDIRASHITOV","phone":"0535 442 44 85","groupId":"g6F"},{"id":"g6F_3","name":"AHMET MUHAMMED ACAR","phone":"0553 617 99 86","groupId":"g6F"},{"id":"g6F_4","name":"AHMET MUHAMMET DAĞ","phone":"0539 854 69 90","groupId":"g6F"},{"id":"g6F_5","name":"ALİ METE COŞGUN","phone":"0545 191 99 41","groupId":"g6F"},{"id":"g6F_6","name":"BERAT ÇEKİÇ","phone":"0543 442 22 16","groupId":"g6F"},{"id":"g6F_7","name":"EMİR KÜÇÜKKİPRİTCİ","phone":"0537 299 34 35","groupId":"g6F"},{"id":"g6F_8","name":"EYMEN GÜNDÜZ","phone":"0542 584 71 49","groupId":"g6F"},{"id":"g6F_9","name":"HAMZA ÇIRA","phone":"0505 094 83 98","groupId":"g6F"},{"id":"g6F_10","name":"HAMZA TEMUR","phone":"0538 943 63 72","groupId":"g6F"},{"id":"g6F_12","name":"HASAN ERDEM BÜYÜKİLİK","phone":"0545 833 55 43","groupId":"g6F"},{"id":"g6F_13","name":"İBRAHİM ETHEM ÇELİK","phone":"0544 330 86 65","groupId":"g6F"},{"id":"g6F_14","name":"İBRAHİM İSA","phone":"0555 009 94 99","groupId":"g6F"},{"id":"g6F_15","name":"MAHMUD HAŞİM İSA","phone":"0555 009 94 99","groupId":"g6F"},{"id":"g6F_16","name":"MEHMET MİRAÇ KAYNAR","phone":"0507 698 09 12","groupId":"g6F"},{"id":"g6F_17","name":"MEHMETHAN ALAN","phone":"0538 874 15 36","groupId":"g6F"},{"id":"g6F_19","name":"MUHAMMED ENES YAŞAR","phone":"0554 384 26 07","groupId":"g6F"},{"id":"g6F_20","name":"MUSAB AYSU","phone":"0553 829 73 01","groupId":"g6F"},{"id":"g6F_21","name":"YİĞİT KILIÇARSLAN","phone":"0552 797 98 97","groupId":"g6F"},{"id":"g6F_22","name":"YUSUF ÇELİK","phone":"0538 262 79 26","groupId":"g6F"},{"id":"g6F_23","name":"ZÜLKARNEYN BAKTEMUR","phone":"0537 480 22 08","groupId":"g6F"},{"id":"g7A_1","name":"AİŞE NAZLI ÇAVDARCI","phone":"0552 306 42 85","groupId":"g7A"},{"id":"g7A_2","name":"AYŞE ARABACI","phone":"0551 108 31 39","groupId":"g7A"},{"id":"g7A_3","name":"BAHAR SARE DOĞAN","phone":"0507 738 51 38","groupId":"g7A"},{"id":"g7A_4","name":"EBRAR BUYRUCU","phone":"0507 723 65 27","groupId":"g7A"},{"id":"g7A_5","name":"ECEM İKRA CANSIN","phone":"0531 524 10 91","groupId":"g7A"},{"id":"g7A_6","name":"ELİF KASAR","phone":"0507 416 49 00","groupId":"g7A"},{"id":"g7A_7","name":"ELİF RAVDA KÜRKLÜ","phone":"0535 837 97 08","groupId":"g7A"},{"id":"g7A_8","name":"ERVA COŞGUN","phone":"0535 843 82 08","groupId":"g7A"},{"id":"g7A_9","name":"ERVA ÖZEL","phone":"0534 585 49 37","groupId":"g7A"},{"id":"g7A_10","name":"ESİLAY ASLAN","phone":"0531 833 21 59","groupId":"g7A"},{"id":"g7A_11","name":"ESLEM ARTIŞ","phone":"0539 522 63 42","groupId":"g7A"},{"id":"g7A_13","name":"FATIMA ESLEM KOÇ","phone":"0501 550 52 87","groupId":"g7A"},{"id":"g7A_14","name":"FATMA ESLEM YALÇIN","phone":"0538 680 51 58","groupId":"g7A"},{"id":"g7A_15","name":"GÜL MERYEM ARI","phone":"0553 297 76 75","groupId":"g7A"},{"id":"g7A_16","name":"HACER ECRİN ATAK","phone":"0544 729 40 58","groupId":"g7A"},{"id":"g7A_17","name":"HASRET HARMAN","phone":"0545 627 74 89","groupId":"g7A"},{"id":"g7A_18","name":"HAYRUNNİSA DOĞAN","phone":"0537 395 07 98","groupId":"g7A"},{"id":"g7A_19","name":"HAYRÜNNİSA ERKUT","phone":"0537 362 95 89","groupId":"g7A"},{"id":"g7A_20","name":"İMRAN YILMAZ","phone":"0541 620 17 54","groupId":"g7A"},{"id":"g7A_21","name":"KAMİLE ZEHRA GÜNVAR","phone":"0551 865 11 56","groupId":"g7A"},{"id":"g7A_22","name":"NESİL EREL","phone":"0553 686 42 09","groupId":"g7A"},{"id":"g7A_23","name":"NİSANUR KARAAĞAÇ","phone":"0542 687 94 12","groupId":"g7A"},{"id":"g7A_24","name":"RÜMEYSA DAĞLI","phone":"0551 647 38 92","groupId":"g7A"},{"id":"g7A_25","name":"TUĞBA ESLEM CAN","phone":"0553 131 22 34","groupId":"g7A"},{"id":"g7A_26","name":"ÜMMÜGÜLSÜM BAYAR","phone":"0537 738 39 90","groupId":"g7A"},{"id":"g7A_27","name":"ZEYNEP RANA GÜLER","phone":"0505 570 88 50","groupId":"g7A"},{"id":"g7A_28","name":"ZEYNEP ZÜMRA GEDİKLİ","phone":"0553 033 55 91","groupId":"g7A"},{"id":"g7B_1","name":"ENSAR ÖZTÜRK","phone":"0535 889 26 00","groupId":"g7B"},{"id":"g7B_2","name":"FİKRET SAN","phone":"0539 883 85 91","groupId":"g7B"},{"id":"g7B_3","name":"GÜRAY UYSAL","phone":"0542 527 33 14","groupId":"g7B"},{"id":"g7B_4","name":"H.YUSUF DOĞRAMACI","phone":"0543 424 26 17","groupId":"g7B"},{"id":"g7B_5","name":"HAMZA ALMAMOU","phone":"0552 389 80 42","groupId":"g7B"},{"id":"g7B_6","name":"İSA OKATTIK","phone":"0546 807 84 79","groupId":"g7B"},{"id":"g7B_7","name":"İSMAİL ÇELİK","phone":"0553 710 91 72","groupId":"g7B"},{"id":"g7B_8","name":"KUZEY TAHSİN AYGÜL","phone":"0542 526 93 28","groupId":"g7B"},{"id":"g7B_9","name":"LÜTFİ ARIEKEN","phone":"0506 903 16 14","groupId":"g7B"},{"id":"g7B_10","name":"M.ALİ GÖÇER","phone":"0546 405 30 66","groupId":"g7B"},{"id":"g7B_11","name":"M.BERAT DAĞ","phone":"0554 339 32 60","groupId":"g7B"},{"id":"g7B_12","name":"M.EMİN DUYMAZ","phone":"0541 745 95 36","groupId":"g7B"},{"id":"g7B_13","name":"M.EMİR ERDEM","phone":"0541 442 14 74","groupId":"g7B"},{"id":"g7B_14","name":"M.MELİH ERİŞ","phone":"0546 851 84 91","groupId":"g7B"},{"id":"g7B_15","name":"M.MEVLÜT GÜMÜŞTAŞ","phone":"0543 104 43 82","groupId":"g7B"},{"id":"g7B_16","name":"M.YUSUF DUYMAZ","phone":"0536 677 67 49","groupId":"g7B"},{"id":"g7B_17","name":"M.YUSUF VAROL","phone":"0544 322 55 06","groupId":"g7B"},{"id":"g7B_18","name":"M.ZEKİ CAN","phone":"0555 167 97 07","groupId":"g7B"},{"id":"g7B_19","name":"MEVLÜT ENES YILDIZ","phone":"0534 360 67 77","groupId":"g7B"},{"id":"g7B_20","name":"MUSTAFA EMİR SARIBAŞ","phone":"0505 550 71 09","groupId":"g7B"},{"id":"g7B_21","name":"NACİ İRİŞ","phone":"0545 601 59 46","groupId":"g7B"},{"id":"g7B_22","name":"NUH EYMEN YALDIR","phone":"0554 812 20 72","groupId":"g7B"},{"id":"g7B_23","name":"SALAH DHAY","phone":"0537 252 21 19","groupId":"g7B"},{"id":"g7B_24","name":"Y.EYMEN KILIÇEL","phone":"0544 567 68 35","groupId":"g7B"},{"id":"g7B_25","name":"YAMEN KEMAM BABLLI","phone":"0538 558 85 59","groupId":"g7B"},{"id":"g7C_1","name":"ALMİNA ELÇİN KANTAL","phone":"0536 560 02 53","groupId":"g7C"},{"id":"g7C_2","name":"AYBÜKE KAYA","phone":"0545 477 15 86","groupId":"g7C"},{"id":"g7C_3","name":"AYŞE NAZ ŞEN","phone":"0546 442 96 84","groupId":"g7C"},{"id":"g7C_4","name":"DENİZ KAMACI","phone":"0545 530 51 92","groupId":"g7C"},{"id":"g7C_5","name":"EBRAR COŞGUN","phone":"0545 191 99 41","groupId":"g7C"},{"id":"g7C_6","name":"EBRAR DOĞAN","phone":"0541 466 39 46","groupId":"g7C"},{"id":"g7C_7","name":"EBRAR NAZ ÖZ","phone":"0536 938 49 52","groupId":"g7C"},{"id":"g7C_8","name":"ECRİN KAYA","phone":"0539 255 67 08","groupId":"g7C"},{"id":"g7C_9","name":"ELİF ORHAN","phone":"0535 135 11 92","groupId":"g7C"},{"id":"g7C_10","name":"ELİF ZEREN TOPAK","phone":"0536 948 70 29","groupId":"g7C"},{"id":"g7C_11","name":"FATMA CEBBEŞ","phone":"0531 023 95 08","groupId":"g7C"},{"id":"g7C_13","name":"HALİME SENA TAŞDELEN","phone":"0546 217 74 44","groupId":"g7C"},{"id":"g7C_14","name":"HAVVA SENA ACAR","phone":"0551 106 08 40","groupId":"g7C"},{"id":"g7C_15","name":"HİRA NUR İRİŞ","phone":"0543 942 18 67","groupId":"g7C"},{"id":"g7C_16","name":"LAMA ELHAŞHAŞ","phone":"0531 849 45 09","groupId":"g7C"},{"id":"g7C_17","name":"MENEKŞE MİNA ÜNAL","phone":"0553 481 13 39","groupId":"g7C"},{"id":"g7C_18","name":"MERYEM ÖZARAS","phone":"0507 824 11 32","groupId":"g7C"},{"id":"g7C_19","name":"RAVZA ZENGİNOVA","phone":"0543 811 88 77","groupId":"g7C"},{"id":"g7C_20","name":"RAZİYE NAZ BÜYÜKŞEN","phone":"0552 793 07 08","groupId":"g7C"},{"id":"g7C_21","name":"SANİYE ÇİNİ","phone":"0542 686 86 49","groupId":"g7C"},{"id":"g7C_22","name":"SEBAHAT GÜL ALTAN","phone":"0536 080 80 31","groupId":"g7C"},{"id":"g7C_23","name":"SEMMAH ELHAJİSA","phone":"0535 941 11 97","groupId":"g7C"},{"id":"g7C_24","name":"SULTAN GÖZÜBÜYÜK","phone":"0535 300 81 62","groupId":"g7C"},{"id":"g7C_25","name":"ULE TABBAŞ","phone":"0535 342 95 69","groupId":"g7C"},{"id":"g7C_26","name":"YAĞMUR ALTUNOK","phone":"0545 645 21 03","groupId":"g7C"},{"id":"g7C_27","name":"ZEYNEP GÖZÜBÜYÜK","phone":"0543 592 25 95","groupId":"g7C"},{"id":"g7C_28","name":"ZÜLEYHA KARAKAYA","phone":"0542 687 94 27","groupId":"g7C"},{"id":"g7D_1","name":"ABDULKADİR BALCI","phone":"0554 115 91 25","groupId":"g7D"},{"id":"g7D_3","name":"AHMET FURKAN BEDİR","phone":"0552 349 10 59","groupId":"g7D"},{"id":"g7D_5","name":"AHMET PINAR","phone":"0541 356 41 50","groupId":"g7D"},{"id":"g7D_6","name":"AHMET YASİN ŞEN","phone":"0535 931 91 45","groupId":"g7D"},{"id":"g7D_7","name":"AZAD İBRAHİM ÇEKİÇ","phone":"0541 310 02 53","groupId":"g7D"},{"id":"g7D_8","name":"BATUHAN GÜZEL","phone":"0541 919 08 05","groupId":"g7D"},{"id":"g7D_9","name":"BEDİRHAN DEDE ERGİN","phone":"0552 664 77 20","groupId":"g7D"},{"id":"g7D_10","name":"BERAT ÖZKAN","phone":"0543 145 14 01","groupId":"g7D"},{"id":"g7D_11","name":"BERAT YASİN DOĞAN","phone":"0554 007 42 49","groupId":"g7D"},{"id":"g7D_12","name":"BEYTULLAH EMİR KILIÇ","phone":"0545 245 38 31","groupId":"g7D"},{"id":"g7D_13","name":"BURHAN SAMİ ALKIŞ","phone":"0507 079 15 88","groupId":"g7D"},{"id":"g7D_14","name":"CİHAD HÜSEYİN ASLAN","phone":"0539 851 22 70","groupId":"g7D"},{"id":"g7D_15","name":"CUMA GÜNDÜZ","phone":"0553 855 26 86","groupId":"g7D"},{"id":"g7D_16","name":"ENİS CAN ARAS","phone":"0555 683 64 18","groupId":"g7D"},{"id":"g7D_19","name":"KERİM ABDULCABBAR DEMİR","phone":"0542 273 27 17","groupId":"g7D"},{"id":"g7D_23","name":"MUHAMMED EMİN KULOĞLU","phone":"0538 249 37 24","groupId":"g7D"},{"id":"g7D_24","name":"MUHAMMET ELALI","phone":"0534 744 82 30","groupId":"g7D"},{"id":"g7D_25","name":"MUHAMMET SALİH ESER","phone":"0535 938 82 92","groupId":"g7D"},{"id":"g7D_26","name":"MUHAMMET TALHA BÖZTAŞ","phone":"0543 463 10 91","groupId":"g7D"},{"id":"g7D_27","name":"MUHAMMET TALHA CERAN","phone":"0507 494 85 99","groupId":"g7D"},{"id":"g7D_28","name":"NUREDDİN DADO","phone":"0535 491 58 04","groupId":"g7D"},{"id":"g7D_30","name":"SERHAD ULAŞ SARIKAYA","phone":"0541 951 63 91","groupId":"g7D"},{"id":"g7D_31","name":"UMUT CEYRAN","phone":"0537 882 04 38","groupId":"g7D"},{"id":"g7D_32","name":"UMUT YILDIZ","phone":"0535 062 89 21","groupId":"g7D"},{"id":"g7D_33","name":"YİĞİT EMİR SATI","phone":"0531 389 54 43","groupId":"g7D"},{"id":"g8A_1","name":"Ayşe Nisa UYAR","phone":"0554 890 20 96","groupId":"g8A"},{"id":"g8A_2","name":"Azra Beren ÖZBEK","phone":"0555 327 35 15","groupId":"g8A"},{"id":"g8A_3","name":"Ecrin TUNA","phone":"0507 230 89 65","groupId":"g8A"},{"id":"g8A_4","name":"Elif GÜNEY","phone":"0551 121 25 97","groupId":"g8A"},{"id":"g8A_5","name":"Elif Su HANÇERLİ","phone":"0535 229 47 23","groupId":"g8A"},{"id":"g8A_6","name":"Eslem Nisa ÖZBEK","phone":"0554 412 13 16","groupId":"g8A"},{"id":"g8A_7","name":"Hatice ALTUNOK","phone":"0545 645 21 03","groupId":"g8A"},{"id":"g8A_8","name":"Havva Nur ÇOBAN","phone":"0546 857 21 01","groupId":"g8A"},{"id":"g8A_9","name":"Hira Nur İMA","phone":"0552 261 91 45","groupId":"g8A"},{"id":"g8A_10","name":"Hümeyra SOYTÜRK","phone":"0543 347 12 74","groupId":"g8A"},{"id":"g8A_11","name":"Kübra ÇELİK","phone":"0534 298 24 30","groupId":"g8A"},{"id":"g8A_12","name":"Kübra Nur ÖZDEMİR","phone":"0537 797 23 44","groupId":"g8A"},{"id":"g8A_13","name":"Medine ŞAHAN","phone":"0544 382 44 84","groupId":"g8A"},{"id":"g8A_14","name":"Reyhan Gül GÜROCAK","phone":"0536 393 03 28","groupId":"g8A"},{"id":"g8A_15","name":"Reyyan Sena SEVGİ","phone":"0539 584 98 50","groupId":"g8A"},{"id":"g8A_16","name":"Zeynep FİDANBOY","phone":"0538 740 85 42","groupId":"g8A"},{"id":"g8B_1","name":"MUHAMMED ELHAŞAŞ","phone":"0531 849 45 09","groupId":"g8B"},{"id":"g8B_3","name":"AHMET SERDAR DEVELİ","phone":"0507 012 78 27","groupId":"g8B"},{"id":"g8B_4","name":"AHMET YASİR HANÇERLİ","phone":"0542 767 45 75","groupId":"g8B"},{"id":"g8B_5","name":"ALİ EYMEN İPEK","phone":"0530 511 34 77","groupId":"g8B"},{"id":"g8B_6","name":"ALİ İRİŞ","phone":"0553 078 05 59","groupId":"g8B"},{"id":"g8B_7","name":"BATUHAN OĞUZ","phone":"0544 870 33 32","groupId":"g8B"},{"id":"g8B_8","name":"BERAT ERTÜRK","phone":"0507 415 89 17","groupId":"g8B"},{"id":"g8B_9","name":"CEMİL TEDİLİ","phone":"0535 514 44 32","groupId":"g8B"},{"id":"g8B_10","name":"EMİRHAN ALTAN","phone":"0541 625 92 47","groupId":"g8B"},{"id":"g8B_11","name":"ENES TALHA ÇATLI","phone":"0535 685 35 76","groupId":"g8B"},{"id":"g8B_13","name":"ERKAM ÖZEL","phone":"0534 585 49 37","groupId":"g8B"},{"id":"g8B_15","name":"MECİT GÜNEY","phone":"0539 780 22 94","groupId":"g8B"},{"id":"g8B_16","name":"MEHMET FATİH SAYDAM","phone":"0532 379 87 89","groupId":"g8B"},{"id":"g8B_17","name":"MİKAİL KEKLİKÇİ","phone":"0542 502 23 78","groupId":"g8B"},{"id":"g8B_18","name":"MİRAÇ ALİ GÖLELİ","phone":"0531 895 29 87","groupId":"g8B"},{"id":"g8B_20","name":"MUHAMMED EMİN YAVUZ","phone":"0535 486 11 28","groupId":"g8B"},{"id":"g8B_21","name":"MUHAMMED YİĞİT DADAK","phone":"0507 367 32 71","groupId":"g8B"},{"id":"g8B_22","name":"MUSTAFA ALTAN","phone":"0553 217 55 51","groupId":"g8B"},{"id":"g8B_23","name":"MUSTAFA TAYYİP İLHAN","phone":"0507 152 63 77","groupId":"g8B"},{"id":"g8B_25","name":"ÖMER TALHA TEKE","phone":"0531 274 55 71","groupId":"g8B"},{"id":"g8B_26","name":"SALİH ÇAKIR","phone":"0545 252 77 05","groupId":"g8B"},{"id":"g8B_27","name":"SAMET KORKMAZ","phone":"0530 042 60 56","groupId":"g8B"},{"id":"g8B_28","name":"YASIN RAHİMİ","phone":"0534 273 31 40","groupId":"g8B"},{"id":"g8B_29","name":"YILMAZ ALAN","phone":"0542 740 96 83","groupId":"g8B"},{"id":"g8B_30","name":"YOUSEF KEMAM BABLLI","phone":"0538 558 85 59","groupId":"g8B"},{"id":"g8B_31","name":"YUNUS ALİ EREN","phone":"0536 997 12 42","groupId":"g8B"},{"id":"g8B_32","name":"YUSUF EFE DOĞAN","phone":"0554 007 42 49","groupId":"g8B"},{"id":"g8C_1","name":"Aişe Elubeyt","phone":"0555 065 55 64","groupId":"g8C"},{"id":"g8C_2","name":"Berru Pınar","phone":"0541 356 41 50","groupId":"g8C"},{"id":"g8C_3","name":"Elif Ece Ata","phone":"0541 184 37 00","groupId":"g8C"},{"id":"g8C_4","name":"Elif Özkurt","phone":"0539 735 43 80","groupId":"g8C"},{"id":"g8C_5","name":"Fatma El Mahmod","phone":"0539 480 83 79","groupId":"g8C"},{"id":"g8C_6","name":"Feyza Nur Çanakçı","phone":"0507 138 97 20","groupId":"g8C"},{"id":"g8C_7","name":"Havvanur Özdil","phone":"0536 941 47 08","groupId":"g8C"},{"id":"g8C_8","name":"Hayrünnisa Çatlı","phone":"0535 685 35 76","groupId":"g8C"},{"id":"g8C_9","name":"Hümeyra Kılıç","phone":"0545 245 38 31","groupId":"g8C"},{"id":"g8C_10","name":"Janna Alhaj","phone":"0535 941 11 79","groupId":"g8C"},{"id":"g8C_11","name":"Melek Naz Erol","phone":"0554 726 43 12","groupId":"g8C"},{"id":"g8C_12","name":"Nisanur Tunç","phone":"0507 021 35 07","groupId":"g8C"},{"id":"g8C_13","name":"Nisanur Yılancı","phone":"0541 283 02 24","groupId":"g8C"},{"id":"g8C_14","name":"Saliha Karacan","phone":"0544 927 93 79","groupId":"g8C"},{"id":"g8C_15","name":"Zeynep Hatice Akova","phone":"0536 377 32 93","groupId":"g8C"},{"id":"g6C_1","name":"Eslem Terzi","phone":"0551 131 00 41","groupId":"g6C"},{"id":"g6C_2","name":"Nursena Canıvar","phone":"0552 798 02 90","groupId":"g6C"},{"id":"g6C_3","name":"Kevser Demir","phone":"0539 494 10 05","groupId":"g6C"},{"id":"g6C_4","name":"Esma Gül Uslu","phone":"0542 484 81 25","groupId":"g6C"},{"id":"g6C_5","name":"Zümra Betül Atik","phone":"0537 684 69 10","groupId":"g6C"},{"id":"g6C_6","name":"Zeynep Şura Aygün","phone":"0531 493 92 48","groupId":"g6C"},{"id":"g6C_7","name":"Hüda El Mahmud","phone":"0539 727 79 95","groupId":"g6C"},{"id":"g6C_8","name":"Nurçiçek Dinek","phone":"0551 691 72 23","groupId":"g6C"},{"id":"g6C_9","name":"Zümra Nisa Tekeli","phone":"0531 863 83 22","groupId":"g6C"},{"id":"g6C_10","name":"Müne El Huleyf","phone":"0531 768 70 31","groupId":"g6C"},{"id":"g6C_11","name":"Elif Zümra Mucurlu","phone":"0554 768 84 52","groupId":"g6C"},{"id":"g6C_12","name":"Elif Nisa Boztaş","phone":"0545 912 40 20","groupId":"g6C"},{"id":"g6C_13","name":"Elif Yazıcı","phone":"0535 281 47 12","groupId":"g6C"},{"id":"g6C_14","name":"Aysel Çınar","phone":"0553 572 25 26","groupId":"g6C"},{"id":"g6C_15","name":"Ecrin Buğlem Camızcı","phone":"0539 984 15 24","groupId":"g6C"},{"id":"g6C_16","name":"Kübra Doğan","phone":"0541 466 90 45","groupId":"g6C"},{"id":"g6C_17","name":"Belinaysu Ayıran","phone":"0552 691 50 45","groupId":"g6C"}]};
+  
+  let data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (stored && Array.isArray(stored.groups) && Array.isArray(stored.people)) {
+      data = stored;
     }
-    container.appendChild(card);
-  });
-  // Her ekranda bir adet boş buton bulunur; düzenleme açıkken bu bir sonraki giriş formudur.
-  const blank=document.createElement("div");blank.className="person"+(editing?" editor":"");
-  if(editing){
-    blank.innerHTML='<div class="fields"><input class="new-name" maxlength="60" aria-label="Yeni kişi adı" placeholder="İsim"><input class="new-phone" maxlength="24" aria-label="Yeni telefon numarası" placeholder="Telefon numarası" inputmode="tel"><button type="button" class="smallbtn save-next">Kaydet ve Yeni Kişi</button></div>';
-    blank.querySelector(".save-next").onclick=()=>{
-      const name=blank.querySelector(".new-name").value.trim(),phone=blank.querySelector(".new-phone").value.trim();
-      if(!name||!phone){alert("Lütfen isim ve telefon numarasını gir.");return}
-      data.people.push({id:uid(),name,phone,groupId:groupId||null});save();updateView();
-      const input=$(containerId).querySelector(".person.editor:last-child .new-name");if(input)input.focus();
-    };
-  }else{
-    blank.innerHTML='<button class="call" type="button" aria-label="Boş kişi butonu"><span class="name">&nbsp;</span><span class="number">&nbsp;</span></button><span class="phone" aria-hidden="true">＋</span>';
-    blank.querySelector(".call").onclick=()=>{alert("Bu boş butona kişi eklemek için üstteki “Kişileri Düzenle” düğmesine bas.")};
+  } catch (e) {}
+
+  let view = "home", activeGroupId = null, editing = false;
+  const $ = id => document.getElementById(id);
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
-  container.appendChild(blank);
-}
-$("editToggle").onclick=()=>{
-  editing=!editing;updateView();
-  if(editing){const id=view==="group"?"groupPeople":"homePeople";const input=$(id).querySelector(".new-name")||$(id).querySelector(".edit-name");if(input)input.focus()}
-};
-$("groupsButton").onclick=()=>{view="groups";editing=false;updateView()};
-$("backHome").onclick=()=>{view="home";editing=false;updateView()};
-$("backGroups").onclick=()=>{view="groups";editing=false;updateView()};
-$("addGroup").onclick=()=>{$("groupName").value="";$("groupModal").classList.add("open");setTimeout(()=>$("groupName").focus(),30)};
-$("cancelGroup").onclick=()=>$("groupModal").classList.remove("open");
-$("groupModal").onclick=e=>{if(e.target===$("groupModal"))$("groupModal").classList.remove("open")};
-$("groupForm").onsubmit=e=>{
-  e.preventDefault();const name=$("groupName").value.trim();if(!name)return;
-  if(data.groups.some(g=>g.name.toLocaleLowerCase("tr-TR")===name.toLocaleLowerCase("tr-TR"))){alert("Bu isimde bir grup zaten var.");return}
-  data.groups.push({id:uid(),name});save();$("groupModal").classList.remove("open");view="groups";editing=false;updateView();
-};
-updateView();
+
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function activeGroup() {
+    return data.groups.find(g => g.id === activeGroupId);
+  }
+
+  function peopleFor(groupId) {
+    return data.people.filter(p => (p.groupId || null) === (groupId || null));
+  }
+
+  function deleteGroup(groupId) {
+    const g = data.groups.find(item => item.id === groupId);
+    if (!g) return;
+    if (confirm(`"${g.name}" grubunu silmek istediğinize emin misiniz?`)) {
+      data.people = data.people.filter(p => p.groupId !== groupId);
+      data.groups = data.groups.filter(item => item.id !== groupId);
+      save();
+      if (activeGroupId === groupId) {
+        activeGroupId = null;
+        view = "groups";
+      }
+      updateView();
+    }
+  }
+
+  function updateView() {
+    $("homeView").classList.toggle("hidden", view !== "home");
+    $("groupsView").classList.toggle("hidden", view !== "groups");
+    $("groupView").classList.toggle("hidden", view !== "group");
+    
+    $("editToggle").textContent = editing ? "✓ Bitir" : "✏️ Düzenle";
+    $("editToggle").classList.toggle("primary", editing);
+
+    renderPeople("homePeople", null);
+    
+    const list = $("groupList");
+    list.innerHTML = "";
+    data.groups.forEach(g => {
+      const card = document.createElement("div");
+      card.className = "group-card";
+      card.innerHTML = `
+        <button type="button" class="group-item-btn">${esc(g.name)}</button>
+        <button type="button" class="group-del-btn" title="Grubu Sil">🗑️</button>
+      `;
+      card.querySelector(".group-item-btn").onclick = () => {
+        activeGroupId = g.id;
+        view = "group";
+        editing = false;
+        updateView();
+      };
+      card.querySelector(".group-del-btn").onclick = (e) => {
+        e.stopPropagation();
+        deleteGroup(g.id);
+      };
+      list.appendChild(card);
+    });
+    
+    $("groupsEmpty").classList.toggle("hidden", data.groups.length > 0);
+    
+    const g = activeGroup();
+    if (g) {
+      $("groupTitle").textContent = g.name;
+      renderPeople("groupPeople", g.id);
+    }
+  }
+
+  function renderPeople(containerId, groupId) {
+    const container = $(containerId);
+    if (!container) return;
+    const people = peopleFor(groupId);
+    container.innerHTML = "";
+    
+    if (containerId === "homePeople") {
+      $("homeCount").textContent = people.length ? people.length + " kişi" : "0 kişi";
+    }
+
+    people.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "person" + (editing ? " editor" : "");
+      
+      if (editing) {
+        card.innerHTML = `
+          <div class="fields">
+            <input class="edit-name" maxlength="60" aria-label="Ad Soyad" placeholder="Ad Soyad" value="${esc(p.name)}">
+            <input class="edit-phone" maxlength="24" aria-label="Telefon numarası" placeholder="Telefon numarası" inputmode="tel" value="${esc(p.phone)}">
+            <div class="field-buttons">
+              <button type="button" class="smallbtn save-edit">Kaydet</button>
+              <button type="button" class="delbtn delete-person" title="Kişiyi Sil">🗑️ Sil</button>
+            </div>
+          </div>`;
+        card.querySelector(".save-edit").onclick = () => {
+          const name = card.querySelector(".edit-name").value.trim();
+          const phone = card.querySelector(".edit-phone").value.trim();
+          if (!name || !phone) { alert("Lütfen isim ve telefon numarasını gir."); return; }
+          p.name = name;
+          p.phone = phone;
+          save();
+          updateView();
+        };
+        card.querySelector(".delete-person").onclick = () => {
+          if (confirm(`${p.name} silinsin mi?`)) {
+            data.people = data.people.filter(item => item.id !== p.id);
+            save();
+            updateView();
+          }
+        };
+      } else {
+        card.innerHTML = `<button class="call" type="button" aria-label="${esc(p.name || "Kişi")} ara"><span class="name">${esc(p.name)}</span><span class="number">${esc(p.phone)}</span></button><span class="phone" aria-hidden="true">☎</span>`;
+        card.querySelector(".call").onclick = () => {
+          let n = String(p.phone || "").replace(/\D/g, "");
+          if (!n) { alert("Önce Kişileri Düzenle ile isim ve telefon kaydet."); return; }
+          if (n.startsWith("0")) n = "+90" + n.slice(1);
+          else if (n.startsWith("90")) n = "+" + n;
+          else if (!n.startsWith("+")) n = "+90" + n;
+          location.href = "tel:" + n;
+        };
+      }
+      container.appendChild(card);
+    });
+
+    const blank = document.createElement("div");
+    blank.className = "person" + (editing ? " editor" : "");
+    if (editing) {
+      blank.innerHTML = '<div class="fields"><input class="new-name" maxlength="60" aria-label="Yeni kişi adı" placeholder="İsim"><input class="new-phone" maxlength="24" aria-label="Yeni telefon numarası" placeholder="Telefon numarası" inputmode="tel"><button type="button" class="smallbtn save-next">Kaydet ve Yeni Kişi</button></div>';
+      blank.querySelector(".save-next").onclick = () => {
+        const name = blank.querySelector(".new-name").value.trim();
+        const phone = blank.querySelector(".new-phone").value.trim();
+        if (!name || !phone) { alert("Lütfen isim ve telefon numarasını gir."); return; }
+        data.people.push({ id: uid(), name, phone, groupId: groupId || null });
+        save();
+        updateView();
+      };
+    } else {
+      blank.innerHTML = '<button class="call" type="button" aria-label="Boş kişi butonu"><span class="name">&nbsp;</span><span class="number">&nbsp;</span></button><span class="phone" aria-hidden="true">＋</span>';
+      blank.querySelector(".call").onclick = () => { alert("Bu boş butona kişi eklemek için üstteki “Düzenle” düğmesine bas."); };
+    }
+    container.appendChild(blank);
+  }
+
+  // --- Excel Yükleme: Sadece Excel Sekmelerini Gruplara Yükler ---
+  $("uploadBtn").onclick = () => {
+    $("excelFileInput").click();
+  };
+
+  $("excelFileInput").onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const arrayBuffer = evt.target.result;
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+        
+        let totalAdded = 0;
+
+        // Ana Sayfa kişilerimizi koruyoruz (groupId bulunmayanlar)
+        const homePeople = data.people.filter(p => !p.groupId);
+
+        // Grupları ve grup kişilerini temizleyip sadece yeni Excel gruplarını yüklüyoruz
+        data.groups = [];
+        data.people = [...homePeople];
+
+        // Excel'deki her bir sekmeyi (Sheet) tek tek Grup olarak işle
+        workbook.SheetNames.forEach(sheetName => {
+          const cleanSheetName = sheetName.trim();
+          if (!cleanSheetName) return;
+
+          const newGroup = { id: uid(), name: cleanSheetName };
+          data.groups.push(newGroup);
+
+          const worksheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+          rows.forEach(row => {
+            if (!row || row.length === 0) return;
+            
+            let name = "", phone = "";
+            row.forEach(cell => {
+              if (cell === null || cell === undefined) return;
+              const strVal = String(cell).trim();
+              if (!strVal) return;
+
+              const digits = strVal.replace(/\D/g, "");
+              if (digits.length >= 7 && !phone) {
+                phone = strVal;
+              } else if (!name) {
+                name = strVal;
+              }
+            });
+
+            if (name && phone) {
+              data.people.push({
+                id: uid(),
+                name: name,
+                phone: phone,
+                groupId: newGroup.id // SADECE ilgili gruba atanır, Ana Sayfaya eklenmez
+              });
+              totalAdded++;
+            }
+          });
+        });
+
+        if (totalAdded === 0) {
+          alert("Excel dosyasında geçerli kişi/numara kaydı bulunamadı.");
+          return;
+        }
+
+        save();
+        view = "groups"; // Yükleme sonrası doğrudan Gruplarım sayfasına geç
+        editing = false;
+        updateView();
+        alert(`İşlem Başarılı!\n• Excel'deki ${workbook.SheetNames.length} sekme grup olarak yüklendi.\n• Toplam ${totalAdded} kişi gruplara eklendi.\n• Ana Sayfaya hiçbir numara atanmadı.`);
+
+      } catch (err) {
+        console.error(err);
+        alert("Excel dosyası okunurken bir hata oluştu. Lütfen dosya biçimini kontrol edin.");
+      } finally {
+        $("excelFileInput").value = "";
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  // Olay Dinleyicileri (Event Listeners)
+  $("editToggle").onclick = () => {
+    editing = !editing;
+    updateView();
+  };
+
+  $("groupsButton").onclick = () => {
+    view = "groups";
+    editing = false;
+    updateView();
+  };
+
+  $("backHome").onclick = () => {
+    view = "home";
+    editing = false;
+    updateView();
+  };
+
+  $("backGroups").onclick = () => {
+    view = "groups";
+    editing = false;
+    updateView();
+  };
+
+  $("deleteCurrentGroup").onclick = () => {
+    if (activeGroupId) deleteGroup(activeGroupId);
+  };
+
+  $("addGroup").onclick = () => {
+    $("groupName").value = "";
+    $("groupModal").classList.add("open");
+    setTimeout(() => $("groupName").focus(), 30);
+  };
+
+  $("cancelGroup").onclick = () => $("groupModal").classList.remove("open");
+  
+  $("groupModal").onclick = e => {
+    if (e.target === $("groupModal")) $("groupModal").classList.remove("open");
+  };
+
+  $("groupForm").onsubmit = e => {
+    e.preventDefault();
+    const name = $("groupName").value.trim();
+    if (!name) return;
+    if (data.groups.some(g => g.name.toLocaleLowerCase("tr-TR") === name.toLocaleLowerCase("tr-TR"))) {
+      alert("Bu isimde bir grup zaten var.");
+      return;
+    }
+    data.groups.push({ id: uid(), name });
+    save();
+    $("groupModal").classList.remove("open");
+    view = "groups";
+    editing = false;
+    updateView();
+  };
+
+  updateView();
+});
 </script>
 </body>
 </html>
