@@ -14,16 +14,16 @@ body{font-size:21px;margin:0;font-family:Arial,sans-serif;background:var(--bg);c
 header{background:linear-gradient(135deg,var(--dark),#2186c7);color:#fff;padding:20px 14px;text-align:center}
 h1{margin:0 0 5px;font-size:clamp(29px,6.5vw,38px)}header p{margin:0;font-size:18.2px;opacity:.92}
 main{max-width:900px;margin:auto;padding:14px}
-.toolbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.toolbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .btn{border:0;border-radius:10px;padding:12px 6px;font-weight:700;font-size:16.9px;cursor:pointer;background:#fff;color:#174c78;box-shadow:0 2px 7px #10243b12;text-align:center;display:inline-flex;align-items:center;justify-content:center}
-.btn.primary{background:var(--blue);color:#fff}.btn.green{background:var(--green);color:#fff}.btn.orange{background:var(--orange);color:#fff}
+.btn.primary{background:var(--blue);color:#fff}.btn.green{background:var(--green);color:#fff}.btn.orange{background:var(--orange);color:#fff}.btn.teal{background:#0f766e;color:#fff}.btn.purple{background:#6d3fc0;color:#fff}
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
 .section-head h2{font-size:22.1px;margin:0;overflow-wrap:anywhere}
 .people,.group-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start}
 .person{display:flex;align-items:stretch;min-width:0;min-height:99px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 7px #10243b0c}
 .call{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:13px 11px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:6px}
 .call:active,.group-item-btn:active{background:#e8f4ff}
-.name{font-size:19.5px;font-weight:700;overflow-wrap:anywhere}.number{font-size:16.9px;color:#526579;overflow-wrap:anywhere}.phone{align-self:center;color:var(--green);font-size:24.7px;padding:0 10px}
+.name{font-size:19.5px;font-weight:700;overflow-wrap:anywhere}.number{font-size:22px;white-space:nowrap;color:#526579;overflow-wrap:anywhere}.phone{align-self:center;color:var(--green);font-size:24.7px;padding:0 10px}
 .person.editor{display:block;padding:9px}.person.editor .call,.person.editor .phone{display:none}
 .fields{display:grid;gap:7px;width:100%}.fields input,.modal input{width:100%;min-width:0;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font:inherit;background:#fff}
 .field-buttons{display:flex;gap:6px}
@@ -43,7 +43,7 @@ main{max-width:900px;margin:auto;padding:14px}
 .modal form{display:grid;gap:10px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
 .note{font-size:15.6px;color:var(--muted);text-align:center;line-height:1.5;margin:16px 0 4px}
 .hidden{display:none!important}
-@media(max-width:500px){main{padding:10px}.toolbar{grid-template-columns:1fr 1fr;gap:6px}.btn{font-size:15.6px;padding:10px 4px}.people,.group-list{gap:8px}.call{padding:11px 8px}.name{font-size:16.9px}.number{font-size:14.3px}.phone{font-size:22.1px;padding:0 7px}.person{min-height:91px}}
+@media(max-width:500px){main{padding:10px}.toolbar{gap:6px}.btn{font-size:15.6px;padding:10px 4px}.people,.group-list{gap:8px}.call{padding:11px 5px}.name{font-size:16.9px}.number{font-size:18.6px;letter-spacing:-.6px}.phone{font-size:18px;padding:0 4px}.person{min-height:91px}}
 </style>
 </head>
 <body>
@@ -55,6 +55,9 @@ main{max-width:900px;margin:auto;padding:14px}
     <button class="btn green" id="addGroup" type="button">＋ Grup Ekle</button>
     <button class="btn orange" id="uploadBtn" type="button">📥 Rehber Yükle</button>
     <input type="file" id="excelFileInput" accept=".xls,.xlsx,.csv" class="hidden">
+    <button class="btn teal" id="backupBtn" type="button">💾 Yedekle</button>
+    <button class="btn purple" id="restoreBtn" type="button">🔄 Güncelle</button>
+    <input type="file" id="restoreInput" accept=".json,application/json,text/plain" class="hidden">
   </nav>
 
   <section id="homeView">
@@ -337,6 +340,88 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     reader.readAsArrayBuffer(file);
+  };
+
+  // --- Yedekle: rehber yedek.json dosyası oluşturur ---
+  $("backupBtn").onclick = async () => {
+    const payload = JSON.stringify({
+      app: "hizliAramaRehberi",
+      version: 3,
+      date: new Date().toISOString(),
+      groups: data.groups,
+      people: data.people
+    }, null, 2);
+    const fileName = "rehber yedek.json";
+
+    // Masaüstü Chrome/Edge: kayıt penceresi masaüstünde açılır
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: fileName,
+          startIn: "desktop",
+          types: [{ description: "Rehber yedeği", accept: { "application/json": [".json"] } }]
+        });
+        const w = await handle.createWritable();
+        await w.write(payload);
+        await w.close();
+        alert("Yedek kaydedildi: " + handle.name);
+        return;
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+      }
+    }
+
+    // Diğer tarayıcılar / telefon: dosya indirilir
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  };
+
+  // --- Güncelle: yedek dosyasını geri yükler ---
+  $("restoreBtn").onclick = () => $("restoreInput").click();
+
+  $("restoreInput").onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const obj = JSON.parse(evt.target.result);
+        if (!obj || !Array.isArray(obj.groups) || !Array.isArray(obj.people)) throw new Error("biçim");
+        const groups = obj.groups
+          .filter(g => g && g.id && typeof g.name === "string")
+          .map(g => ({ id: String(g.id), name: g.name }));
+        const ids = new Set(groups.map(g => g.id));
+        const people = obj.people
+          .filter(p => p && typeof p.name === "string" && p.phone !== undefined && p.phone !== null)
+          .map(p => ({
+            id: String(p.id || uid()),
+            name: p.name,
+            phone: String(p.phone),
+            groupId: p.groupId && ids.has(String(p.groupId)) ? String(p.groupId) : null
+          }));
+        if (!groups.length && !people.length) throw new Error("boş");
+        if (!confirm(`Yedekte ${groups.length} grup ve ${people.length} kişi var.\nMevcut rehber bununla değiştirilsin mi?`)) return;
+        data = { groups, people };
+        save();
+        view = "home";
+        activeGroupId = null;
+        editing = false;
+        updateView();
+        alert("Rehber yedekten güncellendi.");
+      } catch (err) {
+        alert("Bu dosya geçerli bir rehber yedeği değil.");
+      } finally {
+        $("restoreInput").value = "";
+      }
+    };
+    reader.readAsText(file);
   };
 
   // Olay Dinleyicileri (Event Listeners)
