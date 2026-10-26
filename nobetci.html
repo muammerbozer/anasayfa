@@ -1390,9 +1390,11 @@
     const v = document.getElementById('note-alarm').value;
     if ((n.alarm || '') !== v) n.alarmAck = false;
     if (v) n.alarm = v; else { delete n.alarm; delete n.alarmAck; }
+    if (n.alarmAck === false) beepedNotes.delete(n); // yeniden kurulan alarm tekrar öter
   }
 
-  let audioCtx = null, alarmBeepTimer = null, lastAlarmSig = '';
+  let audioCtx = null, alarmBeepTimer = null, lastAlarmSig = '', beepRounds = 0;
+  const beepedNotes = new WeakSet(); // sesi çalınmış alarmlar (yanıp sönme ayrı, TAMAM'a kadar sürer)
   function unlockAudio() {
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1402,7 +1404,7 @@
   ['click', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, unlockAudio, {passive: true}));
 
   function beepBeep() {
-    if (!audioCtx || audioCtx.state !== 'running') return;
+    if (!audioCtx || audioCtx.state !== 'running') return false;
     const t = audioCtx.currentTime;
     [0, 0.25].forEach(off => {
       const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -1414,6 +1416,13 @@
       o.connect(g); g.connect(audioCtx.destination);
       o.start(t + off); o.stop(t + off + 0.18);
     });
+    return true;
+  }
+
+  // "Bip bip" yalnızca 3 kez çalar; ses henüz açılmadıysa çalınana kadar sayılmaz
+  function beepStep() {
+    if (beepRounds <= 0) { clearInterval(alarmBeepTimer); alarmBeepTimer = null; return; }
+    if (beepBeep()) beepRounds--;
   }
 
   function syncAlarmUI() {
@@ -1438,10 +1447,15 @@
       item.appendChild(txt); item.appendChild(btn);
       box.appendChild(item);
     });
-    if (active.length) {
-      if (!alarmBeepTimer) { beepBeep(); alarmBeepTimer = setInterval(beepBeep, 1500); }
-    } else if (alarmBeepTimer) {
-      clearInterval(alarmBeepTimer); alarmBeepTimer = null;
+    const fresh = active.filter(i => !beepedNotes.has(notesList[i]));
+    if (fresh.length) {
+      fresh.forEach(i => beepedNotes.add(notesList[i]));
+      beepRounds = 3;
+      if (!alarmBeepTimer) { beepStep(); alarmBeepTimer = setInterval(beepStep, 1500); }
+    }
+    if (!active.length) {
+      beepRounds = 0;
+      if (alarmBeepTimer) { clearInterval(alarmBeepTimer); alarmBeepTimer = null; }
     }
   }
 
