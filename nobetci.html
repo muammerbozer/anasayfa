@@ -293,6 +293,47 @@
       opacity: 0.85;
     }
 
+    /* NOT ALARMI: yanıp sönen kırmızı */
+    @keyframes alarmBlink {
+      0%, 49% { background-color: #dc2626; color: #fff; }
+      50%, 100% { background-color: #fff; color: #dc2626; }
+    }
+    .note-cell.note-alarm-active {
+      animation: alarmBlink 0.8s steps(1) infinite;
+      font-weight: 800;
+    }
+    #alarm-box {
+      position: fixed;
+      top: 10px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: min(92vw, 420px);
+    }
+    .alarm-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 2px solid #991b1b;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      animation: alarmBlink 0.8s steps(1) infinite;
+      font-weight: 700;
+    }
+    .alarm-item .alarm-text { flex: 1; min-width: 0; word-break: break-word; font-size: 0.95rem; }
+    .alarm-item .alarm-text small { display: block; font-weight: 600; opacity: 0.9; }
+    .alarm-item button {
+      background: #fff; color: #991b1b;
+      border: 2px solid #991b1b; border-radius: 6px;
+      padding: 6px 14px; font-weight: 800; cursor: pointer;
+    }
+    #arsiv-table { table-layout: fixed; width: 100%; margin-bottom: 10px; }
+    #arsiv-table .note-cell { max-width: none; }
+    #archive-modal .arsiv-scroll { max-height: 60vh; overflow-y: auto; margin-bottom: 10px; }
+
     /* MODAL STİLLERİ */
     .modal-overlay {
       display: none;
@@ -852,14 +893,6 @@
         </tbody>
       </table>
 
-      <!-- ARŞİV (varsayılan gizli, ARŞİV butonuyla açılır) -->
-      <div id="archive-section" style="display:none;">
-        <div class="section-title" style="padding:4px 8px; background:#6b7280;">ARŞİVLENEN NOTLAR</div>
-        <table>
-          <tbody id="arsiv-body"></tbody>
-        </table>
-      </div>
-
     </div>
   </div>
 
@@ -895,11 +928,34 @@
   </div>
 </div>
 
+<!-- ARŞİVLENEN NOTLAR LİSTESİ (ARŞİV butonuyla açılır) -->
+<div class="modal-overlay" id="archive-modal">
+  <div class="modal-content">
+    <h3>Arşivlenen Notlar</h3>
+    <div class="arsiv-scroll">
+      <table id="arsiv-table">
+        <tbody id="arsiv-body"></tbody>
+      </table>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn btn-primary" onclick="closeArchiveModal()" style="background:#6b7280;">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOT ALARMLARI (TAMAM'a basılana kadar yanıp söner) -->
+<div id="alarm-box"></div>
+
 <!-- NOT GİRİŞ / DÜZENLEME MODAL KUTUSU -->
 <div class="modal-overlay" id="note-modal">
   <div class="modal-content">
     <h3 id="modal-title">Not Gir/Düzenle</h3>
     <textarea id="note-text" placeholder="Notunuzu buraya yazınız..."></textarea>
+    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:0 0 10px;">
+      <label for="note-alarm" style="font-weight:700; font-size:0.85rem;">⏰ Alarm:</label>
+      <input type="datetime-local" id="note-alarm" style="padding:4px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem;">
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('note-alarm').value=''" style="background:#6b7280; padding:3px 8px;">Alarmı Kaldır</button>
+    </div>
     <div class="modal-buttons">
       <!-- DÜĞMELERİN BAŞ TARAFINDA TİK VE X İŞARETLERİ -->
       <button class="btn btn-icon-check" onclick="markNoteStatus('done')" title="Tamamlandı (Mavi)">✔</button>
@@ -1294,11 +1350,14 @@
       let td = document.createElement('td');
       
       let statusClass = '';
-      if (noteObj.status === 'done') statusClass = 'status-done';
+      if (isAlarmActive(noteObj)) statusClass = 'note-alarm-active';
+      else if (noteObj.status === 'done') statusClass = 'status-done';
       else if (noteObj.status === 'incomplete') statusClass = 'status-incomplete';
 
       td.className = `note-cell ${statusClass}`;
-      td.innerText = noteObj.text ? noteObj.text.split('\n')[0] : "";
+      const hasAlarm = noteObj.alarm && !noteObj.alarmAck;
+      td.innerText = (hasAlarm ? '⏰ ' : '') + (noteObj.text ? noteObj.text.split('\n')[0] : "");
+      if (hasAlarm) td.title = 'Alarm: ' + alarmLabel(noteObj.alarm);
       td.onclick = () => openNoteModal(index);
       tr.appendChild(td);
       if (noteObj.archived) { arsivBody.appendChild(tr); arsivSayisi++; }
@@ -1308,31 +1367,122 @@
       arsivBody.innerHTML = '<tr><td class="note-cell" style="cursor:default; color:#888;">Arşivde not yok</td></tr>';
     }
     document.getElementById('btn-archive-toggle').innerText = arsivSayisi ? 'ARŞİV (' + arsivSayisi + ')' : 'ARŞİV';
+    syncAlarmUI();
   }
 
+  /* ARŞİV LİSTESİ (pencere olarak açılır) */
+  let returnToArchive = false;
   function toggleArchive() {
-    const sec = document.getElementById('archive-section');
-    sec.style.display = (sec.style.display === 'none') ? 'block' : 'none';
+    document.getElementById('archive-modal').style.display = 'flex';
   }
+  function closeArchiveModal() {
+    document.getElementById('archive-modal').style.display = 'none';
+  }
+
+  /* NOT ALARMLARI */
+  const alarmLabel = v => { const d = new Date(v); return isNaN(d) ? v : d.toLocaleString('tr-TR', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}); };
+  function isAlarmActive(n) {
+    if (!n || !n.alarm || n.alarmAck) return false;
+    const t = new Date(n.alarm).getTime();
+    return !isNaN(t) && t <= Date.now();
+  }
+  function applyAlarm(n) {
+    const v = document.getElementById('note-alarm').value;
+    if ((n.alarm || '') !== v) n.alarmAck = false;
+    if (v) n.alarm = v; else { delete n.alarm; delete n.alarmAck; }
+  }
+
+  let audioCtx = null, alarmBeepTimer = null, lastAlarmSig = '';
+  function unlockAudio() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {}
+  }
+  ['click', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, unlockAudio, {passive: true}));
+
+  function beepBeep() {
+    if (!audioCtx || audioCtx.state !== 'running') return;
+    const t = audioCtx.currentTime;
+    [0, 0.25].forEach(off => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'square';
+      o.frequency.value = 1000;
+      g.gain.setValueAtTime(0.0001, t + off);
+      g.gain.exponentialRampToValueAtTime(0.25, t + off + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + off + 0.16);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(t + off); o.stop(t + off + 0.18);
+    });
+  }
+
+  function syncAlarmUI() {
+    const box = document.getElementById('alarm-box');
+    const active = [];
+    notesList.forEach((n, i) => { if (isAlarmActive(n)) active.push(i); });
+    lastAlarmSig = active.join(',');
+    box.innerHTML = '';
+    active.forEach(i => {
+      const n = notesList[i];
+      const item = document.createElement('div');
+      item.className = 'alarm-item';
+      const txt = document.createElement('div');
+      txt.className = 'alarm-text';
+      txt.innerText = '⏰ ' + ((n.text || '').split('\n')[0] || '(Boş not)');
+      const small = document.createElement('small');
+      small.innerText = 'Alarm: ' + alarmLabel(n.alarm);
+      txt.appendChild(small);
+      const btn = document.createElement('button');
+      btn.innerText = 'TAMAM';
+      btn.onclick = () => ackAlarm(i);
+      item.appendChild(txt); item.appendChild(btn);
+      box.appendChild(item);
+    });
+    if (active.length) {
+      if (!alarmBeepTimer) { beepBeep(); alarmBeepTimer = setInterval(beepBeep, 1500); }
+    } else if (alarmBeepTimer) {
+      clearInterval(alarmBeepTimer); alarmBeepTimer = null;
+    }
+  }
+
+  function ackAlarm(i) {
+    if (notesList[i]) {
+      notesList[i].alarmAck = true;
+      store.set('nobet1_notes_v2', notesList);
+    }
+    renderNotes();
+  }
+
+  // Alarm vakti gelince (veya geçmişse) notları yeniden çizip uyarıyı başlatır
+  setInterval(() => {
+    const sig = notesList.map((n, i) => isAlarmActive(n) ? i : '').filter(x => x !== '').join(',');
+    if (sig !== lastAlarmSig) renderNotes();
+  }, 1000);
 
   /* NOTU ARŞİVE GÖNDER / ARŞİVDEN ÇIKART */
   function archiveNote(flag) {
     const text = document.getElementById('note-text').value;
     if (currentNoteIndex === null) {
       if (text.trim() === '') { closeNoteModal(); return; }
-      notesList.push({ text: text, status: "normal", archived: flag });
+      const nn = { text: text, status: "normal", archived: flag };
+      notesList.push(nn);
+      applyAlarm(nn);
     } else {
       notesList[currentNoteIndex].text = text;
       notesList[currentNoteIndex].archived = flag;
+      applyAlarm(notesList[currentNoteIndex]);
     }
     store.set('nobet1_notes_v2', notesList);
     renderNotes();
     closeNoteModal();
-    if (flag) document.getElementById('archive-section').style.display = 'block';
   }
 
   function openNoteModal(index) {
     currentNoteIndex = index;
+    // Arşiv listesinden açıldıysa, not kapanınca liste tekrar görünsün
+    const archModal = document.getElementById('archive-modal');
+    returnToArchive = archModal.style.display === 'flex';
+    archModal.style.display = 'none';
     const modal = document.getElementById('note-modal');
     const textarea = document.getElementById('note-text');
     
@@ -1346,6 +1496,7 @@
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Not Düzenle / İncele";
     }
+    document.getElementById('note-alarm').value = (index !== null && notesList[index] && notesList[index].alarm) || '';
     const isArch = index !== null && notesList[index] && notesList[index].archived;
     document.getElementById('btn-archive').style.display = isArch ? 'none' : '';
     document.getElementById('btn-unarchive').style.display = isArch ? '' : 'none';
@@ -1354,16 +1505,23 @@
 
   function closeNoteModal() {
     document.getElementById('note-modal').style.display = 'none';
+    if (returnToArchive) {
+      returnToArchive = false;
+      document.getElementById('archive-modal').style.display = 'flex';
+    }
   }
 
   /* TİK / X İŞARETLERİ İLE RENK DEĞİŞİMİ */
   function markNoteStatus(status) {
     const text = document.getElementById('note-text').value;
     if (currentNoteIndex === null) {
-      notesList.push({ text: text, status: status });
+      const nn = { text: text, status: status };
+      notesList.push(nn);
+      applyAlarm(nn);
     } else {
       notesList[currentNoteIndex].text = text;
       notesList[currentNoteIndex].status = status;
+      applyAlarm(notesList[currentNoteIndex]);
     }
     store.set('nobet1_notes_v2', notesList);
     renderNotes();
@@ -1382,9 +1540,12 @@
   function saveNote() {
     const text = document.getElementById('note-text').value;
     if (currentNoteIndex === null) {
-      notesList.push({ text: text, status: "normal" });
+      const nn = { text: text, status: "normal" };
+      notesList.push(nn);
+      applyAlarm(nn);
     } else {
       notesList[currentNoteIndex].text = text;
+      applyAlarm(notesList[currentNoteIndex]);
     }
     store.set('nobet1_notes_v2', notesList);
     renderNotes();
