@@ -841,13 +841,24 @@
       <!-- NOTLAR BÖLÜMÜ -->
       <div class="section-title" style="display:flex; justify-content:space-between; align-items:center; padding: 4px 8px;">
         <span>NOTLAR</span>
-        <button class="btn btn-warning" onclick="openNoteModal(null)" style="padding:2px 8px; font-size:0.75rem;">YENİ</button>
+        <span style="display:flex; gap:4px;">
+          <button class="btn btn-warning" onclick="openNoteModal(null)" style="padding:2px 8px; font-size:0.75rem;">YENİ</button>
+          <button class="btn btn-primary" id="btn-archive-toggle" onclick="toggleArchive()" style="padding:2px 8px; font-size:0.75rem; background:#6b7280;">ARŞİV</button>
+        </span>
       </div>
       <table>
         <tbody id="notlar-body">
           <!-- Dinamik Notlar -->
         </tbody>
       </table>
+
+      <!-- ARŞİV (varsayılan gizli, ARŞİV butonuyla açılır) -->
+      <div id="archive-section" style="display:none;">
+        <div class="section-title" style="padding:4px 8px; background:#6b7280;">ARŞİVLENEN NOTLAR</div>
+        <table>
+          <tbody id="arsiv-body"></tbody>
+        </table>
+      </div>
 
     </div>
   </div>
@@ -864,10 +875,10 @@
 
       <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SOLA YASLI BUTONLAR -->
       <div class="controls-right-group">
-        <button class="btn btn-warning" onclick="downloadBackup()" title="Yedeği yedek.json olarak indirilenlere kaydet">YEDEKLE</button>
+        <button class="btn btn-warning" onclick="githubBackup()" title="Yedeği GitHub'a (muammerbozer/anasayfa) yedek.json olarak yükle">YEDEKLE</button>
 
-        <button class="btn btn-primary" onclick="document.getElementById('backup-file').click()" title="İndirilenlerdeki yedek.json dosyasını seçip yükle">YEDEK YÜKLE</button>
-        <input type="file" id="backup-file" accept=".json,application/json" style="display:none" onchange="handleBackupUpload(event)">
+        <button class="btn btn-primary" onclick="githubRestore()" title="Bilgisayarınızdan bir yedek (.json) dosyası seçip yükle">YEDEK YÜKLE</button>
+        <input type="file" id="restore-file" accept=".json,application/json" style="display:none;" onchange="handleRestoreFile(event)">
 
         <select id="gun-select" onchange="updateData(true)" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
           <option value="">Bugün</option>
@@ -895,6 +906,8 @@
       <button class="btn btn-icon-cancel" onclick="markNoteStatus('incomplete')" title="Tamamlanmadı (Kırmızı)">✖</button>
       
       <button class="btn btn-success" onclick="saveNote()">Kaydet</button>
+      <button class="btn btn-primary" id="btn-archive" onclick="archiveNote(true)" style="background:#6b7280;">Arşive Gönder</button>
+      <button class="btn btn-primary" id="btn-unarchive" onclick="archiveNote(false)" style="background:#6b7280; display:none;">Arşivden Çıkart</button>
       <button class="btn btn-warning" id="btn-edit" onclick="enableEditNote()">Düzenle</button>
       <button class="btn btn-danger" id="btn-delete" onclick="deleteNote()">Sil</button>
       <button class="btn btn-primary" onclick="cancelCloseModal()" style="background:#6b7280;">Kapat</button>
@@ -1272,7 +1285,10 @@
   /* NOTLARI LİSTELEME VE DURUM RENKLENDİRMESİ */
   function renderNotes() {
     const tbody = document.getElementById('notlar-body');
+    const arsivBody = document.getElementById('arsiv-body');
     tbody.innerHTML = '';
+    arsivBody.innerHTML = '';
+    let arsivSayisi = 0;
     notesList.forEach((noteObj, index) => {
       let tr = document.createElement('tr');
       let td = document.createElement('td');
@@ -1285,8 +1301,34 @@
       td.innerText = noteObj.text ? noteObj.text.split('\n')[0] : "";
       td.onclick = () => openNoteModal(index);
       tr.appendChild(td);
-      tbody.appendChild(tr);
+      if (noteObj.archived) { arsivBody.appendChild(tr); arsivSayisi++; }
+      else tbody.appendChild(tr);
     });
+    if (arsivSayisi === 0) {
+      arsivBody.innerHTML = '<tr><td class="note-cell" style="cursor:default; color:#888;">Arşivde not yok</td></tr>';
+    }
+    document.getElementById('btn-archive-toggle').innerText = arsivSayisi ? 'ARŞİV (' + arsivSayisi + ')' : 'ARŞİV';
+  }
+
+  function toggleArchive() {
+    const sec = document.getElementById('archive-section');
+    sec.style.display = (sec.style.display === 'none') ? 'block' : 'none';
+  }
+
+  /* NOTU ARŞİVE GÖNDER / ARŞİVDEN ÇIKART */
+  function archiveNote(flag) {
+    const text = document.getElementById('note-text').value;
+    if (currentNoteIndex === null) {
+      if (text.trim() === '') { closeNoteModal(); return; }
+      notesList.push({ text: text, status: "normal", archived: flag });
+    } else {
+      notesList[currentNoteIndex].text = text;
+      notesList[currentNoteIndex].archived = flag;
+    }
+    store.set('nobet1_notes_v2', notesList);
+    renderNotes();
+    closeNoteModal();
+    if (flag) document.getElementById('archive-section').style.display = 'block';
   }
 
   function openNoteModal(index) {
@@ -1304,6 +1346,9 @@
       textarea.disabled = false;
       document.getElementById('modal-title').innerText = "Not Düzenle / İncele";
     }
+    const isArch = index !== null && notesList[index] && notesList[index].archived;
+    document.getElementById('btn-archive').style.display = isArch ? 'none' : '';
+    document.getElementById('btn-unarchive').style.display = isArch ? '' : 'none';
     modal.style.display = 'flex';
   }
 
@@ -1360,7 +1405,7 @@
     }
   }
 
-  /* YEDEKLEME: yedek.json olarak indirilir; YEDEK YÜKLE muammerbozer/anasayfa deposundaki yedek.json dosyasını okur */
+  /* GITHUB YEDEKLEME: muammerbozer/anasayfa deposunda sabit "yedek.json" dosyası */
   const GH_OWNER = 'muammerbozer', GH_REPO = 'anasayfa', GH_FILE = 'yedek.json';
   const GH_URL = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
   let ghBusy = false;
@@ -1393,8 +1438,13 @@
     return btoa(bin);
   };
 
-  function downloadBackup() {
+  async function githubBackup() {
+    if (ghBusy) return;
+    const token = ghToken(true);
+    if (!token) return;
+    ghBusy = true;
     try {
+      const now = new Date();
       const backupData = {
         excel_data: store.get('nobet1_d', null),
         manual_inputs: store.get('nobet1_m', {}),
@@ -1402,19 +1452,27 @@
         notes: store.get('nobet1_notes_v2', []),
         calendar_notes: store.get('nobet1_cal_v1', {}),
         students: store.get('nobet1_ogr', []),
-        export_date: new Date().toISOString()
+        export_date: now.toISOString()
       };
-      const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = GH_FILE;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      // Dosya zaten varsa üzerine yazmak için mevcut sürümün sha değeri gerekir
+      let sha;
+      const g = await fetch(GH_URL + '?t=' + Date.now(), {headers: ghHeaders(token), cache: 'no-store'});
+      if (g.ok) sha = (await g.json()).sha;
+      else if (g.status !== 404) throw new Error(ghErrorText(g.status));
+
+      const body = {message: 'Yedek ' + now.toLocaleString('tr-TR'), content: utf8ToB64(JSON.stringify(backupData, null, 2))};
+      if (sha) body.sha = sha;
+      const r = await fetch(GH_URL, {
+        method: 'PUT',
+        headers: Object.assign(ghHeaders(token), {'Content-Type': 'application/json'}),
+        body: JSON.stringify(body)
+      });
+      if (!r.ok) throw new Error(ghErrorText(r.status));
+      alert('Yedek GitHub\'a yüklendi: ' + GH_OWNER + '/' + GH_REPO + '/' + GH_FILE + (sha ? '\n(Önceki yedeğin üzerine yazıldı.)' : ''));
     } catch (err) {
       alert('Yedekleme başarısız: ' + (err.message || err));
+    } finally {
+      ghBusy = false;
     }
   }
 
@@ -1429,65 +1487,30 @@
     renderNotes();
   }
 
-  function handleBackupUpload(e) {
-    const file = e.target.files && e.target.files[0];
+  /* YEDEK YÜKLE: GitHub yerine bilgisayardan seçilen yedek dosyasını (.json) yükler */
+  function githubRestore() {
+    document.getElementById('restore-file').click();
+  }
+
+  function handleRestoreFile(e) {
+    const file = e.target.files[0];
+    e.target.value = ''; // aynı dosya tekrar seçilebilsin
     if (!file) return;
-    if (!file.name.toLocaleLowerCase('tr-TR').endsWith('.json')) {
-      alert('Lütfen yedek.json dosyasını seçin.');
-      e.target.value = '';
-      return;
-    }
-    if (!confirm('Seçilen ' + file.name + ' yedeği yüklenecek ve bu cihazdaki mevcut verilerin üzerine yazılabilecek. Devam edilsin mi?')) {
-      e.target.value = '';
-      return;
-    }
+    if (!confirm('"' + file.name + '" dosyası yüklenecek ve bu cihazdaki mevcut veriler değişecek. Devam edilsin mi?')) return;
     const reader = new FileReader();
     reader.onload = function(evt) {
       try {
-        const data = JSON.parse(evt.target.result);
-        if (!data || typeof data !== 'object' || Array.isArray(data)) {
-          throw new Error('Geçerli yedek formatı değil.');
-        }
+        let data;
+        try { data = JSON.parse(evt.target.result); } catch (err) { throw new Error('Seçilen dosya geçerli bir yedek dosyası değil.'); }
+        if (!data || typeof data !== 'object') throw new Error('Seçilen dosya geçerli bir yedek dosyası değil.');
         applyBackup(data);
-        alert('Yedek başarıyla yüklendi ve veriler güncellendi.' +
-          (data.export_date ? '\\nYedek tarihi: ' + new Date(data.export_date).toLocaleString('tr-TR') : ''));
+        alert('Yedek yüklendi ve tüm veriler güncellendi.' + (data.export_date ? '\nYedek tarihi: ' + new Date(data.export_date).toLocaleString('tr-TR') : ''));
       } catch (err) {
         alert('Yedek yüklenemedi: ' + (err.message || err));
-      } finally {
-        e.target.value = '';
       }
     };
-    reader.onerror = function() {
-      alert('Dosya okunamadı. Lütfen yedek.json dosyasını tekrar seçin.');
-      e.target.value = '';
-    };
-    reader.readAsText(file, 'UTF-8');
-  }
-
-  async function githubRestore() {
-    if (ghBusy) return;
-    if (!confirm('GitHub\'daki ' + GH_FILE + ' dosyası yüklenecek ve bu cihazdaki mevcut veriler değişecek. Devam edilsin mi?')) return;
-    ghBusy = true;
-    try {
-      const raw = 'application/vnd.github.raw+json';
-      const url = GH_URL + '?t=' + Date.now();
-      let token = ghToken(false);
-      let r = await fetch(url, {headers: ghHeaders(token, raw), cache: 'no-store'});
-      // Depo özelse (veya anahtar yoksa) anahtar iste ve bir kez daha dene
-      if (!r.ok && !token && (r.status === 404 || r.status === 401 || r.status === 403)) {
-        token = ghToken(true);
-        if (token) r = await fetch(url, {headers: ghHeaders(token, raw), cache: 'no-store'});
-      }
-      if (!r.ok) throw new Error(ghErrorText(r.status));
-      let data;
-      try { data = JSON.parse(await r.text()); } catch (e) { throw new Error(GH_FILE + ' geçerli bir yedek dosyası değil.'); }
-      applyBackup(data);
-      alert('GitHub\'daki yedek yüklendi ve tüm veriler güncellendi.' + (data.export_date ? '\nYedek tarihi: ' + new Date(data.export_date).toLocaleString('tr-TR') : ''));
-    } catch (err) {
-      alert('Yedek yüklenemedi: ' + (err.message || err));
-    } finally {
-      ghBusy = false;
-    }
+    reader.onerror = () => alert('Dosya okunamadı.');
+    reader.readAsText(file, 'utf-8');
   }
 
   function handleFileUpload(e) {
