@@ -154,6 +154,19 @@
       }
     }
 
+    /* NÖBET GÜN NAVİGASYONU */
+    .nobet-nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;
+      background: var(--primary-navy); color: #fff; padding: 4px 8px;
+      border: 1px solid var(--primary-navy); border-bottom: 3px solid var(--gold-accent);
+    }
+    .nobet-nav .nobet-title { font-weight: 800; letter-spacing: .5px; text-transform: uppercase; font-size: clamp(0.75rem, 1.2vw, 1rem); text-align: center; flex: 1; min-width: 150px; }
+    .nobet-nav .nobet-arrow { background: none; border: none; color: var(--gold-accent); font-size: 1.6rem; font-weight: 800; cursor: pointer; padding: 0 10px; line-height: 1; }
+    .nobet-nav .nobet-arrow:hover:not(:disabled) { color: #fff; }
+    .nobet-nav .nobet-arrow:disabled { opacity: .3; cursor: default; }
+    .nobet-nav .nobet-tools { display: flex; gap: 4px; }
+    .nobet-nav .btn { padding: 3px 8px; font-size: 0.72rem; }
+
     /* TABLO STİLLERİ */
     .section-title {
       background-color: var(--primary-navy);
@@ -755,7 +768,16 @@
     <div class="left-column">
       
       <!-- 1. NÖBETÇİ ÖĞRETMENLER (YERLEŞİM) -->
-      <div class="section-title">NÖBETÇİ ÖĞRETMENLER</div>
+      <div class="nobet-nav">
+        <button type="button" class="nobet-arrow" id="nobet-prev" onclick="nobetChange(-1)" aria-label="Önceki gün">&lt;</button>
+        <div class="nobet-title" id="nobet-title">NÖBETÇİ ÖĞRETMENLER</div>
+        <button type="button" class="nobet-arrow" id="nobet-next" onclick="nobetChange(1)" aria-label="Sonraki gün">&gt;</button>
+        <span class="nobet-tools">
+          <button type="button" class="btn btn-warning" onclick="nobetToday()" title="Bugüne dön">BUGÜN</button>
+          <button type="button" class="btn btn-danger" onclick="nobetReportPDF()" title="1 Eylül 2026'dan itibaren nöbet kayıtları (PDF)">PDF</button>
+          <button type="button" class="btn btn-success" onclick="nobetReportExcel()" title="1 Eylül 2026'dan itibaren nöbet kayıtları (Excel)">EXCEL</button>
+        </span>
+      </div>
       <table>
         <thead>
           <tr>
@@ -955,12 +977,12 @@
 
       <!-- MASAÜSTÜNDE DEVAM EDEN, MOBİLDE 2. SATIRA GEÇEN SOLA YASLI BUTONLAR -->
       <div class="controls-right-group">
-        <button class="btn btn-warning" onclick="githubBackup()" title="Yedeği GitHub'a (muammerbozer/anasayfa) yedek.json olarak yükle">YEDEKLE</button>
+        <button class="btn btn-warning" onclick="githubBackup()" title="Tüm verileri yedek dosyası (.json) olarak indir">YEDEKLE</button>
 
-        <button class="btn btn-primary" onclick="githubRestore()" title="Bilgisayarınızdan bir yedek (.json) dosyası seçip yükle">YEDEK YÜKLE</button>
+        <button class="btn btn-primary" onclick="githubRestore()" title="İndirilen yedek (.json) dosyasını seçip yükle">YEDEK YÜKLE</button>
         <input type="file" id="restore-file" accept=".json,application/json" style="display:none;" onchange="handleRestoreFile(event)">
 
-        <select id="gun-select" onchange="updateData(true)" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
+        <select id="gun-select" onchange="onGunChange()" style="padding:5px;border-radius:4px;border:1px solid var(--primary-navy)">
           <option value="">Bugün</option>
           <option value="0">Pazartesi</option>
           <option value="1">Salı</option>
@@ -1176,6 +1198,26 @@
   };
   let manual = store.get('nobet1_m', {});
   let bosNames = store.get('nobet1_b', Array(6).fill(""));
+  let rosterSaved = store.get('nobet1_r', {}); // { "2026-10-27": [6 isim] } elle yapılan nöbet değişiklikleri
+  const NOBET_MIN = '2026-09-01';
+  let nobetDate = null;
+  const parseIso = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+  const nobetDayIdx = () => { const w = parseIso(nobetDate).getDay(); return (w === 0 || w === 6) ? 0 : w - 1; };
+  function onGunChange() { nobetDate = null; updateData(true); }
+  function nobetToday() {
+    const t = new Date(); t.setHours(12);
+    while (t.getDay() === 0 || t.getDay() === 6) t.setDate(t.getDate() + 1);
+    let k = isoOf(t); if (k < NOBET_MIN) k = NOBET_MIN;
+    nobetDate = k; $('gun-select').value = ''; updateData(true);
+  }
+  function nobetChange(delta) {
+    const d = parseIso(nobetDate);
+    do { d.setDate(d.getDate() + delta); } while (d.getDay() === 0 || d.getDay() === 6);
+    const k = isoOf(d);
+    if (k < NOBET_MIN) return;
+    nobetDate = k;
+    renderRoster(); renderNobetci();
+  }
 
   function lev(a, b) {
     const d = [...Array(b.length + 1).keys()];
@@ -1242,7 +1284,11 @@
     }
     initBosDerslerTable();
     renderNotes();
-    ROSTER_IDS.forEach(id => $(id).addEventListener('input', renderNobetci));
+    ROSTER_IDS.forEach(id => $(id).addEventListener('input', () => {
+      rosterSaved[nobetDate] = ROSTER_IDS.map(i => $(i).value);
+      store.set('nobet1_r', rosterSaved);
+      renderNobetci();
+    }));
     
     // Elle giriş takibi ve SARI arka plan güncellemesi
     document.addEventListener('input', e => {
@@ -1328,12 +1374,16 @@
   }
 
   function renderRoster() {
-    const r = excelData.nobet[curDate()];
-    if (r) ROSTER_IDS.forEach((id, i) => { $(id).value = r[i] || ''; });
+    if (!nobetDate) { nobetDate = curDate(); if (nobetDate < NOBET_MIN) nobetDate = NOBET_MIN; }
+    const r = rosterSaved[nobetDate] || excelData.nobet[nobetDate] || [];
+    ROSTER_IDS.forEach((id, i) => { $(id).value = r[i] || ''; });
+    $('nobet-title').innerText = 'NÖBETÇİ ÖĞRETMENLER — ' + parseIso(nobetDate).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric', weekday: 'long'});
+    $('nobet-prev').disabled = nobetDate <= NOBET_MIN;
   }
 
   function renderNobetci() {
-    const di = dayIdx(), dt = curDate();
+    if (!nobetDate) renderRoster();
+    const di = nobetDayIdx(), dt = nobetDate;
     let h = '';
     ROSTER_IDS.forEach((id, i) => {
       const name = $(id).value.trim(), t = findTeacher(name);
@@ -1669,47 +1719,38 @@
     return btoa(bin);
   };
 
-  async function githubBackup() {
-    if (ghBusy) return;
-    const token = ghToken(true);
-    if (!token) return;
-    ghBusy = true;
+  /* YEDEKLE: tüm verileri .json dosyası olarak indirilenler klasörüne indirir */
+  function githubBackup() {
     try {
       const now = new Date();
       const backupData = {
         excel_data: store.get('nobet1_d', null),
         manual_inputs: store.get('nobet1_m', {}),
+        roster_overrides: store.get('nobet1_r', {}),
         bos_dersler: store.get('nobet1_b', Array(6).fill("")),
         notes: store.get('nobet1_notes_v2', []),
         calendar_notes: store.get('nobet1_cal_v1', {}),
         students: store.get('nobet1_ogr', []),
         export_date: now.toISOString()
       };
-      // Dosya zaten varsa üzerine yazmak için mevcut sürümün sha değeri gerekir
-      let sha;
-      const g = await fetch(GH_URL + '?t=' + Date.now(), {headers: ghHeaders(token), cache: 'no-store'});
-      if (g.ok) sha = (await g.json()).sha;
-      else if (g.status !== 404) throw new Error(ghErrorText(g.status));
-
-      const body = {message: 'Yedek ' + now.toLocaleString('tr-TR'), content: utf8ToB64(JSON.stringify(backupData, null, 2))};
-      if (sha) body.sha = sha;
-      const r = await fetch(GH_URL, {
-        method: 'PUT',
-        headers: Object.assign(ghHeaders(token), {'Content-Type': 'application/json'}),
-        body: JSON.stringify(body)
-      });
-      if (!r.ok) throw new Error(ghErrorText(r.status));
-      alert('Yedek GitHub\'a yüklendi: ' + GH_OWNER + '/' + GH_REPO + '/' + GH_FILE + (sha ? '\n(Önceki yedeğin üzerine yazıldı.)' : ''));
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'yedek_' + isoOf(now) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (err) {
       alert('Yedekleme başarısız: ' + (err.message || err));
-    } finally {
-      ghBusy = false;
     }
   }
 
   function applyBackup(data) {
     if (data.excel_data) store.set('nobet1_d', data.excel_data);
     if (data.manual_inputs) { manual = data.manual_inputs; store.set('nobet1_m', manual); }
+    if (data.roster_overrides) { rosterSaved = data.roster_overrides; store.set('nobet1_r', rosterSaved); }
     if (data.bos_dersler) { bosNames = data.bos_dersler; store.set('nobet1_b', bosNames); }
     if (data.notes) { notesList = data.notes; store.set('nobet1_notes_v2', notesList); }
     if (data.students) { ogrenciList = data.students; store.set('nobet1_ogr', ogrenciList); populateOgrenciSelect(); }
@@ -1925,6 +1966,60 @@
         <td class="current-lesson-text">${esc(fullLine(lessonInfo))}</td>
       </tr>`;
     }).join('');
+  }
+
+  /* NÖBET KAYIT RAPORU (1 Eylül 2026'dan bugüne) */
+  const NOBET_HEADS = ['BAHÇE-1', 'BAHÇE-2', 'KANTİN', 'ZEMİN', '1. KAT', '2. KAT'];
+  function nobetReportRows() {
+    const rows = [];
+    const end = new Date(); end.setHours(12);
+    for (let d = parseIso(NOBET_MIN); d <= end; d.setDate(d.getDate() + 1)) {
+      if (d.getDay() === 0 || d.getDay() === 6) continue;
+      const k = isoOf(d);
+      const r = rosterSaved[k] || excelData.nobet[k] || [];
+      const notes = [];
+      for (let i = 0; i < 6; i++) {
+        const parts = [];
+        for (let p = 0; p < 8; p++) {
+          const v = (manual[k + '|' + i + '|' + p] || '').trim();
+          if (v) parts.push((p + 1) + '.D: ' + v);
+        }
+        if (parts.length) notes.push((r[i] || NOBET_HEADS[i]) + ' → ' + parts.join(', '));
+      }
+      if (!r.some(x => x) && !notes.length) continue;
+      rows.push([d.toLocaleDateString('tr-TR'), d.toLocaleDateString('tr-TR', {weekday: 'long'})]
+        .concat([0,1,2,3,4,5].map(i => r[i] || ''), [notes.join(' | ')]));
+    }
+    return rows;
+  }
+
+  function nobetReportExcel() {
+    if (typeof XLSX === 'undefined') { alert('Excel kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edin.'); return; }
+    const rows = nobetReportRows();
+    if (!rows.length) { alert('1 Eylül 2026 sonrası için kayıt bulunamadı.'); return; }
+    const ws = XLSX.utils.aoa_to_sheet([['TARİH', 'GÜN'].concat(NOBET_HEADS, ['NÖBETÇİ DERS KAYITLARI'])].concat(rows));
+    ws['!cols'] = [{wch: 12}, {wch: 12}, ...NOBET_HEADS.map(() => ({wch: 24})), {wch: 70}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Nöbet Kayıtları');
+    XLSX.writeFile(wb, 'nobet_kayitlari_' + isoOf(new Date()) + '.xlsx');
+  }
+
+  function nobetReportPDF() {
+    const rows = nobetReportRows();
+    if (!rows.length) { alert('1 Eylül 2026 sonrası için kayıt bulunamadı.'); return; }
+    const w = window.open('', '_blank');
+    if (!w) { alert('Açılır pencere engellendi. Lütfen bu site için izin verin.'); return; }
+    const head = ['TARİH', 'GÜN'].concat(NOBET_HEADS, ['NÖBETÇİ DERS KAYITLARI']).map(x => '<th>' + esc(x) + '</th>').join('');
+    const body = rows.map(r => '<tr>' + r.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>').join('');
+    w.document.write('<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Nöbet Kayıtları</title><style>' +
+      '@page{size:A4 landscape;margin:10mm}body{font-family:Segoe UI,Arial,sans-serif;color:#000}' +
+      'h2{text-align:center;margin:0 0 4px;font-size:15px}p{text-align:center;margin:0 0 8px;font-size:11px}' +
+      'table{width:100%;border-collapse:collapse;font-size:9px}th,td{border:1px solid #000;padding:3px;text-align:left;vertical-align:top}' +
+      'th{background:#0b2341;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}thead{display:table-header-group}tr{page-break-inside:avoid}' +
+      '</style></head><body><h2>FETİHKENT İMAM HATİP ORTAOKULU — NÖBET KAYITLARI</h2><p>01.09.2026 – ' + new Date().toLocaleDateString('tr-TR') + '</p>' +
+      '<table><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>' +
+      '<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>');
+    w.document.close();
   }
 
   function updateData(silent) {
